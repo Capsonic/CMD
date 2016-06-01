@@ -37,4 +37,28 @@ namespace CMDEntities
             return entity;
         }
     }
+
+    class cross_Objective_Initiative_CRUD : superJunction_CRUD<Initiative, cross_Objective_Initiative>
+    {
+        public cross_Objective_Initiative_CRUD()
+        {
+            sp_update = "udp_cross_Objective_Initiative_ups";
+            query_GetByParent = "SELECT * FROM vw_initiative"
+                                + " WHERE ObjectiveKey = @parentKey"
+                                + " AND User_ID = @userKey";
+        }
+
+        public override void addParameters(cross_Objective_Initiative entity, ref SQL DM)
+        {
+            DM.Load_SP_Parameters("@ID", entity.id);
+            DM.Load_SP_Parameters("@ObjectiveKey", entity.ObjectiveKey);
+            DM.Load_SP_Parameters("@InitiativeKey", entity.InitiativeKey);
+        }
+
+        public override Initiative entityFromTableRow(DataRow row)
+        {
+            Initiative_CRUD initiative_CRUD = new Initiative_CRUD();
+            return initiative_CRUD.entityFromTableRow(row);
+        }
+    }
 }

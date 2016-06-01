@@ -10,9 +10,8 @@ namespace CMDEntities.Reusable
     class ConnectionManager
     {
         private static string user = "CMD_APP";
-        //private static string server = @".\SQLEXPRESS";
-        private static string server = "RSSERVER";
-        private static string pass = "Alfa0210";
+        private static string server = @".\SQLEXPRESS";
+        private static string pass = "capsonic";
         private static string database = "CMD";
 
         // private Data_Mng.SQL_DTMG DMG;

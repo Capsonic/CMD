@@ -61,8 +61,11 @@
     <Compile Include="Reusable\Comments\Comment_CRUD.cs" />
     <Compile Include="Reusable\Email\Email.cs" />
     <Compile Include="Reusable\Response\CommonResponse.cs" />
+    <Compile Include="Reusable\Sortable\Sortable.cs" />
+    <Compile Include="Reusable\Sortable\Sortable_CRUD.cs" />
     <Compile Include="Reusable\Super\IEntity.cs" />
     <Compile Include="Reusable\Super\Stateful.cs" />
+    <Compile Include="Reusable\Super\superJunction_CRUD.cs" />
     <Compile Include="Reusable\Super\Super_CRUD.cs" />
     <Compile Include="Reusable\Tasks\Task.cs" />
     <Compile Include="Reusable\Tasks\Task_CRUD.cs" />

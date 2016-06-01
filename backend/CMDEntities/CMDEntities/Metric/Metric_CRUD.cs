@@ -24,7 +24,7 @@ namespace CMDEntities
             DM.Load_SP_Parameters("@GoalValue", entity.GoalValue);
             DM.Load_SP_Parameters("@FormatKey", entity.FormatKey);
             DM.Load_SP_Parameters("@BasisKey", entity.BasisKey);
-            DM.Load_SP_Parameters("@ComparatorMethod", entity.ComparatorMethod);
+            DM.Load_SP_Parameters("@ComparatorMethodKey", entity.ComparatorMethodKey);
         }
 
         public override Metric entityFromTableRow(DataRow row)
@@ -37,8 +37,32 @@ namespace CMDEntities
             entity.GoalValue = row["GoalValue"].ToString() == "" ? (decimal?)null : decimal.Parse(row["GoalValue"].ToString());
             entity.FormatKey = row["FormatKey"].ToString() == "" ? (long?)null : long.Parse(row["FormatKey"].ToString());
             entity.FormatKey = row["BasisKey"].ToString() == "" ? (long?)null : long.Parse(row["BasisKey"].ToString());
-            entity.FormatKey = row["ComparatorMethod"].ToString() == "" ? (long?)null : long.Parse(row["ComparatorMethod"].ToString());
+            entity.FormatKey = row["ComparatorMethodKey"].ToString() == "" ? (long?)null : long.Parse(row["ComparatorMethod"].ToString());
             return entity;
+        }
+    }
+
+    class cross_Objective_Metric_CRUD : superJunction_CRUD<Metric, cross_Objective_Metric>
+    {
+        public cross_Objective_Metric_CRUD()
+        {
+            sp_update = "udp_cross_Objective_Metric_ups";
+            query_GetByParent = "SELECT * FROM vw_metric"
+                                + " WHERE ObjectiveKey = @parentKey"
+                                + " AND User_ID = @userKey";
+        }
+
+        public override void addParameters(cross_Objective_Metric entity, ref SQL DM)
+        {
+            DM.Load_SP_Parameters("@ID", entity.id);
+            DM.Load_SP_Parameters("@ObjectiveKey", entity.ObjectiveKey);
+            DM.Load_SP_Parameters("@MetricKey", entity.MetricKey);
+        }
+
+        public override Metric entityFromTableRow(DataRow row)
+        {
+            Metric_CRUD metric_CRUD = new Metric_CRUD();
+            return metric_CRUD.entityFromTableRow(row);
         }
     }
 }

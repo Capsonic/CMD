@@ -21,6 +21,8 @@ namespace CMDEntities.Reusable
         public long? User_RemovedBy { get; set; }
         public long? User_AssignedTo { get; set; }
         public long? User_AssignedBy { get; set; }
+
+        //Aux:
         public string TransactionAction { get; set; }
         public bool AssignationMade { get; set; }
 
