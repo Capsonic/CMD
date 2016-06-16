@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CMDLogic.cs" />
     <Compile Include="EF\cat_ComparatorMethod.cs" />
     <Compile Include="EF\cat_MetricBasis.cs" />
     <Compile Include="EF\cat_MetricFormat.cs" />

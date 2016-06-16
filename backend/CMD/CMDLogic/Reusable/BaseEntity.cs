@@ -9,11 +9,11 @@ namespace CMDLogic.Reusable
         public virtual int ID { get; set; }
 
         [NotMapped]
-        public string AAA_EntityName { get; set; }
+        public virtual string AAA_EntityName { get; set; }
 
         public BaseEntity()
         {
-            AAA_EntityName = GetType().Name;
+            AAA_EntityName = GetType().Name.Split('_')[0];
         }
 
         public override bool Equals(object obj)

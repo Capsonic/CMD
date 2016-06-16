@@ -8,7 +8,7 @@ namespace CMDLogic.Reusable
 {
     public class GenericDocumentRepository<T> : GenericDataRepository<T> where T : BaseDocument
     {
-        private readonly ITrackRepository trackRepository = new TrackRepository();
+        private readonly ITrackRepository _trackRepository = new TrackRepository();
 
         public override void Add(DbContext context, int? byUserID, params T[] items)
         {
@@ -23,10 +23,20 @@ namespace CMDLogic.Reusable
                     Entity_Kind = entity.AAA_EntityName,
                     User_CreatedBy = byUserID ?? 0
                 };
-                trackRepository.Add(context, byUserID, track);
+                _trackRepository.Add(context, byUserID, track);
                 entity.InfoTrack = track;
             }
             context.SaveChanges();
+        }
+
+        public override IList<T> GetAll(DbContext context, params Expression<Func<T, object>>[] navigationProperties)
+        {
+            IList<T> result = base.GetAll(context, navigationProperties);
+            foreach (T item in result)
+            {
+                item.InfoTrack = _trackRepository.GetSingle(context, t => t.Entity_ID == item.ID && t.Entity_Kind == item.AAA_EntityName);
+            }
+            return result;
         }
     }
 }
