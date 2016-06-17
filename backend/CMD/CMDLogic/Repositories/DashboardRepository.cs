@@ -3,7 +3,7 @@ using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IDashboardRepository : IGenericDataRepository<Dashboard> { }
+    public interface IDashboardRepository : IGenericDocumentRepository<Dashboard> { }
 
     public class DashboardRepository : GenericDocumentRepository<Dashboard>, IDashboardRepository { }
 }

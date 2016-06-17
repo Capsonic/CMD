@@ -82,14 +82,5 @@ namespace CMDLogic
                 context.Entry(item).State = EntityState.Modified;
             }
         }
-
-        //public virtual void SetActive(DbContext context, bool bActive, params T[] items)
-        //{
-        //    foreach (T item in items)
-        //    {
-                
-        //        context.Entry(item).State = EntityState.Modified;
-        //    }
-        //}
     }
 }

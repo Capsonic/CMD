@@ -17,4 +17,9 @@ namespace CMDLogic
         void Update(DbContext context, int? byUserID, params T[] items);
         void Remove(DbContext context, int? byUserID, params T[] items);
     }
+
+    public interface IGenericDocumentRepository<T> : IGenericDataRepository<T> where T : class
+    {
+        void SetActive(DbContext context, int? byUserID, bool bActive, params T[] items);
+    }
 }
