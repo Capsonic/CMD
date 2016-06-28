@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface IInitiativeRepository : IGenericDataRepository<Initiative> { }
 
-    public class InitiativeRepository : GenericDataRepository<Initiative>, IInitiativeRepository { }
+    public class InitiativeRepository : BaseGenericDataRepository<Initiative>, IInitiativeRepository
+    {
+        
+    }
 }

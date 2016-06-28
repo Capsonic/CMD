@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface IUserRepository : IGenericDataRepository<User> { }
 
-    public class UserRepository : GenericDataRepository<User>, IUserRepository { }
+    public class UserRepository : BaseGenericDataRepository<User>, IUserRepository
+    {
+        
+    }
 }

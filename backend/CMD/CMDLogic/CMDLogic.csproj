@@ -63,8 +63,11 @@
     <Compile Include="EF\Sort.cs" />
     <Compile Include="EF\Track.cs" />
     <Compile Include="EF\User.cs" />
-    <Compile Include="Entities\Entities.cs" />
+    <Compile Include="Entities\Objective.cs" />
+    <Compile Include="Entities\Dashboard.cs" />
+    <Compile Include="Logic\ObjectiveLogic.cs" />
     <Compile Include="Logic\DashboardLogic.cs" />
+    <Compile Include="MainContext.cs" />
     <Compile Include="Migrations\201606162006001_Initial.cs" />
     <Compile Include="Migrations\201606162006001_Initial.Designer.cs">
       <DependentUpon>201606162006001_Initial.cs</DependentUpon>
@@ -72,6 +75,10 @@
     <Compile Include="Migrations\201606162021434_FixSysActiveColumn.cs" />
     <Compile Include="Migrations\201606162021434_FixSysActiveColumn.Designer.cs">
       <DependentUpon>201606162021434_FixSysActiveColumn.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201606171530239_AddRelationTrackCreatedBy.cs" />
+    <Compile Include="Migrations\201606171530239_AddRelationTrackCreatedBy.Designer.cs">
+      <DependentUpon>201606171530239_AddRelationTrackCreatedBy.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -84,8 +91,10 @@
     <Compile Include="Repositories\MetricRepository.cs" />
     <Compile Include="Repositories\DashboardRepository.cs" />
     <Compile Include="Reusable\BaseDocument.cs" />
+    <Compile Include="Reusable\BaseLogic.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
-    <Compile Include="Reusable\GenericDataRepository.cs" />
+    <Compile Include="Reusable\BaseGenericDataRepository.cs" />
+    <Compile Include="Reusable\GenericEntityRepository.cs" />
     <Compile Include="Reusable\GenericDocumentRepository.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
     <Compile Include="Reusable\IGenericDataRepository.cs" />
@@ -101,6 +110,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606162021434_FixSysActiveColumn.resx">
       <DependentUpon>201606162021434_FixSysActiveColumn.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201606171530239_AddRelationTrackCreatedBy.resx">
+      <DependentUpon>201606171530239_AddRelationTrackCreatedBy.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

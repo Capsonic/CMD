@@ -22,8 +22,6 @@ namespace CMDLogic.EF
         [StringLength(250)]
         public string Title { get; set; }
 
-        public bool sys_active { get; set; }
-
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Dashboard> Dashboards { get; set; }
 

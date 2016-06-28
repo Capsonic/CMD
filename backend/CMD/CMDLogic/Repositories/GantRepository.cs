@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface IGantRepository : IGenericDataRepository<Gant> { }
 
-    public class GantRepository : GenericDataRepository<Gant>, IGantRepository { }
+    public class GantRepository : BaseGenericDataRepository<Gant>, IGantRepository
+    {
+        
+    }
 }

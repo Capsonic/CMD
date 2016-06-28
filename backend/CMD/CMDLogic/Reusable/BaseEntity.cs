@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMDLogic.Reusable
@@ -6,15 +7,10 @@ namespace CMDLogic.Reusable
     public abstract class BaseEntity : ICloneable
     {
         [NotMapped]
-        public virtual int ID { get; set; }
-
+        public abstract int ID { get; }
+        
         [NotMapped]
-        public virtual string AAA_EntityName { get; set; }
-
-        public BaseEntity()
-        {
-            AAA_EntityName = GetType().Name.Split('_')[0];
-        }
+        public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }        
 
         public override bool Equals(object obj)
         {

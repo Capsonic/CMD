@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface IMetricRepository : IGenericDataRepository<Metric> { }
 
-    public class MetricRepository : GenericDataRepository<Metric>, IMetricRepository { }
+    public class MetricRepository : BaseGenericDataRepository<Metric>, IMetricRepository
+    {
+        
+    }
 }

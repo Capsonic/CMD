@@ -1,15 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Linq.Expressions;
+﻿using System.Data.Entity;
 using CMDLogic.EF;
+using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IObjectiveRepository : IGenericDataRepository<Objective> { }
+    public interface IObjectiveRepository : IGenericDocumentRepository<Objective> { }
 
-    public class ObjectiveRepository : GenericDataRepository<Objective>, IObjectiveRepository { }
+    public class ObjectiveRepository : GenericDocumentRepository<Objective>, IObjectiveRepository
+    {
+        
+    }
 }

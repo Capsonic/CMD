@@ -16,7 +16,7 @@ namespace CMDLogic.EF
         [StringLength(50)]
         public string Entity_Kind { get; set; }
 
-        public int User_CreatedBy { get; set; }
+        public int User_CreatedByKey { get; set; }
 
         public DateTime Date_CreatedOn { get; set; }
 
@@ -26,20 +26,22 @@ namespace CMDLogic.EF
 
         public DateTime? Date_LastTimeUsed { get; set; }
 
-        public int? User_LastEditedBy { get; set; }
+        public int? User_LastEditedByKey { get; set; }
 
-        public int? User_RemovedBy { get; set; }
+        public int? User_RemovedByKey { get; set; }
 
-        public int? User_AssignedTo { get; set; }
+        public int? User_AssignedToKey { get; set; }
 
-        public int? User_AssignedBy { get; set; }
+        public int? User_AssignedByKey { get; set; }
 
-        public virtual User User { get; set; }
+        public virtual User User_CreatedBy { get; set; }
 
-        public virtual User User1 { get; set; }
+        public virtual User User_LastEditedBy { get; set; }
 
-        public virtual User User2 { get; set; }
+        public virtual User User_RemovedBy { get; set; }
 
-        public virtual User User3 { get; set; }
+        public virtual User User_AssignedTo { get; set; }
+
+        public virtual User User_AssignedBy { get; set; }
     }
 }

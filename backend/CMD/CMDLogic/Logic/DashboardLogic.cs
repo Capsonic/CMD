@@ -1,99 +1,26 @@
 ﻿using CMDLogic.EF;
 using CMDLogic.Reusable;
 using System;
-using System.Collections;
 using System.Collections.Generic;
 
 namespace CMDLogic.Logic
 {
-    public class DashboardLogic
+    public class DashboardLogic : BaseLogic<DashboardRepository, Dashboard>
     {
-        private readonly IDashboardRepository _dashboardRepository;
-
-        public DashboardLogic()
+        protected override void attachParent(MainContext context, Dashboard entity, BaseEntity parent)
         {
-            _dashboardRepository = new DashboardRepository();
+            throw new NotImplementedException();
         }
 
-        public CommonResponse Add(int byUserID, Dashboard dashboard)
+        protected override void loadNavigationProperties(MainContext context, IList<Dashboard> entities)
         {
-            CommonResponse commonResponse = new CommonResponse();
-            try
+            var objectiveRepository = new ObjectiveRepository();
+            objectiveRepository.context = context;
+
+            foreach (Dashboard item in entities)
             {
-                using (var context = new CMDContext())
-                {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            _dashboardRepository.Add(context, byUserID, dashboard);
-
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            dbContextTransaction.Rollback();
-                            return commonResponse.Error(ex.Message);
-                        }
-                    }
-                }
+                item.Objectives = objectiveRepository.GetListByParent<Dashboard>(item.ID);
             }
-            catch (Exception ex)
-            {
-
-                return commonResponse.Error(ex.Message);
-            }
-
-            return commonResponse.Success(dashboard);
         }
-
-        public CommonResponse GetAll(int? byUserID = null)
-        {
-            CommonResponse commonResponse = new CommonResponse();
-            IList<Dashboard> result;
-            try
-            {
-                using (var context = new CMDContext())
-                {
-                    result = _dashboardRepository.GetAll(context);
-                }
-            }
-            catch (Exception ex)
-            {
-                return commonResponse.Error(ex.Message);
-            }
-
-            return commonResponse.Success(result);
-        }
-
-        public CommonResponse Remove(int byUserID, Dashboard dashboard)
-        {
-            CommonResponse commonResponse = new CommonResponse();
-            try
-            {
-                using (var context = new CMDContext())
-                {
-                    using (var dbContextTransaction = context.Database.BeginTransaction())
-                    {
-                        try
-                        {
-                            _dashboardRepository.SetActive(context, byUserID, false, dashboard);
-
-                            dbContextTransaction.Commit();
-                        }
-                        catch (Exception ex)
-                        {
-                            dbContextTransaction.Rollback();
-                            return commonResponse.Error(ex.Message);
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                return commonResponse.Error(ex.Message);
-            }
-            return commonResponse.Success(dashboard);            
-        }        
     }
 }

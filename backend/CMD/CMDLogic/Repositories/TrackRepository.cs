@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface ITrackRepository : IGenericDataRepository<Track> { }
 
-    public class TrackRepository : GenericDataRepository<Track>, ITrackRepository { }
+    public class TrackRepository : BaseGenericDataRepository<Track>, ITrackRepository
+    {
+        
+    }
 }

@@ -15,6 +15,7 @@ namespace CMDLogic.EF
             Tracks1 = new HashSet<Track>();
             Tracks2 = new HashSet<Track>();
             Tracks3 = new HashSet<Track>();
+            Tracks4 = new HashSet<Track>();
             sys_active = true;
         }
 
@@ -61,5 +62,8 @@ namespace CMDLogic.EF
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Track> Tracks3 { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Track> Tracks4 { get; set; }
     }
 }

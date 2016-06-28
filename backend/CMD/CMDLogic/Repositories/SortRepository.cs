@@ -11,5 +11,8 @@ namespace CMDLogic
 {
     public interface ISortRepository : IGenericDataRepository<Sort> { }
 
-    public class SortRepository : GenericDataRepository<Sort>, ISortRepository { }
+    public class SortRepository : BaseGenericDataRepository<Sort>, ISortRepository
+    {
+        
+    }
 }

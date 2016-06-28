@@ -7,6 +7,7 @@ namespace CMDLogic.EF
         public CMDContext()
             : base("name=CMDContext")
         {
+            Configuration.LazyLoadingEnabled = false;            
         }
 
         public virtual DbSet<cat_ComparatorMethod> cat_ComparatorMethod { get; set; }
@@ -80,23 +81,28 @@ namespace CMDLogic.EF
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks)
-                .WithOptional(e => e.User)
-                .HasForeignKey(e => e.User_LastEditedBy);
+                .WithOptional(e => e.User_LastEditedBy)
+                .HasForeignKey(e => e.User_LastEditedByKey);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks1)
-                .WithOptional(e => e.User1)
-                .HasForeignKey(e => e.User_RemovedBy);
+                .WithOptional(e => e.User_RemovedBy)
+                .HasForeignKey(e => e.User_RemovedByKey);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks2)
-                .WithOptional(e => e.User2)
-                .HasForeignKey(e => e.User_AssignedTo);
+                .WithOptional(e => e.User_AssignedTo)
+                .HasForeignKey(e => e.User_AssignedToKey);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks3)
-                .WithOptional(e => e.User3)
-                .HasForeignKey(e => e.User_AssignedBy);
+                .WithOptional(e => e.User_AssignedBy)
+                .HasForeignKey(e => e.User_AssignedByKey);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Tracks4)
+                .WithRequired(e => e.User_CreatedBy)
+                .HasForeignKey(e => e.User_CreatedByKey);
         }
     }
 }
