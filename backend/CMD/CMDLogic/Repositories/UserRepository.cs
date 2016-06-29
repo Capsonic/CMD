@@ -9,9 +9,9 @@ using CMDLogic.EF;
 
 namespace CMDLogic
 {
-    public interface IUserRepository : IGenericDataRepository<User> { }
+    public interface IUserRepository : IRepository<User> { }
 
-    public class UserRepository : BaseGenericDataRepository<User>, IUserRepository
+    public class UserRepository : BaseRepository<User>, IUserRepository
     {
         
     }

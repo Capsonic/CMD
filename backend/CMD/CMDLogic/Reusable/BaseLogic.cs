@@ -1,23 +1,15 @@
-﻿using CMDLogic.EF;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace CMDLogic.Reusable
 {
     public abstract class BaseLogic<Repository, Entity>
         where Entity : BaseEntity
-        where Repository : GenericEntityRepository<Entity>
+        where Repository : BaseEntityRepository<Entity>
     {
         protected abstract void loadNavigationProperties(MainContext context, IList<Entity> entities);
-        protected abstract void attachParent(MainContext context, Entity entity, BaseEntity parent);
-
-        protected IGenericDocumentRepository<Dashboard> ParentRepository = null;
-        protected Type ParentType = null;
 
         public CommonResponse Add(Entity entity, int byUserID)
         {
@@ -106,7 +98,7 @@ namespace CMDLogic.Reusable
             }
         }
 
-        public CommonResponse Remove(int byUserID, Entity entity)
+        public CommonResponse Remove(int byUserID, int id)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -121,13 +113,14 @@ namespace CMDLogic.Reusable
                             repository.context = context;
                             repository.byUserID = byUserID;
 
-                            if (repository is IGenericDocumentRepository<Entity>)
+                            if (typeof(Entity).IsSubclassOf(typeof(BaseDocument)))
                             {
-                                (repository as IGenericDocumentRepository<Entity>).Deactivate(entity);
+                                MethodInfo method = repository.GetType().GetMethod("Deactivate");
+                                method.Invoke(repository, new object[] { id });
                             }
                             else
                             {
-                                repository.Delete(entity);
+                                repository.Delete(id);
                             }
 
                             transaction.Commit();
@@ -144,7 +137,7 @@ namespace CMDLogic.Reusable
             {
                 return response.Error(ex.Message);
             }
-            return response.Success(entity);
+            return response.Success(id);
         }
 
         public CommonResponse Update(int byUserID, Entity entity)
@@ -183,7 +176,7 @@ namespace CMDLogic.Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse AddToParent(int byUserID, int parentID, Entity entity)
+        public CommonResponse AddToParent<ParentType>(int byUserID, int parentID, Entity entity) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             try
@@ -198,25 +191,55 @@ namespace CMDLogic.Reusable
                             repository.context = context;
                             repository.byUserID = byUserID;
 
-                            if (ParentRepository == null)
-                            {
-                                response.Error("Entity " + entity.AAA_EntityName + " has no Parent Entity specified");
-                            }
+                            //var parentRepoType = typeof(BaseEntityRepository<>);
+                            //Type[] parentRepositoryArgs = { typeof(ParentType) };
+                            //var makeme = parentRepoType.MakeGenericType(parentRepositoryArgs);
+                            //object parentRepository = Activator.CreateInstance(makeme);
 
-                            (ParentRepository as GenericEntityRepository<BaseEntity>).context = context;
-                            (ParentRepository as GenericEntityRepository<BaseEntity>).byUserID = byUserID;
+                            //PropertyInfo propContext = parentRepository.GetType().GetProperty("context", BindingFlags.Public | BindingFlags.Instance);
+                            //propContext.SetValue(parentRepository, context);
 
-                            BaseEntity parent = (ParentRepository as GenericEntityRepository<BaseEntity>).GetByID(parentID);
+                            //PropertyInfo propByUser = parentRepository.GetType().GetProperty("byUserID", BindingFlags.Public | BindingFlags.Instance);
+                            //propByUser.SetValue(parentRepository, byUserID);
+
+                            //MethodInfo method = parentRepository.GetType().GetMethod("GetByID");
+                            //BaseEntity parent = (Entity)method.Invoke(parentRepository, new object[] { parentID });
+                            //if (parent == null)
+                            //{
+                            //    return response.Error("Non-existent Parent Entity.");
+                            //}
+
+                            DbSet<ParentType> parentSet = context.Set<ParentType>();
+                            ParentType parent = parentSet.Find(parentID);
                             if (parent == null)
                             {
-                                return response.Error("Non-existent Parent Entity.");
+                                throw new Exception("Non-existent Parent Entity.");
+                            }
+                            if (parent is BaseDocument)
+                            {
+                                if ((parent as BaseDocument).sys_active == false)
+                                {
+                                    throw new Exception("Non-existent Parent Entity.");
+                                }
                             }
 
                             context.Entry(parent).State = EntityState.Unchanged;
 
-                            attachParent(context, entity, parent);
-                            repository.Add(entity);
+                            string navigationPropertyName = typeof(ParentType).Name + "s";
 
+                            PropertyInfo navigationProperty = entity.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
+                            ICollection<ParentType> parentsList = (ICollection<ParentType>) navigationProperty.GetValue(entity);
+
+                            parentsList.Add(parent);
+
+                            if (entity.ID > 0)
+                            {
+                                repository.Update(entity);
+                            }else
+                            {
+                                repository.Add(entity);
+                            }
+                                                        
                             transaction.Commit();
                         }
                         catch (Exception ex)
@@ -235,7 +258,7 @@ namespace CMDLogic.Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse GetAllByParent(int parentID, int? byUserID = null)
+        public CommonResponse GetAllByParent<ParentType>(int parentID, int? byUserID = null) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             IList<Entity> entities;
@@ -244,19 +267,15 @@ namespace CMDLogic.Reusable
             {
                 using (var context = new MainContext())
                 {
-                    if (ParentType == null)
-                    {
-                        return response.Error("Entity has no Parent Type specified");
-                    }
-
                     Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                     repository.context = context;
                     repository.byUserID = byUserID;
-                    
-                    MethodInfo method = repository.GetType().GetMethod("GetListByParent");
-                    MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { ParentType });
-                    entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
-                    //entities = repository.GetListByParent<ParentType.GetType()>(parentID);
+
+                    entities = repository.GetListByParent<ParentType>(parentID);
+
+                    //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
+                    //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
+                    //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
                 }
             }
             catch (Exception ex)

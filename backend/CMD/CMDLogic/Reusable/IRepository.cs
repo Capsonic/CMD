@@ -4,26 +4,27 @@ using System.Collections.Generic;
 
 namespace CMDLogic
 {
-    public interface IGenericDataRepository<T> where T : class
+    public interface IRepository<T> where T : class
     {
         IList<T> GetAll();
         IList<T> GetList(Func<T, bool> where);
-        T GetByID(int ID);
+        T GetByID(int id);
         T GetSingle(Func<T, bool> where);
         void Add(params T[] items);
         void Update(params T[] items);
-        void Delete(params T[] items);
+        void Delete(int id);
     }
 
-    public interface IGenericEntityRepository<T> : IGenericDataRepository<T> where T : class
+    public interface IEntityRepository<T> : IRepository<T> where T : BaseEntity
     {
         IList<T> GetListByParent<P>(int parentID) where P : BaseEntity;
         T GetSingleByParent<P>(int parentID) where P : BaseEntity;
+        void AddToParent<P>(int parentId, T entity) where P : BaseEntity;
     }
 
-    public interface IGenericDocumentRepository<T> : IGenericEntityRepository<T> where T : class
+    public interface IDocumentRepository<T> : IEntityRepository<T> where T : BaseDocument
     {
-        void Activate(params T[] items);
-        void Deactivate(params T[] items);
+        void Activate(int id);
+        void Deactivate(int id);
     }
 }

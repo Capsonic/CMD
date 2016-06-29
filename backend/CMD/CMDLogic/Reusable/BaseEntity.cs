@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMDLogic.Reusable
-{
+{   
     public abstract class BaseEntity : ICloneable
     {
         [NotMapped]

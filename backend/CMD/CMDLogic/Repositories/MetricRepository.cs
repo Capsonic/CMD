@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Linq.Expressions;
-using CMDLogic.EF;
+﻿using CMDLogic.EF;
+using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IMetricRepository : IGenericDataRepository<Metric> { }
+    public interface IMetricRepository : IDocumentRepository<Metric> { }
 
-    public class MetricRepository : BaseGenericDataRepository<Metric>, IMetricRepository
+    public class MetricRepository : BaseDocumentRepository<Metric>, IMetricRepository
     {
         
     }

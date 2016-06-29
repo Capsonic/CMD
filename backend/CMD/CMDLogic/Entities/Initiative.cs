@@ -3,9 +3,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMDLogic.EF
 {
-    public partial class Objective : BaseDocument
+    public partial class Initiative : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return ObjectiveKey; } }
+        public override int ID { get { return InitiativeKey; } }
     }
 }

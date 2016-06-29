@@ -1,12 +1,11 @@
-﻿using System.Data.Entity;
-using CMDLogic.EF;
+﻿using CMDLogic.EF;
 using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IDashboardRepository : IGenericDocumentRepository<Dashboard> { }
+    public interface IDashboardRepository : IDocumentRepository<Dashboard> { }
 
-    public class DashboardRepository : GenericDocumentRepository<Dashboard>, IDashboardRepository
+    public class DashboardRepository : BaseDocumentRepository<Dashboard>, IDashboardRepository
     {
         
     }

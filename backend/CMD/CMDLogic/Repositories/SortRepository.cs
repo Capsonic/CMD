@@ -9,9 +9,9 @@ using CMDLogic.EF;
 
 namespace CMDLogic
 {
-    public interface ISortRepository : IGenericDataRepository<Sort> { }
+    public interface ISortRepository : IRepository<Sort> { }
 
-    public class SortRepository : BaseGenericDataRepository<Sort>, ISortRepository
+    public class SortRepository : BaseRepository<Sort>, ISortRepository
     {
         
     }

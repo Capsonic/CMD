@@ -4,9 +4,9 @@ using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IObjectiveRepository : IGenericDocumentRepository<Objective> { }
+    public interface IObjectiveRepository : IDocumentRepository<Objective> { }
 
-    public class ObjectiveRepository : GenericDocumentRepository<Objective>, IObjectiveRepository
+    public class ObjectiveRepository : BaseDocumentRepository<Objective>, IObjectiveRepository
     {
         
     }

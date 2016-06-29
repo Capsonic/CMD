@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Linq.Expressions;
-using CMDLogic.EF;
+﻿using CMDLogic.EF;
+using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IInitiativeRepository : IGenericDataRepository<Initiative> { }
+    public interface IInitiativeRepository : IDocumentRepository<Initiative> { }
 
-    public class InitiativeRepository : BaseGenericDataRepository<Initiative>, IInitiativeRepository
+    public class InitiativeRepository : BaseDocumentRepository<Initiative>, IInitiativeRepository
     {
         
     }

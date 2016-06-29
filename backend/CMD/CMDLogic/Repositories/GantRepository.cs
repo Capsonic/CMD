@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Linq.Expressions;
-using CMDLogic.EF;
+﻿using CMDLogic.EF;
+using CMDLogic.Reusable;
 
 namespace CMDLogic
 {
-    public interface IGantRepository : IGenericDataRepository<Gant> { }
+    public interface IGantRepository : IDocumentRepository<Gant> { }
 
-    public class GantRepository : BaseGenericDataRepository<Gant>, IGantRepository
+    public class GantRepository : BaseDocumentRepository<Gant>, IGantRepository
     {
         
     }

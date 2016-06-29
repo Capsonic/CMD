@@ -9,9 +9,9 @@ using CMDLogic.EF;
 
 namespace CMDLogic
 {
-    public interface ITrackRepository : IGenericDataRepository<Track> { }
+    public interface ITrackRepository : IRepository<Track> { }
 
-    public class TrackRepository : BaseGenericDataRepository<Track>, ITrackRepository
+    public class TrackRepository : BaseRepository<Track>, ITrackRepository
     {
         
     }

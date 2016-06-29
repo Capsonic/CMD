@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace CMDLogic
 {
-    public abstract class BaseGenericDataRepository<T> : IGenericDataRepository<T> where T : class
+    public abstract class BaseRepository<T> : IRepository<T> where T : class
     {
         public virtual DbContext context { get; set; }
 
@@ -57,11 +57,19 @@ namespace CMDLogic
             return item;
         }
 
-        public virtual void Delete(params T[] items)
+        public virtual void Delete(int id)
         {
-            foreach (T item in items)
+            DbSet<T> tSet = context.Set<T>();
+            T entity = tSet.Find(id);
+
+            if (entity != null)
             {
-                context.Entry(item).State = EntityState.Deleted;
+                context.Entry(entity).State = EntityState.Deleted;
+                context.SaveChanges();
+            }
+            else
+            {
+                throw new Exception("Entity not found.");
             }
         }
 
@@ -71,13 +79,14 @@ namespace CMDLogic
             {
                 context.Entry(item).State = EntityState.Modified;
             }
+            context.SaveChanges();
         }
 
-        public virtual T GetByID(int ID)
+        public virtual T GetByID(int id)
         {
             DbSet<T> set = context.Set<T>();
 
-            return set.Find(ID);
+            return set.Find(id);
         }
     }
 }

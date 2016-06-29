@@ -5,8 +5,13 @@ using System.Linq;
 
 namespace CMDLogic.Reusable
 {
-    public class GenericEntityRepository<T> : BaseGenericDataRepository<T>, IGenericEntityRepository<T> where T : BaseEntity
+    public class BaseEntityRepository<T> : BaseRepository<T>, IEntityRepository<T> where T : BaseEntity
     {
+        public void AddToParent<P>(int parentId, T entity) where P : BaseEntity
+        {
+            //TODO
+        }
+
         public virtual IList<T> GetListByParent<P>(int parentID) where P : BaseEntity
         {
             List<T> list = new List<T>();

@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace CMDLogic.Reusable
 {
-    public class GenericDocumentRepository<T> : GenericEntityRepository<T>, IGenericDocumentRepository<T> where T : BaseDocument
+    public class BaseDocumentRepository<T> : BaseEntityRepository<T>, IDocumentRepository<T> where T : BaseDocument
     {
         private readonly ITrackRepository _trackRepository = new TrackRepository();
 
@@ -90,54 +90,72 @@ namespace CMDLogic.Reusable
         public override T GetByID(int ID)
         {
             T result = base.GetByID(ID);
-            if (result != null)
+            if (result != null && result.sys_active != false)
             {
                 result.InfoTrack = _trackRepository.GetSingle(t => t.Entity_ID == result.ID && t.Entity_Kind == result.AAA_EntityName);
+                return result;
             }
-            return result;
+            else
+            {
+                return null;
+            }
         }
 
-        public void Activate(params T[] items)
+        public void Activate(int id)
         {
-            foreach (T item in items)
+            DbSet<T> tSet = context.Set<T>();
+            T entity = tSet.Find(id);
+            if (entity != null)
             {
-                item.InfoTrack = _trackRepository.GetSingle(t => t.Entity_ID == item.ID && t.Entity_Kind == item.AAA_EntityName);
+                entity.sys_active = true;
+                context.Entry(entity).State = EntityState.Modified;
 
-                if (item.InfoTrack != null)
+                entity.InfoTrack = _trackRepository.GetSingle(t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
+
+                if (entity.InfoTrack != null)
                 {
-                    item.InfoTrack.Date_EditedOn = DateTime.Now;
-                    item.InfoTrack.User_LastEditedByKey = byUserID;
+                    entity.InfoTrack.Date_EditedOn = DateTime.Now;
+                    entity.InfoTrack.User_LastEditedByKey = byUserID;
 
-                    item.InfoTrack.Date_RemovedOn = null;
-                    item.InfoTrack.User_RemovedByKey = null;
+                    entity.InfoTrack.Date_RemovedOn = null;
+                    entity.InfoTrack.User_RemovedByKey = null;
 
-                    _trackRepository.Update(item.InfoTrack);
+                    _trackRepository.Update(entity.InfoTrack);
                 }
 
-                item.sys_active = true;
-                context.Entry(item).State = EntityState.Modified;
+                context.SaveChanges();
             }
-            context.SaveChanges();
+            else
+            {
+                throw new Exception("Entity not found.");
+            }
         }
 
-        public void Deactivate(params T[] items)
+        public void Deactivate(int id)
         {
-            foreach (T item in items)
+            DbSet<T> tSet = context.Set<T>();
+            T entity = tSet.Find(id);
+            if (entity != null)
             {
-                item.InfoTrack = _trackRepository.GetSingle(t => t.Entity_ID == item.ID && t.Entity_Kind == item.AAA_EntityName);
+                entity.sys_active = false;
+                context.Entry(entity).State = EntityState.Modified;
 
-                if (item.InfoTrack != null)
+                entity.InfoTrack = _trackRepository.GetSingle(t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
+
+                if (entity.InfoTrack != null)
                 {
-                    item.InfoTrack.Date_RemovedOn = DateTime.Now;
-                    item.InfoTrack.User_RemovedByKey = byUserID;
+                    entity.InfoTrack.Date_RemovedOn = DateTime.Now;
+                    entity.InfoTrack.User_RemovedByKey = byUserID;
 
-                    _trackRepository.Update(item.InfoTrack);
+                    _trackRepository.Update(entity.InfoTrack);
                 }
 
-                item.sys_active = false;
-                context.Entry(item).State = EntityState.Modified;
+                context.SaveChanges();
             }
-            context.SaveChanges();
+            else
+            {
+                throw new Exception("Entity not found.");
+            }
         }
 
         public override void Update(params T[] items)
@@ -158,7 +176,7 @@ namespace CMDLogic.Reusable
             context.SaveChanges();
         }
 
-        public override void Delete(params T[] items)
+        public override void Delete(int id)
         {
             throw new Exception("Cannot delete Document entities.");
         }

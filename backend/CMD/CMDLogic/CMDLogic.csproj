@@ -63,8 +63,12 @@
     <Compile Include="EF\Sort.cs" />
     <Compile Include="EF\Track.cs" />
     <Compile Include="EF\User.cs" />
+    <Compile Include="Entities\Metric.cs" />
+    <Compile Include="Entities\Initiative.cs" />
+    <Compile Include="Entities\Gant.cs" />
     <Compile Include="Entities\Objective.cs" />
     <Compile Include="Entities\Dashboard.cs" />
+    <Compile Include="Logic\InitiativeLogic.cs" />
     <Compile Include="Logic\ObjectiveLogic.cs" />
     <Compile Include="Logic\DashboardLogic.cs" />
     <Compile Include="MainContext.cs" />
@@ -93,11 +97,11 @@
     <Compile Include="Reusable\BaseDocument.cs" />
     <Compile Include="Reusable\BaseLogic.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
-    <Compile Include="Reusable\BaseGenericDataRepository.cs" />
-    <Compile Include="Reusable\GenericEntityRepository.cs" />
-    <Compile Include="Reusable\GenericDocumentRepository.cs" />
+    <Compile Include="Reusable\BaseRepository.cs" />
+    <Compile Include="Reusable\BaseEntityRepository.cs" />
+    <Compile Include="Reusable\BaseDocumentRepository.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
-    <Compile Include="Reusable\IGenericDataRepository.cs" />
+    <Compile Include="Reusable\IRepository.cs" />
     <Compile Include="Reusable\Trackable.cs" />
   </ItemGroup>
   <ItemGroup>
