@@ -1,16 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Reflection;
 
 namespace CMDLogic.Reusable
 {
-    public abstract class BaseLogic<Repository, Entity>
-        where Entity : BaseEntity
-        where Repository : BaseEntityRepository<Entity>
+    public abstract class BaseLogic<Entity> where Entity : BaseEntity
     {
-
         protected int? byUserId = null;
+
         public BaseLogic(int? byUserId)
         {
             this.byUserId = byUserId;
@@ -29,7 +26,7 @@ namespace CMDLogic.Reusable
                     {
                         try
                         {
-                            Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                            var repository = RepositoryFactory.Create<Entity>();
                             repository.context = context;
                             repository.byUserID = byUserId;
 
@@ -61,7 +58,7 @@ namespace CMDLogic.Reusable
             {
                 using (var context = new MainContext())
                 {
-                    Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                    var repository = RepositoryFactory.Create<Entity>();
                     repository.context = context;
                     repository.byUserID = byUserId;
 
@@ -86,7 +83,7 @@ namespace CMDLogic.Reusable
             {
                 using (var context = new MainContext())
                 {
-                    Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                    var repository = RepositoryFactory.Create<Entity>();
                     repository.context = context;
                     repository.byUserID = byUserId;
 
@@ -116,7 +113,7 @@ namespace CMDLogic.Reusable
                     {
                         try
                         {
-                            Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                            var repository = RepositoryFactory.Create<Entity>();
                             repository.context = context;
                             repository.byUserID = byUserId;
 
@@ -158,7 +155,7 @@ namespace CMDLogic.Reusable
                     {
                         try
                         {
-                            Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                            var repository = RepositoryFactory.Create<Entity>();
                             repository.context = context;
                             repository.byUserID = byUserId;
 
@@ -194,7 +191,7 @@ namespace CMDLogic.Reusable
                     {
                         try
                         {
-                            Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                            var repository = RepositoryFactory.Create<Entity>();
                             repository.context = context;
                             repository.byUserID = byUserId;
 
@@ -245,7 +242,7 @@ namespace CMDLogic.Reusable
             {
                 using (var context = new MainContext())
                 {
-                    Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
+                    var repository = RepositoryFactory.Create<Entity>();
                     repository.context = context;
                     repository.byUserID = byUserId;
 

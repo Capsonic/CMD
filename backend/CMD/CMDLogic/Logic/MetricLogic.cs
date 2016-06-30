@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CMDLogic.Logic
 {
-    public class MetricLogic : BaseLogic<MetricRepository, Metric>
+    public class MetricLogic : BaseLogic<Metric>
     {
         public MetricLogic(int? byUserId) : base(byUserId)
         {

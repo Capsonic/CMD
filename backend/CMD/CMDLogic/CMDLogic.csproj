@@ -63,9 +63,15 @@
     <Compile Include="EF\Sort.cs" />
     <Compile Include="EF\Track.cs" />
     <Compile Include="EF\User.cs" />
+    <Compile Include="Entities\cat_MetricFormat.cs" />
+    <Compile Include="Entities\cat_MetricBasis.cs" />
     <Compile Include="Entities\Metric.cs" />
     <Compile Include="Entities\Initiative.cs" />
     <Compile Include="Entities\Gant.cs" />
+    <Compile Include="Entities\cat_ComparatorMethod.cs" />
+    <Compile Include="Entities\User.cs" />
+    <Compile Include="Entities\Track.cs" />
+    <Compile Include="Entities\Sort.cs" />
     <Compile Include="Entities\Objective.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
@@ -87,14 +93,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Repositories\Objective.cs" />
-    <Compile Include="Repositories\GantRepository.cs" />
-    <Compile Include="Repositories\UserRepository.cs" />
-    <Compile Include="Repositories\SortRepository.cs" />
-    <Compile Include="Repositories\TrackRepository.cs" />
-    <Compile Include="Repositories\InitiativeRepository.cs" />
-    <Compile Include="Repositories\MetricRepository.cs" />
-    <Compile Include="Repositories\DashboardRepository.cs" />
     <Compile Include="Reusable\BaseDocument.cs" />
     <Compile Include="Reusable\BaseLogic.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
@@ -103,6 +101,7 @@
     <Compile Include="Reusable\BaseDocumentRepository.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
     <Compile Include="Reusable\IRepository.cs" />
+    <Compile Include="Reusable\RepositoryFactory.cs" />
     <Compile Include="Reusable\Trackable.cs" />
   </ItemGroup>
   <ItemGroup>

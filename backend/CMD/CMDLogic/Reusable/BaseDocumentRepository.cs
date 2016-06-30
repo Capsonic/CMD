@@ -8,7 +8,7 @@ namespace CMDLogic.Reusable
 {
     public class BaseDocumentRepository<T> : BaseEntityRepository<T>, IDocumentRepository<T> where T : BaseDocument
     {
-        private readonly ITrackRepository _trackRepository = new TrackRepository();
+        private readonly BaseEntityRepository<Track> _trackRepository = RepositoryFactory.Create<Track>();
 
         public override int? byUserID
         {
@@ -16,7 +16,7 @@ namespace CMDLogic.Reusable
             set
             {
                 base.byUserID = value;
-                (_trackRepository as TrackRepository).byUserID = value;
+                (_trackRepository as BaseEntityRepository<Track>).byUserID = value;
             }
         }
 
@@ -26,7 +26,7 @@ namespace CMDLogic.Reusable
             set
             {
                 base.context = value;
-                (_trackRepository as TrackRepository).context = value;
+                (_trackRepository as BaseEntityRepository<Track>).context = value;
             }
         }
 

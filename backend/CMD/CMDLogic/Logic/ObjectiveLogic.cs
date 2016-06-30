@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CMDLogic.Logic
 {
-    public class ObjectiveLogic : BaseLogic<ObjectiveRepository, Objective>
+    public class ObjectiveLogic : BaseLogic<Objective>
     {
         public ObjectiveLogic(int? byUserId) : base(byUserId)
         {
@@ -12,8 +12,8 @@ namespace CMDLogic.Logic
 
         protected override void loadNavigationProperties(MainContext context, IList<Objective> entities)
         {
-            var initiativeRepository = new InitiativeRepository();
-            var metricRepository = new MetricRepository();
+            var initiativeRepository = RepositoryFactory.Create<Initiative>();
+            var metricRepository = RepositoryFactory.Create<Metric>();
 
             initiativeRepository.context = context;
             metricRepository.context = context;

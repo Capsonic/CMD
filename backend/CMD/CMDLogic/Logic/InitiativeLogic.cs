@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace CMDLogic.Logic
 {
-    public class InitiativeLogic : BaseLogic<InitiativeRepository, Initiative>
+    public class InitiativeLogic : BaseLogic<Initiative>
     {
         public InitiativeLogic(int? byUserId) : base(byUserId)
         {
@@ -12,7 +12,7 @@ namespace CMDLogic.Logic
 
         protected override void loadNavigationProperties(MainContext context, IList<Initiative> entities)
         {
-            var gantRepository = new GantRepository();
+            var gantRepository = RepositoryFactory.Create<Gant>();
             gantRepository.context = context;
 
             foreach (Initiative item in entities)
