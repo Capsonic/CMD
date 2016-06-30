@@ -6,6 +6,10 @@ namespace CMDLogic.Logic
 {
     public class DashboardLogic : BaseLogic<DashboardRepository, Dashboard>
     {
+        public DashboardLogic(int? byUserId) : base(byUserId)
+        {
+        }
+
         protected override void loadNavigationProperties(MainContext context, IList<Dashboard> entities)
         {
             var objectiveRepository = new ObjectiveRepository();

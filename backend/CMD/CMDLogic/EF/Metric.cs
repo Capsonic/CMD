@@ -30,8 +30,6 @@ namespace CMDLogic.EF
 
         public int? ComparatorMethodKey { get; set; }
 
-        public bool sys_active { get; set; }
-
         public virtual cat_ComparatorMethod cat_ComparatorMethod { get; set; }
 
         public virtual cat_MetricBasis cat_MetricBasis { get; set; }

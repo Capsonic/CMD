@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 
 namespace CMDLogic
 {
-    public abstract class BaseRepository<T> : IRepository<T> where T : class
+    public class BaseRepository<T> : IRepository<T> where T : class
     {
         public virtual DbContext context { get; set; }
 
@@ -75,8 +76,10 @@ namespace CMDLogic
 
         public virtual void Update(params T[] items)
         {
+            DbSet<T> dbSet = context.Set<T>();
             foreach (T item in items)
             {
+                //dbSet.Attach(item);
                 context.Entry(item).State = EntityState.Modified;
             }
             context.SaveChanges();

@@ -9,9 +9,16 @@ namespace CMDLogic.Reusable
         where Entity : BaseEntity
         where Repository : BaseEntityRepository<Entity>
     {
+
+        protected int? byUserId = null;
+        public BaseLogic(int? byUserId)
+        {
+            this.byUserId = byUserId;
+        }
+
         protected abstract void loadNavigationProperties(MainContext context, IList<Entity> entities);
 
-        public CommonResponse Add(Entity entity, int byUserID)
+        public CommonResponse Add(Entity entity)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -24,7 +31,7 @@ namespace CMDLogic.Reusable
                         {
                             Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                             repository.context = context;
-                            repository.byUserID = byUserID;
+                            repository.byUserID = byUserId;
 
                             repository.Add(entity);
 
@@ -46,7 +53,7 @@ namespace CMDLogic.Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse GetAll(int? byUserID = null)
+        public CommonResponse GetAll()
         {
             CommonResponse response = new CommonResponse();
             IList<Entity> entities;
@@ -56,7 +63,7 @@ namespace CMDLogic.Reusable
                 {
                     Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                     repository.context = context;
-                    repository.byUserID = byUserID;
+                    repository.byUserID = byUserId;
 
                     entities = repository.GetAll();
 
@@ -71,7 +78,7 @@ namespace CMDLogic.Reusable
             return response.Success(entities);
         }
 
-        public CommonResponse GetByID(int ID, int? byUserID = null)
+        public CommonResponse GetByID(int ID)
         {
             CommonResponse response = new CommonResponse();
             List<Entity> entities = new List<Entity>();
@@ -81,7 +88,7 @@ namespace CMDLogic.Reusable
                 {
                     Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                     repository.context = context;
-                    repository.byUserID = byUserID;
+                    repository.byUserID = byUserId;
 
                     Entity entity = repository.GetByID(ID);
                     if (entity != null)
@@ -98,7 +105,7 @@ namespace CMDLogic.Reusable
             }
         }
 
-        public CommonResponse Remove(int byUserID, int id)
+        public CommonResponse Remove(int id)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -111,7 +118,7 @@ namespace CMDLogic.Reusable
                         {
                             Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                             repository.context = context;
-                            repository.byUserID = byUserID;
+                            repository.byUserID = byUserId;
 
                             if (typeof(Entity).IsSubclassOf(typeof(BaseDocument)))
                             {
@@ -140,7 +147,7 @@ namespace CMDLogic.Reusable
             return response.Success(id);
         }
 
-        public CommonResponse Update(int byUserID, Entity entity)
+        public CommonResponse Update(Entity entity)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -153,7 +160,7 @@ namespace CMDLogic.Reusable
                         {
                             Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                             repository.context = context;
-                            repository.byUserID = byUserID;
+                            repository.byUserID = byUserId;
 
                             repository.Update(entity);
 
@@ -176,7 +183,7 @@ namespace CMDLogic.Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse AddToParent<ParentType>(int byUserID, int parentID, Entity entity) where ParentType : BaseEntity
+        public CommonResponse AddToParent<ParentType>(int parentID, Entity entity) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             try
@@ -189,7 +196,7 @@ namespace CMDLogic.Reusable
                         {
                             Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                             repository.context = context;
-                            repository.byUserID = byUserID;
+                            repository.byUserID = byUserId;
 
                             //var parentRepoType = typeof(BaseEntityRepository<>);
                             //Type[] parentRepositoryArgs = { typeof(ParentType) };
@@ -209,36 +216,7 @@ namespace CMDLogic.Reusable
                             //    return response.Error("Non-existent Parent Entity.");
                             //}
 
-                            DbSet<ParentType> parentSet = context.Set<ParentType>();
-                            ParentType parent = parentSet.Find(parentID);
-                            if (parent == null)
-                            {
-                                throw new Exception("Non-existent Parent Entity.");
-                            }
-                            if (parent is BaseDocument)
-                            {
-                                if ((parent as BaseDocument).sys_active == false)
-                                {
-                                    throw new Exception("Non-existent Parent Entity.");
-                                }
-                            }
-
-                            context.Entry(parent).State = EntityState.Unchanged;
-
-                            string navigationPropertyName = typeof(ParentType).Name + "s";
-
-                            PropertyInfo navigationProperty = entity.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
-                            ICollection<ParentType> parentsList = (ICollection<ParentType>) navigationProperty.GetValue(entity);
-
-                            parentsList.Add(parent);
-
-                            if (entity.ID > 0)
-                            {
-                                repository.Update(entity);
-                            }else
-                            {
-                                repository.Add(entity);
-                            }
+                            repository.AddToParent<ParentType>(parentID, entity);
                                                         
                             transaction.Commit();
                         }
@@ -258,7 +236,7 @@ namespace CMDLogic.Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse GetAllByParent<ParentType>(int parentID, int? byUserID = null) where ParentType : BaseEntity
+        public CommonResponse GetAllByParent<ParentType>(int parentID) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             IList<Entity> entities;
@@ -269,7 +247,7 @@ namespace CMDLogic.Reusable
                 {
                     Repository repository = (Repository)Activator.CreateInstance(typeof(Repository));
                     repository.context = context;
-                    repository.byUserID = byUserID;
+                    repository.byUserID = byUserId;
 
                     entities = repository.GetListByParent<ParentType>(parentID);
 

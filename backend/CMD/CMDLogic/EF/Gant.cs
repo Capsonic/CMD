@@ -18,8 +18,6 @@ namespace CMDLogic.EF
 
         public string GantData { get; set; }
 
-        public bool sys_active { get; set; }
-
         public virtual Initiative Initiative { get; set; }
     }
 }

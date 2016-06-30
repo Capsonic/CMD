@@ -69,6 +69,7 @@
     <Compile Include="Entities\Objective.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
+    <Compile Include="Logic\MetricLogic.cs" />
     <Compile Include="Logic\ObjectiveLogic.cs" />
     <Compile Include="Logic\DashboardLogic.cs" />
     <Compile Include="MainContext.cs" />

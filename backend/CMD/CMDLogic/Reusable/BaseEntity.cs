@@ -10,7 +10,18 @@ namespace CMDLogic.Reusable
         public abstract int ID { get; }
         
         [NotMapped]
-        public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }        
+        public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }
+        
+        [NotMapped]
+        public EF_EntityState EF_State { get; set; }
+
+        public enum EF_EntityState
+        {
+            Unchanged,
+            Added,
+            Modified,
+            Deleted
+        }
 
         public override bool Equals(object obj)
         {
