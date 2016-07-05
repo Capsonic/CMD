@@ -12,11 +12,9 @@ namespace Reusable
         protected readonly DbContext context;
         protected readonly int? byUserId;
 
-        protected readonly BaseRepository<ITrack> _trackRepository;
-
         public ITrack track { get; set; }
 
-        public BaseRepository(DbContext context, ITrack track, int? byUserId = 1)
+        public BaseRepository(DbContext context, ITrack track, int? byUserId)
         {
             this.context = context;
             this.track = track;
@@ -40,6 +38,27 @@ namespace Reusable
             {
                 context.Entry(item).State = EntityState.Added;
             }
+
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+
+                foreach (T entity in items)
+                {
+                    var document = entity as BaseDocument;
+                    //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
+                    track.Date_CreatedOn = DateTime.Now;
+                    track.Entity_ID = document.ID;
+                    track.Entity_Kind = document.AAA_EntityName;
+                    track.User_CreatedByKey = byUserId ?? 0;
+
+                    context.Entry(track).State = EntityState.Added;
+                    context.SaveChanges();
+
+                    document.InfoTrack = track;
+                }
+            }
+
             context.SaveChanges();
         }
 
@@ -50,7 +69,23 @@ namespace Reusable
 
             list = dbQuery
                 .AsNoTracking()
-                .ToList<T>();
+                .ToList();
+
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                list = list.Where(d => (d as BaseDocument).sys_active == true).ToList();
+
+                foreach (T item in list)
+                {
+                    var document = item as BaseDocument;
+
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                }
+            }
 
             return list;
         }
@@ -63,8 +98,23 @@ namespace Reusable
             list = dbQuery
                 .AsNoTracking()
                 .Where(where)
-                .ToList<T>();
+                .ToList();
 
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                list = list.Where(d => (d as BaseDocument).sys_active == true).ToList();
+
+                foreach (T item in list)
+                {
+                    var document = item as BaseDocument;
+
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                }
+            }
             return list;
         }
 
@@ -77,6 +127,23 @@ namespace Reusable
                 .AsNoTracking()
                 .FirstOrDefault(where);
 
+
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                var document = item as BaseDocument;
+                if (document.sys_active == true)
+                {
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
             return item;
         }
 
@@ -87,7 +154,15 @@ namespace Reusable
 
             if (entity != null)
             {
-                context.Entry(entity).State = EntityState.Deleted;
+                /*DOCUMENT*/
+                if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+                {
+                    Deactivate(id);
+                }
+                else
+                {
+                    context.Entry(entity).State = EntityState.Deleted;
+                }
                 context.SaveChanges();
             }
             else
@@ -104,14 +179,53 @@ namespace Reusable
                 //dbSet.Attach(item);
                 context.Entry(item).State = EntityState.Modified;
             }
+
+
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                foreach (T entity in items)
+                {
+                    var document = entity as BaseDocument;
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                    if (document.InfoTrack != null)
+                    {
+                        document.InfoTrack.User_LastEditedByKey = byUserId;
+                        document.InfoTrack.Date_EditedOn = DateTime.Now;
+
+                        context.Entry(document.InfoTrack).State = EntityState.Modified;
+                    }
+                }
+            }
+
             context.SaveChanges();
         }
 
         public virtual T GetByID(int id)
         {
             DbSet<T> set = context.Set<T>();
+            var item = set.Find(id);
 
-            return set.Find(id);
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                var document = item as BaseDocument;
+                if (document != null && document.sys_active == true)
+                {
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            return item;
         }
 
         public virtual IList<T> GetListByParent<P>(int parentID) where P : class
@@ -140,6 +254,22 @@ namespace Reusable
                 .Query()
                 .AsNoTracking()
                 .ToList<T>();
+
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                list = list.Where(d => (d as BaseDocument).sys_active == true).ToList();
+
+                foreach (T item in list)
+                {
+                    var document = item as BaseDocument;
+
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                }
+            }
 
             return list;
         }
@@ -173,7 +303,7 @@ namespace Reusable
             parentsList.Add(parent);
 
             string sPropID = typeof(T).Name + "Key";
-            int id = (int) context.Entry(entity).Property(sPropID).CurrentValue;
+            int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
 
             if (id > 0)
             {
@@ -209,7 +339,102 @@ namespace Reusable
             string tName = typeof(T).Name;
             entity = context.Entry(parent).Reference<T>(tName).Query().FirstOrDefault();
 
+            /*DOCUMENT*/
+            if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+            {
+                if (entity != null)
+                {
+                    var document = entity as BaseDocument;
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                }
+            }
+
             return entity;
+        }
+
+        public void Activate(int id)
+        {
+            DbSet<T> tSet = context.Set<T>();
+
+            T entity = tSet.Find(id);
+
+            if (entity != null)
+            {
+                if (entity is BaseDocument)
+                {
+                    var document = entity as BaseDocument;
+                    document.sys_active = true;
+                    context.Entry(document).State = EntityState.Modified;
+
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                    if (document.InfoTrack != null)
+                    {
+                        document.InfoTrack.Date_EditedOn = DateTime.Now;
+                        document.InfoTrack.User_LastEditedByKey = byUserId;
+
+                        document.InfoTrack.Date_RemovedOn = null;
+                        document.InfoTrack.User_RemovedByKey = null;
+
+                        context.Entry(document.InfoTrack).State = EntityState.Modified;
+                    }
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Entity is not a document.");
+                }
+            }
+            else
+            {
+                throw new Exception("Entity not found.");
+            }
+        }
+
+        public void Deactivate(int id)
+        {
+            DbSet<T> tSet = context.Set<T>();
+
+            T entity = tSet.Find(id);
+
+            if (entity != null)
+            {
+                if (entity is BaseDocument)
+                {
+                    var document = entity as BaseDocument;
+
+                    document.sys_active = false;
+
+                    context.Entry(document).State = EntityState.Modified;
+
+                    document.InfoTrack = context.Set<ITrack>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+
+                    if (document.InfoTrack != null)
+                    {
+                        document.InfoTrack.Date_RemovedOn = DateTime.Now;
+                        document.InfoTrack.User_RemovedByKey = byUserId;
+
+                        context.Entry(document.InfoTrack).State = EntityState.Modified;
+                    }
+
+                    context.SaveChanges();
+                }
+                else
+                {
+                    throw new Exception("Entity is not a document.");
+                }
+            }
+            else
+            {
+                throw new Exception("Entity not found.");
+            }
         }
     }
 

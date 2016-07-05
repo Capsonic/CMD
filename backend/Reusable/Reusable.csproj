@@ -51,15 +51,12 @@
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reusable\BaseDocument.cs" />
-    <Compile Include="Reusable\BaseDocumentRepository.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
-    <Compile Include="Reusable\BaseEntityRepository.cs" />
     <Compile Include="Reusable\BaseLogic.cs" />
     <Compile Include="Reusable\BaseRepository.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
     <Compile Include="Reusable\IEntity.cs" />
     <Compile Include="Reusable\IRepository.cs" />
-    <Compile Include="Reusable\MainContext.cs" />
     <Compile Include="Reusable\RepositoryFactory.cs" />
     <Compile Include="Reusable\Trackable.cs" />
   </ItemGroup>

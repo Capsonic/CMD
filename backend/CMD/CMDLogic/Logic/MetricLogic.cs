@@ -8,7 +8,7 @@ namespace CMDLogic.Logic
 {
     public class MetricLogic : BaseLogic<Metric>
     {
-        public MetricLogic(DbContext context, BaseRepository<Metric> repository) : base(context, repository)
+        public MetricLogic(DbContext context, IRepository<Metric> repository) : base(context, repository)
         {
         }
 
