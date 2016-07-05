@@ -1,22 +1,20 @@
 ﻿using CMDLogic.EF;
-using CMDLogic.Reusable;
+using Reusable;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
     public class ObjectiveLogic : BaseLogic<Objective>
     {
-        public ObjectiveLogic(int? byUserId) : base(byUserId)
+        public ObjectiveLogic(DbContext context, BaseRepository<Objective> repository) : base(context, repository)
         {
         }
 
-        protected override void loadNavigationProperties(MainContext context, IList<Objective> entities)
+        protected override void loadNavigationProperties(DbContext context, IList<Objective> entities)
         {
-            var initiativeRepository = RepositoryFactory.Create<Initiative>();
-            var metricRepository = RepositoryFactory.Create<Metric>();
-
-            initiativeRepository.context = context;
-            metricRepository.context = context;
+            var initiativeRepository = RepositoryFactory.Create<Initiative>(context, byUserId);
+            var metricRepository = RepositoryFactory.Create<Metric>(context, byUserId);
 
             foreach (Objective item in entities)
             {

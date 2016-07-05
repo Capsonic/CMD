@@ -1,19 +1,19 @@
 ﻿using CMDLogic.EF;
-using CMDLogic.Reusable;
+using Reusable;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
     public class InitiativeLogic : BaseLogic<Initiative>
     {
-        public InitiativeLogic(int? byUserId) : base(byUserId)
+        public InitiativeLogic(DbContext context, BaseRepository<Initiative> repository) : base(context, repository)
         {
         }
 
-        protected override void loadNavigationProperties(MainContext context, IList<Initiative> entities)
+        protected override void loadNavigationProperties(DbContext context, IList<Initiative> entities)
         {
-            var gantRepository = RepositoryFactory.Create<Gant>();
-            gantRepository.context = context;
+            var gantRepository = RepositoryFactory.Create<Gant>(context, byUserId);
 
             foreach (Initiative item in entities)
             {

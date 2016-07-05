@@ -1,34 +1,25 @@
-﻿using CMDLogic.EF;
-using System;
+﻿using System;
 using System.Data.Entity;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace CMDLogic.Reusable
+namespace Reusable
 {
     public class BaseDocumentRepository<T> : BaseEntityRepository<T>, IDocumentRepository<T> where T : BaseDocument
     {
-        private readonly BaseEntityRepository<Track> _trackRepository = RepositoryFactory.Create<Track>();
+        //protected readonly BaseRepository<ITrack> _trackRepository;
 
-        public override int? byUserID
+        public BaseDocumentRepository(DbContext context, ITrack track, int? byUserId = 1) : base(context, track, byUserId)
         {
-            get { return base.byUserID; }
-            set
-            {
-                base.byUserID = value;
-                (_trackRepository as BaseEntityRepository<Track>).byUserID = value;
-            }
         }
 
-        public override DbContext context
-        {
-            get { return base.context; }
-            set
-            {
-                base.context = value;
-                (_trackRepository as BaseEntityRepository<Track>).context = value;
-            }
-        }
+        //public ITrack track { get; set; }
+
+        ////public BaseDocumentRepository(DbContext context, BaseRepository<ITrack> trackRepository, int? byUserId = 1) : base(context, byUserId)
+        //public BaseDocumentRepository(DbContext context, int? byUserId = 1) : base(context, byUserId)
+        //{
+        //    //_trackRepository = trackRepository;
+        //}
 
         public override void Add(params T[] items)
         {
@@ -36,13 +27,11 @@ namespace CMDLogic.Reusable
             foreach (T entity in items)
             {
                 //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
-                Track track = new Track()
-                {
-                    Date_CreatedOn = DateTime.Now,
-                    Entity_ID = entity.ID,
-                    Entity_Kind = entity.AAA_EntityName,
-                    User_CreatedByKey = byUserID ?? 0
-                };
+                track.Date_CreatedOn = DateTime.Now;
+                track.Entity_ID = entity.ID;
+                track.Entity_Kind = entity.AAA_EntityName;
+                track.User_CreatedByKey = byUserId ?? 0;
+
 
                 _trackRepository.Add(track);
                 entity.InfoTrack = track;
@@ -115,7 +104,7 @@ namespace CMDLogic.Reusable
                 if (entity.InfoTrack != null)
                 {
                     entity.InfoTrack.Date_EditedOn = DateTime.Now;
-                    entity.InfoTrack.User_LastEditedByKey = byUserID;
+                    entity.InfoTrack.User_LastEditedByKey = byUserId;
 
                     entity.InfoTrack.Date_RemovedOn = null;
                     entity.InfoTrack.User_RemovedByKey = null;
@@ -145,7 +134,7 @@ namespace CMDLogic.Reusable
                 if (entity.InfoTrack != null)
                 {
                     entity.InfoTrack.Date_RemovedOn = DateTime.Now;
-                    entity.InfoTrack.User_RemovedByKey = byUserID;
+                    entity.InfoTrack.User_RemovedByKey = byUserId;
 
                     _trackRepository.Update(entity.InfoTrack);
                 }
@@ -167,7 +156,7 @@ namespace CMDLogic.Reusable
 
                 if (entity.InfoTrack != null)
                 {
-                    entity.InfoTrack.User_LastEditedByKey = byUserID;
+                    entity.InfoTrack.User_LastEditedByKey = byUserId;
                     entity.InfoTrack.Date_EditedOn = DateTime.Now;
 
                     _trackRepository.Update(entity.InfoTrack);

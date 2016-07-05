@@ -1,19 +1,19 @@
 ﻿using CMDLogic.EF;
-using CMDLogic.Reusable;
+using Reusable;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
     public class DashboardLogic : BaseLogic<Dashboard>
     {
-        public DashboardLogic(int? byUserId) : base(byUserId)
+        public DashboardLogic(DbContext context, BaseRepository<Dashboard> repository) : base(context, repository)
         {
         }
 
-        protected override void loadNavigationProperties(MainContext context, IList<Dashboard> entities)
+        protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
         {
-            var objectiveRepository = RepositoryFactory.Create<Objective>();
-            objectiveRepository.context = context;
+            var objectiveRepository = RepositoryFactory.Create<Objective>(context, byUserId);
 
             foreach (Dashboard item in entities)
             {

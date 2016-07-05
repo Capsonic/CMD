@@ -1,8 +1,8 @@
 ﻿using CMDLogic.EF;
 
-namespace CMDLogic
+namespace Reusable
 {
-    public class MainContext : CMDContext
+    public partial class MainContext : CMDContext
     {
     }
 }

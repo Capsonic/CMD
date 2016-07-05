@@ -1,8 +1,7 @@
-﻿using CMDLogic.Reusable;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
-namespace CMDLogic
+namespace Reusable
 {
     public interface IRepository<T> where T : class
     {
@@ -13,13 +12,17 @@ namespace CMDLogic
         void Add(params T[] items);
         void Update(params T[] items);
         void Delete(int id);
+
+        IList<T> GetListByParent<P>(int parentID) where P : class;
+        T GetSingleByParent<P>(int parentID) where P : class;
+        void AddToParent<P>(int parentId, T entity) where P : class;
+
+        ITrack track { get; set; }
     }
 
     public interface IEntityRepository<T> : IRepository<T> where T : BaseEntity
     {
-        IList<T> GetListByParent<P>(int parentID) where P : BaseEntity;
-        T GetSingleByParent<P>(int parentID) where P : BaseEntity;
-        void AddToParent<P>(int parentId, T entity) where P : BaseEntity;
+        //TODO may be this interface to be removed   
     }
 
     public interface IDocumentRepository<T> : IEntityRepository<T> where T : BaseDocument

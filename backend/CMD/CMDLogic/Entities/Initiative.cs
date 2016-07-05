@@ -1,4 +1,4 @@
-﻿using CMDLogic.Reusable;
+﻿using Reusable;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMDLogic.EF

@@ -1,20 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 
-namespace CMDLogic.Reusable
-{   
-    public abstract class BaseEntity : ICloneable
+namespace Reusable
+{
+    public abstract class BaseEntity : IEntity
     {
         [NotMapped]
         public abstract int ID { get; }
-        
+
         [NotMapped]
         public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }
-        
+
         [NotMapped]
         public EF_EntityState EF_State { get; set; }
-
+        
         public enum EF_EntityState
         {
             Unchanged,

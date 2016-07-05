@@ -65,13 +65,11 @@
     <Compile Include="EF\User.cs" />
     <Compile Include="Entities\cat_MetricFormat.cs" />
     <Compile Include="Entities\cat_MetricBasis.cs" />
+    <Compile Include="Entities\Track.cs" />
     <Compile Include="Entities\Metric.cs" />
     <Compile Include="Entities\Initiative.cs" />
     <Compile Include="Entities\Gant.cs" />
     <Compile Include="Entities\cat_ComparatorMethod.cs" />
-    <Compile Include="Entities\User.cs" />
-    <Compile Include="Entities\Track.cs" />
-    <Compile Include="Entities\Sort.cs" />
     <Compile Include="Entities\Objective.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
@@ -93,16 +91,6 @@
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reusable\BaseDocument.cs" />
-    <Compile Include="Reusable\BaseLogic.cs" />
-    <Compile Include="Reusable\CommonResponse.cs" />
-    <Compile Include="Reusable\BaseRepository.cs" />
-    <Compile Include="Reusable\BaseEntityRepository.cs" />
-    <Compile Include="Reusable\BaseDocumentRepository.cs" />
-    <Compile Include="Reusable\BaseEntity.cs" />
-    <Compile Include="Reusable\IRepository.cs" />
-    <Compile Include="Reusable\RepositoryFactory.cs" />
-    <Compile Include="Reusable\Trackable.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.Config" />
@@ -118,6 +106,12 @@
     <EmbeddedResource Include="Migrations\201606171530239_AddRelationTrackCreatedBy.resx">
       <DependentUpon>201606171530239_AddRelationTrackCreatedBy.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\Reusable\Reusable.csproj">
+      <Project>{03D4D782-B0E0-4919-B416-3DF36F1D413F}</Project>
+      <Name>Reusable</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
