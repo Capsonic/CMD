@@ -1,4 +1,4 @@
-namespace CMDLogic.EF
+namespace Reusable
 {
     using System;
     using System.ComponentModel.DataAnnotations;

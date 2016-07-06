@@ -104,16 +104,35 @@ namespace Reusable
                     try
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
+                        repository.Delete(id);
 
-                        if (typeof(Entity).IsSubclassOf(typeof(BaseDocument)))
-                        {
-                            MethodInfo method = repository.GetType().GetMethod("Deactivate");
-                            method.Invoke(repository, new object[] { id });
-                        }
-                        else
-                        {
-                            repository.Delete(id);
-                        }
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return response.Error(ex.Message);
+                    }
+                }
+
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.Message);
+            }
+            return response.Success(id);
+        }
+
+        public CommonResponse Activate(int id)
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.Activate(id);
 
                         transaction.Commit();
                     }

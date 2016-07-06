@@ -53,12 +53,14 @@
     <Compile Include="Reusable\BaseDocument.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
     <Compile Include="Reusable\BaseLogic.cs" />
-    <Compile Include="Reusable\BaseRepository.cs" />
+    <Compile Include="Reusable\Repository.cs" />
     <Compile Include="Reusable\CommonResponse.cs" />
     <Compile Include="Reusable\IEntity.cs" />
     <Compile Include="Reusable\IRepository.cs" />
-    <Compile Include="Reusable\RepositoryFactory.cs" />
+    <Compile Include="Reusable\Entities\Sort.cs" />
+    <Compile Include="Reusable\Entities\Track.cs" />
     <Compile Include="Reusable\Trackable.cs" />
+    <Compile Include="Reusable\Entities\User.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

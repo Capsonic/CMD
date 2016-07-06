@@ -5,7 +5,7 @@ namespace Reusable
     public abstract class BaseDocument : BaseEntity, Trackable
     {
         [NotMapped]
-        public ITrack InfoTrack { get; set; }
+        public Track InfoTrack { get; set; }
 
         public virtual bool sys_active { get; set; }
     }

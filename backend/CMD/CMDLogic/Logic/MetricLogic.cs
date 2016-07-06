@@ -14,7 +14,7 @@ namespace CMDLogic.Logic
 
         protected override void loadNavigationProperties(DbContext context, IList<Metric> entities)
         {
-            throw new NotImplementedException();
+            //Empty by the momemnt.
         }
     }
 }

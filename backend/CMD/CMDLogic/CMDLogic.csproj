@@ -60,12 +60,8 @@
     <Compile Include="EF\Initiative.cs" />
     <Compile Include="EF\Metric.cs" />
     <Compile Include="EF\Objective.cs" />
-    <Compile Include="EF\Sort.cs" />
-    <Compile Include="EF\Track.cs" />
-    <Compile Include="EF\User.cs" />
     <Compile Include="Entities\cat_MetricFormat.cs" />
     <Compile Include="Entities\cat_MetricBasis.cs" />
-    <Compile Include="Entities\Track.cs" />
     <Compile Include="Entities\Metric.cs" />
     <Compile Include="Entities\Initiative.cs" />
     <Compile Include="Entities\Gant.cs" />

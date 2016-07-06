@@ -1,11 +1,11 @@
-namespace CMDLogic.EF
+namespace Reusable
 {
     using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Track")]
-    public partial class Track
+    public partial class Track : BaseEntity
     {
         [Key]
         public int TrackKey { get; set; }
@@ -43,5 +43,8 @@ namespace CMDLogic.EF
         public virtual User User_AssignedTo { get; set; }
 
         public virtual User User_AssignedBy { get; set; }
+
+        [NotMapped]
+        public override int ID { get { return TrackKey; } }
     }
 }

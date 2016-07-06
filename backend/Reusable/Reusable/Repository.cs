@@ -7,17 +7,14 @@ using System.Reflection;
 
 namespace Reusable
 {
-    public class BaseRepository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext context;
         protected readonly int? byUserId;
 
-        public ITrack track { get; set; }
-
-        public BaseRepository(DbContext context, ITrack track, int? byUserId)
+        public Repository(DbContext context, int? byUserId)
         {
             this.context = context;
-            this.track = track;
             this.byUserId = byUserId;
         }
 
@@ -39,6 +36,8 @@ namespace Reusable
                 context.Entry(item).State = EntityState.Added;
             }
 
+            context.SaveChanges();
+
             /*DOCUMENT*/
             if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
             {
@@ -46,20 +45,17 @@ namespace Reusable
                 foreach (T entity in items)
                 {
                     var document = entity as BaseDocument;
+                    document.InfoTrack = new Track();
                     //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
-                    track.Date_CreatedOn = DateTime.Now;
-                    track.Entity_ID = document.ID;
-                    track.Entity_Kind = document.AAA_EntityName;
-                    track.User_CreatedByKey = byUserId ?? 0;
+                    document.InfoTrack.Date_CreatedOn = DateTime.Now;
+                    document.InfoTrack.Entity_ID = document.ID;
+                    document.InfoTrack.Entity_Kind = document.AAA_EntityName;
+                    document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
 
-                    context.Entry(track).State = EntityState.Added;
+                    context.Entry(document.InfoTrack).State = EntityState.Added;
                     context.SaveChanges();
-
-                    document.InfoTrack = track;
                 }
             }
-
-            context.SaveChanges();
         }
 
         public virtual IList<T> GetAll()
@@ -80,7 +76,9 @@ namespace Reusable
                 {
                     var document = item as BaseDocument;
 
-                    document.InfoTrack = context.Set<ITrack>()
+                    //document.InfoTrack = context.Database.SqlQuery<Track>("select * from Track where Entity_ID = @p0 and Entity_Kind = @p1",
+                    //    document.ID, document.AAA_EntityName).FirstOrDefault();
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 
@@ -92,6 +90,7 @@ namespace Reusable
 
         public virtual IList<T> GetList(Func<T, bool> where)
         {
+            throw new Exception("Testing Missing");
             List<T> list;
             IQueryable<T> dbQuery = context.Set<T>();
 
@@ -109,7 +108,7 @@ namespace Reusable
                 {
                     var document = item as BaseDocument;
 
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 
@@ -120,6 +119,7 @@ namespace Reusable
 
         public virtual T GetSingle(Func<T, bool> where)
         {
+            throw new Exception("Testing Missing");
             T item = null;
             IQueryable<T> dbQuery = context.Set<T>();
 
@@ -134,7 +134,7 @@ namespace Reusable
                 var document = item as BaseDocument;
                 if (document.sys_active == true)
                 {
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
                 }
@@ -149,6 +149,7 @@ namespace Reusable
 
         public virtual void Delete(int id)
         {
+            throw new Exception("Testing Missing");
             DbSet<T> tSet = context.Set<T>();
             T entity = tSet.Find(id);
 
@@ -187,7 +188,7 @@ namespace Reusable
                 foreach (T entity in items)
                 {
                     var document = entity as BaseDocument;
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 
@@ -215,7 +216,7 @@ namespace Reusable
                 var document = item as BaseDocument;
                 if (document != null && document.sys_active == true)
                 {
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
                 }
@@ -264,7 +265,7 @@ namespace Reusable
                 {
                     var document = item as BaseDocument;
 
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 
@@ -317,6 +318,7 @@ namespace Reusable
 
         public virtual T GetSingleByParent<P>(int parentID) where P : class
         {
+            throw new Exception("Testing Missing");
             T entity = null;
 
             DbSet<P> setParent = context.Set<P>();
@@ -345,7 +347,7 @@ namespace Reusable
                 if (entity != null)
                 {
                     var document = entity as BaseDocument;
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
                 }
@@ -368,7 +370,7 @@ namespace Reusable
                     document.sys_active = true;
                     context.Entry(document).State = EntityState.Modified;
 
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 
@@ -412,7 +414,7 @@ namespace Reusable
 
                     context.Entry(document).State = EntityState.Modified;
 
-                    document.InfoTrack = context.Set<ITrack>()
+                    document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
                                         .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
 

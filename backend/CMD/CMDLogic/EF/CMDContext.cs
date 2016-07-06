@@ -1,5 +1,6 @@
 namespace CMDLogic.EF
 {
+    using Reusable;
     using System.Data.Entity;
 
     public partial class CMDContext : DbContext

@@ -7,14 +7,15 @@ namespace CMDLogic.Logic
 {
     public class DashboardLogic : BaseLogic<Dashboard>
     {
-        public DashboardLogic(DbContext context, BaseRepository<Dashboard> repository) : base(context, repository)
+        private readonly IRepository<Objective> objectiveRepository;
+
+        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IRepository<Objective> objectiveRepository) : base(context, repository)
         {
+            this.objectiveRepository = objectiveRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
         {
-            var objectiveRepository = RepositoryFactory.Create<Objective>(context, byUserId);
-
             foreach (Dashboard item in entities)
             {
                 item.Objectives = objectiveRepository.GetListByParent<Dashboard>(item.ID);

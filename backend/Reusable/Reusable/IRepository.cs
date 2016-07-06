@@ -19,7 +19,5 @@ namespace Reusable
 
         void Activate(int id);
         void Deactivate(int id);
-
-        ITrack track { get; set; }
     }
 }

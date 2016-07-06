@@ -7,14 +7,15 @@ namespace CMDLogic.Logic
 {
     public class InitiativeLogic : BaseLogic<Initiative>
     {
-        public InitiativeLogic(DbContext context, BaseRepository<Initiative> repository) : base(context, repository)
+        private readonly IRepository<Gant> gantRepository;
+
+        public InitiativeLogic(DbContext context, IRepository<Initiative> repository, IRepository<Gant> gantRepository) : base(context, repository)
         {
+            this.gantRepository = gantRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Initiative> entities)
         {
-            var gantRepository = RepositoryFactory.Create<Gant>(context, byUserId);
-
             foreach (Initiative item in entities)
             {
                 item.Gants = gantRepository.GetListByParent<Initiative>(item.ID);

@@ -7,15 +7,17 @@ namespace CMDLogic.Logic
 {
     public class ObjectiveLogic : BaseLogic<Objective>
     {
-        public ObjectiveLogic(DbContext context, BaseRepository<Objective> repository) : base(context, repository)
+        private readonly IRepository<Initiative> initiativeRepository;
+        private readonly IRepository<Metric> metricRepository;
+
+        public ObjectiveLogic(DbContext context, IRepository<Objective> repository, IRepository<Initiative> initiativeRepository, IRepository<Metric> metricRepository) : base(context, repository)
         {
+            this.initiativeRepository = initiativeRepository;
+            this.metricRepository = metricRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Objective> entities)
         {
-            var initiativeRepository = RepositoryFactory.Create<Initiative>(context, byUserId);
-            var metricRepository = RepositoryFactory.Create<Metric>(context, byUserId);
-
             foreach (Objective item in entities)
             {
                 item.Initiatives = initiativeRepository.GetListByParent<Objective>(item.ID);
