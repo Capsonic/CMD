@@ -5,7 +5,9 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public class DashboardLogic : BaseLogic<Dashboard>
+    public interface IDashboardLogic : IBaseLogic<Dashboard> { }
+
+    public class DashboardLogic : BaseLogic<Dashboard>, IDashboardLogic
     {
         private readonly IRepository<Objective> objectiveRepository;
 

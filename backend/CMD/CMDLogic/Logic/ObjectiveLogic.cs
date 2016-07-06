@@ -5,7 +5,9 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public class ObjectiveLogic : BaseLogic<Objective>
+    public interface IObjectiveLogic : IBaseLogic<Objective> { }
+
+    public class ObjectiveLogic : BaseLogic<Objective>, IObjectiveLogic
     {
         private readonly IRepository<Initiative> initiativeRepository;
         private readonly IRepository<Metric> metricRepository;

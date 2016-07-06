@@ -12,10 +12,9 @@ namespace Reusable
         protected readonly DbContext context;
         protected readonly int? byUserId;
 
-        public Repository(DbContext context, int? byUserId)
+        public Repository(DbContext context)
         {
             this.context = context;
-            this.byUserId = byUserId;
         }
 
         public virtual void Add(params T[] items)

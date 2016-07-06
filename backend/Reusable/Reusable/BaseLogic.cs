@@ -5,7 +5,7 @@ using System.Reflection;
 
 namespace Reusable
 {
-    public abstract class BaseLogic<Entity> where Entity : BaseEntity
+    public abstract class BaseLogic<Entity> : IBaseLogic<Entity> where Entity : BaseEntity
     {
         protected int? byUserId = null;
         protected DbContext context;
@@ -20,7 +20,7 @@ namespace Reusable
 
         protected abstract void loadNavigationProperties(DbContext context, IList<Entity> entities);
 
-        public CommonResponse Add(Entity entity)
+        public virtual CommonResponse Add(Entity entity)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -50,7 +50,7 @@ namespace Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse GetAll()
+        public virtual CommonResponse GetAll()
         {
             CommonResponse response = new CommonResponse();
             IList<Entity> entities;
@@ -70,7 +70,7 @@ namespace Reusable
             return response.Success(entities);
         }
 
-        public CommonResponse GetByID(int ID)
+        public virtual CommonResponse GetByID(int ID)
         {
             CommonResponse response = new CommonResponse();
             List<Entity> entities = new List<Entity>();
@@ -94,7 +94,7 @@ namespace Reusable
             }
         }
 
-        public CommonResponse Remove(int id)
+        public virtual CommonResponse Remove(int id)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -123,7 +123,7 @@ namespace Reusable
             return response.Success(id);
         }
 
-        public CommonResponse Activate(int id)
+        public virtual CommonResponse Activate(int id)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -151,7 +151,7 @@ namespace Reusable
             return response.Success(id);
         }
 
-        public CommonResponse Update(Entity entity)
+        public virtual CommonResponse Update(Entity entity)
         {
             CommonResponse response = new CommonResponse();
             try
@@ -183,7 +183,7 @@ namespace Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse AddToParent<ParentType>(int parentID, Entity entity) where ParentType : BaseEntity
+        public virtual CommonResponse AddToParent<ParentType>(int parentID, Entity entity) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             try
@@ -233,7 +233,7 @@ namespace Reusable
             return response.Success(entity);
         }
 
-        public CommonResponse GetAllByParent<ParentType>(int parentID) where ParentType : BaseEntity
+        public virtual CommonResponse GetAllByParent<ParentType>(int parentID) where ParentType : BaseEntity
         {
             CommonResponse response = new CommonResponse();
             IList<Entity> entities;

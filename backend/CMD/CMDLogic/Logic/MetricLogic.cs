@@ -6,7 +6,9 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public class MetricLogic : BaseLogic<Metric>
+    public interface IMetricLogic : IBaseLogic<Metric> { }
+
+    public class MetricLogic : BaseLogic<Metric>, IMetricLogic
     {
         public MetricLogic(DbContext context, IRepository<Metric> repository) : base(context, repository)
         {

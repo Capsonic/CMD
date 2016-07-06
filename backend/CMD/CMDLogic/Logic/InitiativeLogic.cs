@@ -5,7 +5,9 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public class InitiativeLogic : BaseLogic<Initiative>
+    public interface IInitiativeLogic : IBaseLogic<Initiative> { }
+
+    public class InitiativeLogic : BaseLogic<Initiative>, IInitiativeLogic
     {
         private readonly IRepository<Gant> gantRepository;
 
