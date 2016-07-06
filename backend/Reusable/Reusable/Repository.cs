@@ -90,14 +90,22 @@ namespace Reusable
 
         public virtual IList<T> GetList(Func<T, bool> where)
         {
-            throw new Exception("Testing Missing");
             List<T> list;
             IQueryable<T> dbQuery = context.Set<T>();
 
-            list = dbQuery
+            if (where != null)
+            {
+                list = dbQuery
                 .AsNoTracking()
                 .Where(where)
                 .ToList();
+            }
+            else
+            {
+                list = dbQuery
+                .AsNoTracking()
+                .ToList();
+            }
 
             /*DOCUMENT*/
             if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
@@ -119,7 +127,6 @@ namespace Reusable
 
         public virtual T GetSingle(Func<T, bool> where)
         {
-            throw new Exception("Testing Missing");
             T item = null;
             IQueryable<T> dbQuery = context.Set<T>();
 
@@ -149,7 +156,6 @@ namespace Reusable
 
         public virtual void Delete(int id)
         {
-            throw new Exception("Testing Missing");
             DbSet<T> tSet = context.Set<T>();
             T entity = tSet.Find(id);
 
@@ -318,7 +324,6 @@ namespace Reusable
 
         public virtual T GetSingleByParent<P>(int parentID) where P : class
         {
-            throw new Exception("Testing Missing");
             T entity = null;
 
             DbSet<P> setParent = context.Set<P>();
