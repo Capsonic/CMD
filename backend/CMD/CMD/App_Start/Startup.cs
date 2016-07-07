@@ -26,7 +26,7 @@ namespace CMD
             ConfigureOAuth(app);
 
             WebApiConfig.Register(config);
-            //app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
+            app.UseCors(Microsoft.Owin.Cors.CorsOptions.AllowAll);
             //app.UseWebApi(config);
             app.UseNinjectMiddleware(NinjectWebCommon.CreateKernel).UseNinjectWebApi(config);
         }

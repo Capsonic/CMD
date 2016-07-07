@@ -6,9 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Cors;
 
 namespace CMD.Controllers
 {
+    [EnableCors(origins: "*", headers: "*", methods: "*")]
     public abstract class BaseController<Entity> : ApiController where Entity: BaseEntity
     {
         IBaseLogic<Entity> _logic;
@@ -19,9 +21,9 @@ namespace CMD.Controllers
         }
 
         // GET: api/Base
-        public IEnumerable<string> Get()
+        public CommonResponse Get()
         {
-            return new string[] { "value1", "value2" };
+            return _logic.GetAll();
         }
 
         // GET: api/Base/5
