@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class Metric : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return MetricKey; } }
+        public override int id { get { return MetricKey; } }
     }
 }

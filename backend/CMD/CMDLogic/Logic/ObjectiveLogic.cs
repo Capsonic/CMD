@@ -22,8 +22,8 @@ namespace CMDLogic.Logic
         {
             foreach (Objective item in entities)
             {
-                item.Initiatives = initiativeRepository.GetListByParent<Objective>(item.ID);
-                item.Metrics = metricRepository.GetListByParent<Objective>(item.ID);
+                item.Initiatives = initiativeRepository.GetListByParent<Objective>(item.id);
+                item.Metrics = metricRepository.GetListByParent<Objective>(item.id);
             }
         }
     }

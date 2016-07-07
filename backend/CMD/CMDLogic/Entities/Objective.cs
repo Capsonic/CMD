@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class Objective : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return ObjectiveKey; } }
+        public override int id { get { return ObjectiveKey; } }
     }
 }

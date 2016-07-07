@@ -14,7 +14,8 @@ angular.module('mainApp', [
     'ngSanitize',
     'ngTouch',
     'inspiracode.crudFactory',
-    'CMD.CRUDServices'
+    'CMD.CRUDServices',
+    'angular-gridster2'
 ]).config(function($routeProvider) {
     $routeProvider
         .when('/', {

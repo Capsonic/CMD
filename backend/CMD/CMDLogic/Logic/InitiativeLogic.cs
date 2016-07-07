@@ -20,7 +20,7 @@ namespace CMDLogic.Logic
         {
             foreach (Initiative item in entities)
             {
-                item.Gants = gantRepository.GetListByParent<Initiative>(item.ID);
+                item.Gants = gantRepository.GetListByParent<Initiative>(item.id);
             }
         }
     }

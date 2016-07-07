@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class Dashboard : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return DashboardKey; } }
+        public override int id { get { return DashboardKey; } }
     }
 }

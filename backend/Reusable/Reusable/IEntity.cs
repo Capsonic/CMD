@@ -8,7 +8,7 @@ namespace Reusable
 {
     public interface IEntity : ICloneable
     {
-        int ID { get; }
+        int id { get; }
 
         string AAA_EntityName { get; }
     }

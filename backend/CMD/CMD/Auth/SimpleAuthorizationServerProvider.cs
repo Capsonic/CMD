@@ -53,7 +53,7 @@ namespace CMD.Auth
 
             var identity = new ClaimsIdentity(context.Options.AuthenticationType);
             identity.AddClaim(new Claim("role", theUser.Role));
-            identity.AddClaim(new Claim("userID", theUser.ID.ToString()));
+            identity.AddClaim(new Claim("userID", theUser.id.ToString()));
             identity.AddClaim(new Claim("userName", theUser.UserName.ToString()));
 
             context.Validated(identity);

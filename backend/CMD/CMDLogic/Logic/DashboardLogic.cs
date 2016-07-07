@@ -20,7 +20,7 @@ namespace CMDLogic.Logic
         {
             foreach (Dashboard item in entities)
             {
-                item.Objectives = objectiveRepository.GetListByParent<Dashboard>(item.ID);
+                item.Objectives = objectiveRepository.GetListByParent<Dashboard>(item.id);
             }
         }
     }

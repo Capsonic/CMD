@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class Gant : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return GantKey; } }
+        public override int id { get { return GantKey; } }
     }
 }

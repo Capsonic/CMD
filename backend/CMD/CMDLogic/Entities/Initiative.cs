@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class Initiative : BaseDocument
     {
         [NotMapped]
-        public override int ID { get { return InitiativeKey; } }
+        public override int id { get { return InitiativeKey; } }
     }
 }

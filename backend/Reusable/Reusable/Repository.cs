@@ -47,7 +47,7 @@ namespace Reusable
                     document.InfoTrack = new Track();
                     //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
                     document.InfoTrack.Date_CreatedOn = DateTime.Now;
-                    document.InfoTrack.Entity_ID = document.ID;
+                    document.InfoTrack.Entity_ID = document.id;
                     document.InfoTrack.Entity_Kind = document.AAA_EntityName;
                     document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
 
@@ -79,7 +79,7 @@ namespace Reusable
                     //    document.ID, document.AAA_EntityName).FirstOrDefault();
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                 }
             }
@@ -117,7 +117,7 @@ namespace Reusable
 
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                 }
             }
@@ -142,7 +142,7 @@ namespace Reusable
                 {
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
                 }
                 else
                 {
@@ -195,7 +195,7 @@ namespace Reusable
                     var document = entity as BaseDocument;
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                     if (document.InfoTrack != null)
                     {
@@ -223,7 +223,7 @@ namespace Reusable
                 {
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
                 }
                 else
                 {
@@ -272,7 +272,7 @@ namespace Reusable
 
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                 }
             }
@@ -353,7 +353,7 @@ namespace Reusable
                     var document = entity as BaseDocument;
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
                 }
             }
 
@@ -376,7 +376,7 @@ namespace Reusable
 
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                     if (document.InfoTrack != null)
                     {
@@ -420,7 +420,7 @@ namespace Reusable
 
                     document.InfoTrack = context.Set<Track>()
                                         .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.ID && t.Entity_Kind == document.AAA_EntityName);
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                     if (document.InfoTrack != null)
                     {

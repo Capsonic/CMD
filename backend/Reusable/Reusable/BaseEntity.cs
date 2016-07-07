@@ -6,7 +6,7 @@ namespace Reusable
     public abstract class BaseEntity : IEntity
     {
         [NotMapped]
-        public abstract int ID { get; }
+        public abstract int id { get; }
 
         [NotMapped]
         public string AAA_EntityName { get { return GetType().Name.Split('_')[0]; } }
@@ -34,12 +34,12 @@ namespace Reusable
             if (Object.ReferenceEquals(this, obj)) return true;
 
             //Check whether the IEntity' ids are equal.
-            return ID.Equals(((BaseEntity)obj).ID);
+            return id.Equals(((BaseEntity)obj).id);
         }
         public override int GetHashCode()
         {
             //Get hash code for the id field if it is not null.
-            int hashID = ID.GetHashCode();
+            int hashID = id.GetHashCode();
 
             return hashID;
         }

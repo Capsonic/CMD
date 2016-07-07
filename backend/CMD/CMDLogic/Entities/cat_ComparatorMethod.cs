@@ -6,6 +6,6 @@ namespace CMDLogic.EF
     public partial class cat_ComparatorMethod : BaseEntity
     {
         [NotMapped]
-        public override int ID { get { return ComparatorMethodKey; } }
+        public override int id { get { return ComparatorMethodKey; } }
     }
 }

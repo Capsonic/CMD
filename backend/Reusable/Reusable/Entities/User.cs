@@ -67,6 +67,6 @@ namespace Reusable
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Track> Tracks4 { get; set; }
 
-        public override int ID { get { return UserKey; } }
+        public override int id { get { return UserKey; } }
     }
 }
