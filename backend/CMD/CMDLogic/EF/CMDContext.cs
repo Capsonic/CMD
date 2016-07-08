@@ -22,6 +22,7 @@ namespace CMDLogic.EF
         public virtual DbSet<Sort> Sorts { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Gridster> Gridsters { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -79,6 +80,11 @@ namespace CMDLogic.EF
                 .HasMany(e => e.Sorts)
                 .WithRequired(e => e.User)
                 .HasForeignKey(e => e.Sort_User_ID);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Gridsters)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.Gridster_User_ID);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Tracks)

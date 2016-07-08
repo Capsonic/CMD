@@ -5,6 +5,9 @@ namespace Reusable
 {
     public interface IRepository<T> where T : class
     {
+        int? byUserId { get; set; }
+        string EntityName { get; set; }
+
         IList<T> GetAll();
         IList<T> GetList(Func<T, bool> where);
         T GetByID(int id);

@@ -26,7 +26,7 @@ namespace CMD.Auth
                 Claim claimUserID = claims.First(c => c.Type == "userID");
                 if (claimUserID != null)
                 {
-                    UserID = long.Parse(claimUserID.Value);
+                    UserID = int.Parse(claimUserID.Value);
                 }
                 Claim claimUserName = claims.First(c => c.Type == "userName");
                 if (claimUserName != null)
@@ -37,7 +37,7 @@ namespace CMD.Auth
         }
 
         public string Role { get; set; }
-        public long? UserID { get; set; }
+        public int? UserID { get; set; }
         public string UserName { get; set; }
     }
 }

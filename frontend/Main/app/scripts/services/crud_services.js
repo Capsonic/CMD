@@ -9,10 +9,10 @@
  */
 angular.module('CMD.CRUDServices', [])
 
-.service('sampleService', function(crudFactory) {
+.service('dashboardService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: "Sample",
+        entityName: "Dashboard",
 
         catalogs: [],
 

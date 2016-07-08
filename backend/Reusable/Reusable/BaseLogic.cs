@@ -2,12 +2,14 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Reflection;
+using static Reusable.BaseEntity;
 
 namespace Reusable
 {
     public abstract class BaseLogic<Entity> : IBaseLogic<Entity> where Entity : BaseEntity
     {
-        protected int? byUserId = null;
+        public int? byUserId { get; set; }
+        
         protected DbContext context;
         protected IRepository<Entity> repository;
 
@@ -19,6 +21,25 @@ namespace Reusable
         }
 
         protected abstract void loadNavigationProperties(DbContext context, IList<Entity> entities);
+
+        protected static EntityState GetEntityState(EF_EntityState state)
+        {
+            switch (state)
+            {
+                case EF_EntityState.Unchanged:
+                    return EntityState.Unchanged;
+                case EF_EntityState.Added:
+                    return EntityState.Added;
+                case EF_EntityState.Modified:
+                    return EntityState.Modified;
+                case EF_EntityState.Deleted:
+                    return EntityState.Deleted;
+                default:
+                    return EntityState.Detached;
+            }
+        }
+
+        protected virtual void onSaving(DbContext context, Entity entity) { }
 
         public virtual CommonResponse Add(Entity entity)
         {
@@ -32,6 +53,7 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                         repository.Add(entity);
+                        onSaving(context, entity);
 
                         transaction.Commit();
                     }
@@ -84,9 +106,11 @@ namespace Reusable
                 {
                     entities.Add(entity);
                     loadNavigationProperties(context, entities);
+                    return response.Success(entity);
+                }else
+                {
+                    return response.Error("Entity not found.");
                 }
-                return response.Success(entity);
-
             }
             catch (Exception ex)
             {
@@ -120,7 +144,7 @@ namespace Reusable
             {
                 return response.Error(ex.Message);
             }
-            return response.Success(id);
+            return response.Success(id, repository.EntityName + " removed successfully.");
         }
 
         public virtual CommonResponse Activate(int id)
@@ -163,6 +187,7 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                         repository.Update(entity);
+                        onSaving(context, entity);
 
                         transaction.Commit();
                     }
@@ -244,7 +269,7 @@ namespace Reusable
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                 entities = repository.GetListByParent<ParentType>(parentID);
-
+                loadNavigationProperties(context, entities);
                 //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
                 //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
                 //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });

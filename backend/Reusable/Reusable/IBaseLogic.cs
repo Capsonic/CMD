@@ -8,6 +8,7 @@ namespace Reusable
 {
     public interface IBaseLogic<Entity> where Entity : BaseEntity
     {
+        int? byUserId { get; set; }
         CommonResponse Add(Entity entity);
         CommonResponse GetAll();
         CommonResponse GetByID(int ID);

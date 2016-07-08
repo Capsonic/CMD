@@ -53,6 +53,7 @@
     <Compile Include="Reusable\BaseDocument.cs" />
     <Compile Include="Reusable\BaseEntity.cs" />
     <Compile Include="Reusable\BaseLogic.cs" />
+    <Compile Include="Reusable\Entities\Gridster.cs" />
     <Compile Include="Reusable\IBaseLogic.cs" />
     <Compile Include="Reusable\Logic\UserLogic.cs" />
     <Compile Include="Reusable\Repository.cs" />

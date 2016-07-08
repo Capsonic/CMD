@@ -28,6 +28,16 @@ angular.module('mainApp', [
             controller: 'AboutCtrl',
             controllerAs: 'about'
         })
+        .when('/dashboards', {
+          templateUrl: 'views/dashboards.html',
+          controller: 'DashboardsCtrl',
+          controllerAs: 'dashboards'
+        })
+        .when('/dashboard', {
+          templateUrl: 'views/dashboard.html',
+          controller: 'DashboardCtrl',
+          controllerAs: 'dashboard'
+        })
         .otherwise({
             redirectTo: '/'
         });

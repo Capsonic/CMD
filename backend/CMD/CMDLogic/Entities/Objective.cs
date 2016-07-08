@@ -7,5 +7,8 @@ namespace CMDLogic.EF
     {
         [NotMapped]
         public override int id { get { return ObjectiveKey; } }
+
+        [NotMapped]
+        public Gridster InfoGridster { get; set; }
     }
 }

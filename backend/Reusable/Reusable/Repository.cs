@@ -10,11 +10,14 @@ namespace Reusable
     public class Repository<T> : IRepository<T> where T : class
     {
         protected readonly DbContext context;
-        protected readonly int? byUserId;
+        public int? byUserId { get; set; }
+
+        public string EntityName { get; set; }
 
         public Repository(DbContext context)
         {
             this.context = context;
+            EntityName = typeof(T).Name;
         }
 
         public virtual void Add(params T[] items)
@@ -443,21 +446,4 @@ namespace Reusable
             }
         }
     }
-
-    //protected static EntityState GetEntityState(EF_EntityState state)
-    //{
-    //    switch (state)
-    //    {
-    //        case EF_EntityState.Unchanged:
-    //            return EntityState.Unchanged;
-    //        case EF_EntityState.Added:
-    //            return EntityState.Added;
-    //        case EF_EntityState.Modified:
-    //            return EntityState.Modified;
-    //        case EF_EntityState.Deleted:
-    //            return EntityState.Deleted;
-    //        default:
-    //            return EntityState.Detached;
-    //    }
-    //}
 }

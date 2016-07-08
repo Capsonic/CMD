@@ -9,18 +9,20 @@ namespace CMDLogic.Logic
 
     public class DashboardLogic : BaseLogic<Dashboard>, IDashboardLogic
     {
-        private readonly IRepository<Objective> objectiveRepository;
+        private readonly IObjectiveLogic objectiveLogic;
 
-        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IRepository<Objective> objectiveRepository) : base(context, repository)
+        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IObjectiveLogic objectiveLogic) : base(context, repository)
         {
-            this.objectiveRepository = objectiveRepository;
+            this.objectiveLogic = objectiveLogic;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
         {
+            objectiveLogic.byUserId = byUserId;
+
             foreach (Dashboard item in entities)
             {
-                item.Objectives = objectiveRepository.GetListByParent<Dashboard>(item.id);
+                item.Objectives = (ICollection<Objective>) objectiveLogic.GetAllByParent<Dashboard>(item.id).Result;
             }
         }
     }

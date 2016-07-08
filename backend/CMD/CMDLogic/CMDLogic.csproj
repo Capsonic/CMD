@@ -85,6 +85,10 @@
     <Compile Include="Migrations\201606171530239_AddRelationTrackCreatedBy.Designer.cs">
       <DependentUpon>201606171530239_AddRelationTrackCreatedBy.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201607071957563_Adding-Gridster.cs" />
+    <Compile Include="Migrations\201607071957563_Adding-Gridster.Designer.cs">
+      <DependentUpon>201607071957563_Adding-Gridster.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -101,6 +105,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201606171530239_AddRelationTrackCreatedBy.resx">
       <DependentUpon>201606171530239_AddRelationTrackCreatedBy.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201607071957563_Adding-Gridster.resx">
+      <DependentUpon>201607071957563_Adding-Gridster.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
