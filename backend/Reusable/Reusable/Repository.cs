@@ -299,18 +299,26 @@ namespace Reusable
                 }
             }
 
+            parentSet.Attach(parent);
             context.Entry(parent).State = EntityState.Unchanged;
 
-            string navigationPropertyName = typeof(P).Name + "s";
+            string navigationPropertyName = typeof(T).Name + "s";
 
             DbSet<T> entitySet = context.Set<T>();
             entitySet.Attach(entity);
 
-            PropertyInfo navigationProperty = entity.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
-            ICollection<P> parentsList = (ICollection<P>)navigationProperty.GetValue(entity);
+            //PropertyInfo navigationProperty = parent.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
+            //ICollection<T> childrenList = (ICollection<T>)navigationProperty.GetValue(entity);
 
-            parentsList.Add(parent);
+            DbCollectionEntry<P, T> childrenCollection = context.Entry(parent).Collection<T>(navigationPropertyName);
+            childrenCollection.Load();
 
+            if (!childrenCollection.CurrentValue.Contains(entity))
+            {
+                childrenCollection.CurrentValue.Add(entity);
+            }
+            //childrenList.Add(entity);
+            
             string sPropID = typeof(T).Name + "Key";
             int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
 

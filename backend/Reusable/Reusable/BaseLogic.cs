@@ -6,10 +6,10 @@ using static Reusable.BaseEntity;
 
 namespace Reusable
 {
-    public abstract class BaseLogic<Entity> : IBaseLogic<Entity> where Entity : BaseEntity
+    public abstract class BaseLogic<Entity> : IBaseLogic<Entity> where Entity : BaseEntity, new()
     {
         public int? byUserId { get; set; }
-        
+
         protected DbContext context;
         protected IRepository<Entity> repository;
 
@@ -40,6 +40,7 @@ namespace Reusable
         }
 
         protected virtual void onSaving(DbContext context, Entity entity) { }
+        protected virtual void onCreate(Entity entity) { }
 
         public virtual CommonResponse Add(Entity entity)
         {
@@ -52,6 +53,7 @@ namespace Reusable
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
+                        repository.byUserId = byUserId;
                         repository.Add(entity);
                         onSaving(context, entity);
 
@@ -80,6 +82,7 @@ namespace Reusable
             {
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
+                repository.byUserId = byUserId;
                 entities = repository.GetAll();
 
                 loadNavigationProperties(context, entities);
@@ -104,10 +107,12 @@ namespace Reusable
                 Entity entity = repository.GetByID(ID);
                 if (entity != null)
                 {
+                    repository.byUserId = byUserId;
                     entities.Add(entity);
                     loadNavigationProperties(context, entities);
                     return response.Success(entity);
-                }else
+                }
+                else
                 {
                     return response.Error("Entity not found.");
                 }
@@ -128,6 +133,7 @@ namespace Reusable
                     try
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
+                        repository.byUserId = byUserId;
                         repository.Delete(id);
 
                         transaction.Commit();
@@ -156,6 +162,7 @@ namespace Reusable
                 {
                     try
                     {
+                        repository.byUserId = byUserId;
                         repository.Activate(id);
 
                         transaction.Commit();
@@ -186,6 +193,7 @@ namespace Reusable
                     {
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
+                        repository.byUserId = byUserId;
                         repository.Update(entity);
                         onSaving(context, entity);
 
@@ -238,7 +246,9 @@ namespace Reusable
                         //    return response.Error("Non-existent Parent Entity.");
                         //}
 
+                        repository.byUserId = byUserId;
                         repository.AddToParent<ParentType>(parentID, entity);
+                        onSaving(context, entity);
 
                         transaction.Commit();
                     }
@@ -268,6 +278,7 @@ namespace Reusable
 
                 //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
+                repository.byUserId = byUserId;
                 entities = repository.GetListByParent<ParentType>(parentID);
                 loadNavigationProperties(context, entities);
                 //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
@@ -281,6 +292,14 @@ namespace Reusable
             }
 
             return response.Success(entities);
+        }
+
+        public CommonResponse CreateInstance()
+        {
+            CommonResponse response = new CommonResponse();
+            Entity entity = new Entity();
+            onCreate(entity);
+            return response.Success(entity);
         }
     }
 }

@@ -34,4 +34,29 @@ angular.module('CMD.CRUDServices', [])
     });
 
     return crudInstance;
+}).service('objectiveService', function(crudFactory) {
+    var crudInstance = new crudFactory({
+        //Entity Name = WebService/API to call:
+        entityName: "Objective",
+
+        catalogs: [],
+
+        adapter: function(theEntity) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {
+            // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
+        },
+
+        adaptToServer: function(theEntity) {
+            //self.validate(theEntity);
+        },
+
+        dependencies: [
+
+        ]
+    });
+
+    return crudInstance;
 });

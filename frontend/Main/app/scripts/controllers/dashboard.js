@@ -7,7 +7,7 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams) {
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, objectiveService, filterFilter, $q) {
 
     $scope.options = {
         gridType: 'fit',
@@ -25,23 +25,17 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         swap: true
     };
 
-    $scope.dashboard = [
-        { cols: 2, rows: 1, y: 0, x: 0, data: 'hola' },
-        { cols: 2, rows: 2, y: 0, x: 2 },
-        { cols: 1, rows: 1, y: 0, x: 4 },
-        { cols: 1, rows: 1, y: 0, x: 5 },
-        { cols: 2, rows: 1, y: 1, x: 0 },
-        { cols: 1, rows: 1, y: 1, x: 4 },
-        { cols: 1, rows: 2, y: 1, x: 5 },
-        { cols: 1, rows: 3, y: 2, x: 0 },
-        { cols: 2, rows: 1, y: 2, x: 1 },
-        { cols: 1, rows: 1, y: 2, x: 3 },
-        { cols: 1, rows: 1, y: 3, x: 4, initCallback: function(item) {} }
-    ];
+    function itemChange(gridsterItem, scope) {
+        scope.item.InfoGridster.cols = scope.item.cols;
+        scope.item.InfoGridster.rows = scope.item.rows;
+        scope.item.InfoGridster.x = scope.item.x;
+        scope.item.InfoGridster.y = scope.item.y;
+        if (scope.item.EF_State != 1) {
+            scope.item.EF_State = 2;
+        }
+    };
 
-    function itemChange() {}
-
-    function eventStop() {}
+    function eventStop() {};
 
 
     var theOriginalEntity;
@@ -69,7 +63,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.afterLoadData = function() {
-        console.log($scope.baseEntity)
 
         if ($scope.baseEntity && $scope.baseEntity.Objectives) {
             $scope.baseEntity.Objectives.forEach(function(objective) {
@@ -77,8 +70,81 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
                 objective.rows = objective.InfoGridster.rows;
                 objective.x = objective.InfoGridster.x;
                 objective.y = objective.InfoGridster.y;
+                objective.initCallback = onItemInit;
             });
         }
+    };
 
+    $scope.addItem = function() {
+        objectiveService.createEntity().then(function(data) {
+            var item = data;
+            item.areGridsterPropertiesMissing = true;
+            item.initCallback = onItemInit;
+            $scope.baseEntity.Objectives.push(item);
+            console.log($scope.baseEntity)
+        });
+    };
+
+    function onItemInit(a, b, c) {
+        for (var i = 0; i < $scope.baseEntity.Objectives.length; i++) {
+            var current = $scope.baseEntity.Objectives[i];
+            if (current.areGridsterPropertiesMissing) {
+                current.InfoGridster.cols = a.cols;
+                current.InfoGridster.rows = a.rows;
+                current.InfoGridster.x = a.x;
+                current.InfoGridster.y = a.y;
+
+                current.cols = current.InfoGridster.cols;
+                current.rows = current.InfoGridster.rows;
+                current.x = current.InfoGridster.x;
+                current.y = current.InfoGridster.y;
+
+                current.areGridsterPropertiesMissing = false;
+                current.initCallback = null;
+                a.item = current;
+            }
+        }
+    };
+
+    $scope.modePresentation = function() {
+        alert("Full scren")
+    };
+
+    function itemsToSave() {
+        if ($scope.baseEntity && $scope.baseEntity.Objectives) {
+            return filterFilter($scope.baseEntity.Objectives, genericItemsToBeSaved);
+        }
+    };
+
+    function genericItemsToBeSaved(item) {
+        return item.EF_State > 0;
+    };
+
+    $scope.saveAll = function() {
+        var arrItems = itemsToSave();
+
+        var arrPromiseConstructors = [];
+
+        arrItems.forEach(function(item) {
+            var promiseConstructor = function() {
+                return $scope.saveItem(item);
+            }
+            arrPromiseConstructors.push(promiseConstructor);
+        });
+
+        $q.serial(arrPromiseConstructors).then(function() {
+            alertify.success('Dashboard saved successfully.');
+        });
+    };
+
+    $scope.saveBaseEntity = function() {
+        if (!$scope.baseEntity) {
+            return false;
+        }
+        return dashboardService.save($scope.baseEntity);
+    };
+
+    $scope.saveItem = function(item) {
+        return objectiveService.addToParent('Dashboard', $scope.baseEntity.id, item);
     };
 });

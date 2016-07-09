@@ -999,6 +999,80 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _createEntity = function() {
+            var deferred = $q.defer();
+
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/Create')
+                .then(function(response) {
+                    if (typeof response.data === 'object') {
+                        var backendResponse = response.data;
+                        if (backendResponse.ErrorThrown) {
+                            log.debug(backendResponse);
+                            deferred.reject(backendResponse);
+                        } else {
+                            backendResponse.Result.EF_State = 1; //Adding
+                            deferred.resolve(backendResponse.Result);
+                        }
+                    } else {
+                        // invalid response
+                        alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response);
+                    }
+                }, function(response) {
+                    // something went wrong
+                    alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                    log.debug(response);
+                    deferred.reject(response);
+                });
+            return deferred.promise;
+        };
+
+        var _addToParent = function(parentType, parentId, theEntity, theArrayBelonging) {
+            var deferred = $q.defer();
+
+            if (mainEntity.validate(theEntity)) {
+
+                $http.post(appConfig.API_URL + mainEntity.entityName + '/AddToParent/' + parentType + '/' + parentId, '=' + escape(JSON.stringify(theEntity)))
+                    .then(function(response) {
+                        if (typeof response.data === 'object') {
+                            var backendResponse = response.data;
+                            if (!backendResponse.ErrorThrown) {
+                                _adapter(backendResponse.Result, _self);
+                                angular.copy(backendResponse.Result, theEntity);
+                                theEntity.EF_State = 0;
+
+                                if (angular.isArray(theArrayBelonging)) {
+                                    var theEntityCopy = angular.copy(theEntity);
+                                    _arrAllRecords.push(theEntityCopy);
+                                    theArrayBelonging.push(theEntity);
+                                } else {
+                                    _arrAllRecords.push(theEntity);
+                                }
+                                deferred.resolve(theEntity);
+                            } else {
+                                alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                                log.debug(response);
+                                deferred.reject(response.data);
+                            }
+                        } else {
+                            // invalid response
+                            alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                            log.debug(response);
+                            deferred.reject(response.data);
+                        }
+                    }, function(response) {
+                        // something went wrong
+                        alertify.alert('Error: ' + response.statusText).set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response.data);
+                    });
+            } else {
+                deferred.reject();
+            }
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1037,8 +1111,11 @@ angular.module('inspiracode.crudFactory', [])
             customPost: _customPost, //Request a custom name method via Post.
             customGet: _customGet, //Request a custom name method via Post.            
             take: _take, //Set a user responsible for an Entity.
-            finalize: _finalize //Entity is validated with bFinalize=true paramter, then status is changed to Completed, and entity is locked out.
+            finalize: _finalize, //Entity is validated with bFinalize=true paramter, then status is changed to Completed, and entity is locked out.
 
+            //After Implementation with Generic Repository and Entity Framework:
+            createEntity: _createEntity, //Gets a new instance of entity from the backend.
+            addToParent: _addToParent //Saves an entity and attaches to parent specified.
         };
         _arrDependenciesAndThis.push(oAPI);
         var _self = oAPI;

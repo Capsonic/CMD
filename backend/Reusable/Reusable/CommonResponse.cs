@@ -13,6 +13,14 @@
             Result = null;
         }
 
+        public CommonResponse Error(string sError, object result)
+        {
+            ErrorThrown = true;
+            ResponseDescription = sError;
+            Result = result;
+            return this;
+        }
+
         public CommonResponse Error(string sError)
         {
             ErrorThrown = true;

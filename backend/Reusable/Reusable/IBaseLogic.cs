@@ -17,5 +17,6 @@ namespace Reusable
         CommonResponse Update(Entity entity);
         CommonResponse AddToParent<ParentType>(int parentID, Entity entity) where ParentType : BaseEntity;
         CommonResponse GetAllByParent<ParentType>(int parentID) where ParentType : BaseEntity;
+        CommonResponse CreateInstance();
     }
 }

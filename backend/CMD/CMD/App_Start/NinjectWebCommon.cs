@@ -13,6 +13,7 @@ namespace CMD.App_Start
     using System.Data.Entity;
     using Reusable;
     using CMDLogic.Logic;
+    using Controllers;
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
@@ -63,12 +64,14 @@ namespace CMD.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
-            kernel.Bind(typeof(DbContext)).To(typeof(MainContext));
-            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>));
+            kernel.Bind(typeof(DbContext)).To(typeof(MainContext)).InRequestScope();
+            kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
+            kernel.Bind(typeof(BaseLogic<>)).ToSelf().InRequestScope();
             kernel.Bind<IDashboardLogic>().To<DashboardLogic>();
             kernel.Bind<IObjectiveLogic>().To<ObjectiveLogic>();
             kernel.Bind<IMetricLogic>().To<MetricLogic>();
             kernel.Bind<IInitiativeLogic>().To<InitiativeLogic>();
+            kernel.Bind(typeof(BaseController<>)).ToSelf().InRequestScope();
         }
     }
 }

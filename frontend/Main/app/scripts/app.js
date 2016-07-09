@@ -16,29 +16,32 @@ angular.module('mainApp', [
     'inspiracode.crudFactory',
     'CMD.CRUDServices',
     'angular-gridster2'
-]).config(function($routeProvider) {
+], function($httpProvider) {
+    $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+    $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
+}).config(function($routeProvider) {
     $routeProvider
-        .when('/', {
-            templateUrl: 'views/main.html',
-            controller: 'MainCtrl',
-            controllerAs: 'main'
-        })
+    // .when('/', {
+    //     templateUrl: 'views/main.html',
+    //     controller: 'MainCtrl',
+    //     controllerAs: 'main'
+    // })
         .when('/about', {
             templateUrl: 'views/about.html',
             controller: 'AboutCtrl',
             controllerAs: 'about'
         })
         .when('/dashboards', {
-          templateUrl: 'views/dashboards.html',
-          controller: 'DashboardsCtrl',
-          controllerAs: 'dashboards'
+            templateUrl: 'views/dashboards.html',
+            controller: 'DashboardsCtrl',
+            controllerAs: 'dashboards'
         })
         .when('/dashboard', {
-          templateUrl: 'views/dashboard.html',
-          controller: 'DashboardCtrl',
-          controllerAs: 'dashboard'
+            templateUrl: 'views/dashboard.html',
+            controller: 'DashboardCtrl',
+            controllerAs: 'dashboard'
         })
         .otherwise({
-            redirectTo: '/'
+            redirectTo: '/dashboards'
         });
 });

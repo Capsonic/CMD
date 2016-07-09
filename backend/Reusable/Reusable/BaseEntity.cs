@@ -28,7 +28,7 @@ namespace Reusable
             if (Object.ReferenceEquals(obj, null)) return false;
 
             //Check whether the compared object is same type.
-            if (!this.GetType().Equals(obj.GetType())) return false;
+            if (!this.GetType().Name.Split('_')[0].Equals(obj.GetType().Name.Split('_')[0])) return false;
 
             //Check whether the compared object references the same data.
             if (Object.ReferenceEquals(this, obj)) return true;

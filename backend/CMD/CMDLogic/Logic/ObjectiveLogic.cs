@@ -46,8 +46,23 @@ namespace CMDLogic.Logic
             entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
             entity.InfoGridster.Gridster_Entity_ID = entity.id;
             entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
-            entity.InfoGridster.Gridster_User_ID = (int) byUserId;
-            context.Entry(entity.InfoGridster).State = GetEntityState(entity.InfoGridster.EF_State);
+            entity.InfoGridster.Gridster_User_ID = (int)byUserId;
+
+            if (entity.InfoGridster.id > 0)
+            {
+                context.Entry(entity.InfoGridster).State = EntityState.Modified;
+            }
+            else
+            {
+                context.Entry(entity.InfoGridster).State = EntityState.Added;
+            }
+            context.SaveChanges();
+        }
+
+        protected override void onCreate(Objective entity)
+        {
+            base.onCreate(entity);
+            entity.InfoGridster = new Gridster();
         }
     }
 }
