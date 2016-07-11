@@ -107,7 +107,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         if (theOnScreenEntity.Objectives[index]) {
             $timeout(function() {
                 $scope.baseEntity.Objectives.push(theOnScreenEntity.Objectives[index]);
-                console.log("item added " + theOnScreenEntity.Objectives[index].id)
                 addOneByOne(++index);
             }, 50);
         } else {

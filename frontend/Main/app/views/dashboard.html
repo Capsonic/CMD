@@ -20,7 +20,11 @@
 </div>
 <div class="Dashboard">
     <div gridster="options">
-        <div gridster-item="item" ng-repeat="item in baseEntity.Objectives">{{item.Title}}</div>
+        <div gridster-item="item" ng-repeat="item in baseEntity.Objectives">
+            
+            <objective-box></objective-box>
+
+        </div>
     </div>
 </div>
 <div class="modal fade" id="modal-objective">
