@@ -38,6 +38,17 @@ namespace CMDLogic.Logic
                 item.InfoGridster = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
                                                                 && e.Gridster_Entity_Kind == item.AAA_EntityName
                                                                 && e.Gridster_User_ID == byUserId);
+                //if (item.InfoGridster == null)
+                //{
+                //    Gridster gridsterFromFirstCreator = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
+                //                                                && e.Gridster_Entity_Kind == item.AAA_EntityName
+                //                                                && e.Gridster_User_ID == item.InfoTrack.User_CreatedByKey);
+                //    if (gridsterFromFirstCreator != null)
+                //    {
+                //        item.InfoGridster = (Gridster)gridsterFromFirstCreator.Clone();
+                //        item.InfoGridster.Gridster_User_ID = (int)byUserId;
+                //    }
+                //}
             }
         }
 

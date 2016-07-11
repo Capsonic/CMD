@@ -285,6 +285,9 @@ namespace Reusable
 
         public void AddToParent<P>(int parentId, T entity) where P : class
         {
+            //string sParentPropID = typeof(P).Name + "Key";
+            //P parent = context.Database.SqlQuery<P>("select * from " + typeof(P).Name + " where " + sParentPropID + " = @p0", parentId).FirstOrDefault();
+
             DbSet<P> parentSet = context.Set<P>();
             P parent = parentSet.Find(parentId);
             if (parent == null)
@@ -299,16 +302,20 @@ namespace Reusable
                 }
             }
 
-            parentSet.Attach(parent);
-            context.Entry(parent).State = EntityState.Unchanged;
+            //parentSet.Attach(parent);
+            //context.Entry(parent).State = EntityState.Unchanged;
 
             string navigationPropertyName = typeof(T).Name + "s";
 
-            DbSet<T> entitySet = context.Set<T>();
-            entitySet.Attach(entity);
+            //DbSet<T> entitySet = context.Set<T>();
+            //entitySet.Attach(entity);
 
             //PropertyInfo navigationProperty = parent.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
             //ICollection<T> childrenList = (ICollection<T>)navigationProperty.GetValue(entity);
+
+
+            //childrenList.Add(entity);
+
 
             DbCollectionEntry<P, T> childrenCollection = context.Entry(parent).Collection<T>(navigationPropertyName);
             childrenCollection.Load();
@@ -316,20 +323,37 @@ namespace Reusable
             if (!childrenCollection.CurrentValue.Contains(entity))
             {
                 childrenCollection.CurrentValue.Add(entity);
-            }
-            //childrenList.Add(entity);
-            
-            string sPropID = typeof(T).Name + "Key";
-            int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
+                context.SaveChanges();
+                
+                /*DOCUMENT*/
+                if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+                {
+                    var document = entity as BaseDocument;
+                    document.InfoTrack = new Track();
+                    //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
+                    document.InfoTrack.Date_CreatedOn = DateTime.Now;
+                    document.InfoTrack.Entity_ID = document.id;
+                    document.InfoTrack.Entity_Kind = document.AAA_EntityName;
+                    document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
 
-            if (id > 0)
-            {
-                Update(entity);
+                    context.Entry(document.InfoTrack).State = EntityState.Added;
+                    context.SaveChanges();
+                }
             }
-            else
-            {
-                Add(entity);
-            }
+
+            //string sPropID = typeof(T).Name + "Key";
+            //int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
+
+            //context.Entry(parent).State = EntityState.Unchanged;
+
+            //if (id > 0)
+            //{
+            //    Update(entity);
+            //}
+            //else
+            //{
+            //    Add(entity);
+            //}
         }
 
         public virtual T GetSingleByParent<P>(int parentID) where P : class

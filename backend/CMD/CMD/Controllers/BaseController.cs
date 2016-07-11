@@ -13,6 +13,7 @@ namespace CMD.Controllers
     public abstract class BaseController<Entity> : ApiController where Entity : BaseEntity
     {
         IBaseLogic<Entity> _logic;
+        int userId = 5;
 
         public BaseController(IBaseLogic<Entity> logic)
         {
@@ -25,6 +26,7 @@ namespace CMD.Controllers
         {
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
+            _logic.byUserId = userId;
 
             return _logic.GetAll();
         }
@@ -35,7 +37,7 @@ namespace CMD.Controllers
         {
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = 2;
+            _logic.byUserId = userId;
 
             return _logic.GetByID(id);
         }
@@ -53,7 +55,7 @@ namespace CMD.Controllers
 
                 LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
                 _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = 2;
+                _logic.byUserId = userId;
 
                 return _logic.Add(entity);
             }
@@ -74,7 +76,7 @@ namespace CMD.Controllers
             {
                 LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
                 _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = 2;
+                _logic.byUserId = userId;
 
                 Type parentType = Type.GetType("CMDLogic.EF." + type + ", CMDLogic", true);
                 entity = JsonConvert.DeserializeObject<Entity>(value);
@@ -108,7 +110,7 @@ namespace CMD.Controllers
 
                 LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
                 _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = 2;
+                _logic.byUserId = userId;
 
                 return _logic.Update(entity);
             }
@@ -123,6 +125,7 @@ namespace CMD.Controllers
         {
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
+            _logic.byUserId = userId;
 
             return _logic.Remove(id);
         }

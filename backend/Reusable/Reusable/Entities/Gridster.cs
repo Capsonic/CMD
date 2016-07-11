@@ -30,5 +30,22 @@ namespace Reusable
         public virtual User User { get; set; }
 
         public override int id { get { return GridsterKey; } }
+
+        public override object Clone()
+        {
+            return new Gridster()
+            {
+                Gridster_Entity_ID = Gridster_Entity_ID,
+                cols = cols,
+                EF_State = EF_State,
+                Gridster_Edited_On = DateTime.Now,
+                Gridster_Entity_Kind = Gridster_Entity_Kind,
+                Gridster_ManyToMany_ID = Gridster_ManyToMany_ID,
+                Gridster_User_ID = Gridster_User_ID,
+                rows = rows,
+                x = x,
+                y = y
+            };
+        }
     }
 }

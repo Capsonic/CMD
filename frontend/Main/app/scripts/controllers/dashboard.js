@@ -7,7 +7,7 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, objectiveService, filterFilter, $q) {
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, objectiveService, filterFilter, $q, $timeout) {
 
     $scope.options = {
         gridType: 'fit',
@@ -39,6 +39,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
 
     var theOriginalEntity;
+    var theOnScreenEntity;
     switch (true) {
         case $routeParams.id !== true && $routeParams.id > 0: //Get By id
             dashboardService.loadEntity($routeParams.id).then(function(data) {
@@ -50,7 +51,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
                     $scope.openingMode = 'error';
                     return;
                 }
-                $scope.baseEntity = angular.copy(theOriginalEntity);
+
+                theOnScreenEntity = angular.copy(theOriginalEntity);
                 $scope.afterLoadData();
             });
             break;
@@ -64,16 +66,55 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.afterLoadData = function() {
 
-        if ($scope.baseEntity && $scope.baseEntity.Objectives) {
-            $scope.baseEntity.Objectives.forEach(function(objective) {
-                objective.cols = objective.InfoGridster.cols;
-                objective.rows = objective.InfoGridster.rows;
-                objective.x = objective.InfoGridster.x;
-                objective.y = objective.InfoGridster.y;
-                objective.initCallback = onItemInit;
+        var tempCopy = angular.copy(theOnScreenEntity);
+        tempCopy.Objectives = [];
+
+        $scope.baseEntity = tempCopy
+
+        adaptForGridster(theOnScreenEntity.Objectives);
+
+        addOneByOne();
+
+    };
+
+    var adaptForGridster = function(items) {
+        var atLeastOneInfoGridsterMissing = items.filter(function(item) {
+            return item.InfoGridster == null;
+        });
+
+        if (atLeastOneInfoGridsterMissing.length > 0) {
+            items.forEach(function(item) {
+                item.initCallback = onItemInit;
+                item.InfoGridster = {};
+                item.EF_State = 1; //1 means add, but we use addToParent which is going to add only it it is not added
+                item.areGridsterPropertiesMissing = true;
+            });
+        } else {
+            items.forEach(function(item) {
+                item.initCallback = onItemInit;
+                item.cols = item.InfoGridster.cols;
+                item.rows = item.InfoGridster.rows;
+                item.x = item.InfoGridster.x;
+                item.y = item.InfoGridster.y;
             });
         }
     };
+
+    var addOneByOne = function(index) {
+        if (index === undefined) {
+            index = 0;
+        }
+        if (theOnScreenEntity.Objectives[index]) {
+            $timeout(function() {
+                $scope.baseEntity.Objectives.push(theOnScreenEntity.Objectives[index]);
+                console.log("item added " + theOnScreenEntity.Objectives[index].id)
+                addOneByOne(++index);
+            }, 50);
+        } else {
+            return;
+        }
+    };
+
 
     $scope.addItem = function() {
         objectiveService.createEntity().then(function(data) {
@@ -81,7 +122,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             item.areGridsterPropertiesMissing = true;
             item.initCallback = onItemInit;
             $scope.baseEntity.Objectives.push(item);
-            console.log($scope.baseEntity)
         });
     };
 
