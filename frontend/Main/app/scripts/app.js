@@ -15,7 +15,8 @@ angular.module('mainApp', [
     'ngTouch',
     'inspiracode.crudFactory',
     'CMD.CRUDServices',
-    'angular-gridster2'
+    'angular-gridster2',
+    angularDragula(angular)
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
     $httpProvider.defaults.headers.put['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -40,6 +41,11 @@ angular.module('mainApp', [
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl',
             controllerAs: 'dashboard'
+        })
+        .when('/administration', {
+          templateUrl: 'views/administration.html',
+          controller: 'AdministrationCtrl',
+          controllerAs: 'administration'
         })
         .otherwise({
             redirectTo: '/dashboards'

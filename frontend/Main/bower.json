@@ -10,7 +10,9 @@
     "angular-touch": "^1.4.0",
     "jquery": "1.9.1",
     "alertify-js": "^1.7.1",
-    "angular-gridster2": "^1.1.2"
+    "angular-gridster2": "^1.1.2",
+    "angular-dragula": "^1.2.7",
+    "screenfull.js": "https://github.com/sindresorhus/screenfull.js.git#^3.0.0"
   },
   "devDependencies": {
     "angular-mocks": "^1.4.0"

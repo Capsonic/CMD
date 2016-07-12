@@ -145,10 +145,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         }
     };
 
-    $scope.modePresentation = function() {
-        alert("Full scren")
-    };
-
     function itemsToSave() {
         if ($scope.baseEntity && $scope.baseEntity.Objectives) {
             return filterFilter($scope.baseEntity.Objectives, genericItemsToBeSaved);
@@ -186,4 +182,25 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.saveItem = function(item) {
         return objectiveService.addToParent('Dashboard', $scope.baseEntity.id, item);
     };
+
+
+    $scope.modePresentation = function() {
+        if (screenfull.enabled) {
+            screenfull.request(angular.element('#fullscreenMe')[0]);
+            angular.element('.Dashboard').css('top', 0);
+
+        }
+    };
+
+    if (screenfull.enabled) {
+        document.addEventListener(screenfull.raw.fullscreenchange, () => {
+            if (screenfull.isFullscreen) {
+                angular.element('.Dashboard').css('top', 0);
+
+            } else {
+                angular.element('.Dashboard').css('top', 50);
+            }
+        });
+    }
+
 });

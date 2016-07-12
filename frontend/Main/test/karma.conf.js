@@ -31,6 +31,8 @@ module.exports = function(config) {
       'bower_components/lodash/lodash.js',
       'bower_components/javascript-detect-element-resize/detect-element-resize.js',
       'bower_components/angular-gridster2/dist/gridster.js',
+      'bower_components/angular-dragula/dist/angular-dragula.js',
+      'bower_components/screenfull.js/dist/screenfull.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

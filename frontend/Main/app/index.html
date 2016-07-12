@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="bower_components/alertify-js/build/css/alertify.min.css" />
     <link rel="stylesheet" href="bower_components/alertify-js/build/css/themes/default.min.css" />
     <link rel="stylesheet" href="bower_components/angular-gridster2/dist/gridster.css" />
+    <link rel="stylesheet" href="bower_components/angular-dragula/dist/dragula.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
@@ -24,9 +25,7 @@
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
     <!-- Add your site or application content here -->
-    <div class="container-fluid">
-        <div ng-view=""></div>
-    </div>
+    <div ng-view=""></div>
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
     ! function(A, n, g, u, l, a, r) {
@@ -52,6 +51,8 @@
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
     <script src="bower_components/angular-gridster2/dist/gridster.js"></script>
+    <script src="bower_components/angular-dragula/dist/angular-dragula.js"></script>
+    <script src="bower_components/screenfull.js/dist/screenfull.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
@@ -64,6 +65,7 @@
     <script src="scripts/directives/objectiveBox/objectivebox.js"></script>
     <script src="scripts/controllers/dashboards.js"></script>
     <script src="scripts/controllers/dashboard.js"></script>
+    <script src="scripts/controllers/administration.js"></script>
     <!-- endbuild -->
     <script src="scripts/reusable/qserialdecorator.js"></script>
     <script src="scripts/reusable/alertify-defaults.js"></script>
