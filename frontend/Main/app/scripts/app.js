@@ -16,6 +16,7 @@ angular.module('mainApp', [
     'inspiracode.crudFactory',
     'CMD.CRUDServices',
     'angular-gridster2',
+    'smart-table',
     angularDragula(angular)
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -43,9 +44,14 @@ angular.module('mainApp', [
             controllerAs: 'dashboard'
         })
         .when('/administration', {
-          templateUrl: 'views/administration.html',
-          controller: 'AdministrationCtrl',
-          controllerAs: 'administration'
+            templateUrl: 'views/administration.html',
+            controller: 'AdministrationCtrl',
+            controllerAs: 'administration'
+        })
+        .when('/dashboard-objectives', {
+          templateUrl: 'views/dashboard-objectives.html',
+          controller: 'DashboardObjectivesCtrl',
+          controllerAs: 'dashboardObjectives'
         })
         .otherwise({
             redirectTo: '/dashboards'

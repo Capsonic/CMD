@@ -80,3 +80,11 @@ body {
     margin-bottom: 30px;
   }
 }
+
+.st-sort-ascent:before {
+    content: '\25BC';
+}
+
+.st-sort-descent:before {
+    content: '\25B2';
+}

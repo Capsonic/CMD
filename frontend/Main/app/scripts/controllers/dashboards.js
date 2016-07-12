@@ -8,17 +8,17 @@
  * Controller of the mainApp
  */
 angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboardService) {
-	
-	dashboardService.loadAll().then(function(){
-		$scope.dashboards = dashboardService.getAll();
-	});
 
-	$scope.open = function(item){
-		alert('hola')
-	};
+    dashboardService.loadAll().then(function() {
+        $scope.dashboards = dashboardService.getAll();
+    });
 
-	$scope.remove = function(item){
-		dashboardService.remove(item);
-	};
+    $scope.open = function(item) {
+        alert('hola')
+    };
+
+    $scope.remove = function(item) {
+        dashboardService.remove(item);
+    };
 
 });
