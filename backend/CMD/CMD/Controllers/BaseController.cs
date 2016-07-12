@@ -12,22 +12,21 @@ namespace CMD.Controllers
     [EnableCors(origins: "*", headers: "*", methods: "*")]
     public abstract class BaseController<Entity> : ApiController where Entity : BaseEntity
     {
-        IBaseLogic<Entity> _logic;
-        int userId = 5;
-
+        protected IBaseLogic<Entity> _logic;
+        
         public BaseController(IBaseLogic<Entity> logic)
         {
             _logic = logic;
+
+            LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
+            _logic.byUserId = loggedUser.UserID;
+            _logic.byUserId = 5;
         }
 
         // GET: api/Base
         [HttpGet Route("")]
         public CommonResponse Get()
         {
-            LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-            _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = userId;
-
             return _logic.GetAll();
         }
 
@@ -35,11 +34,7 @@ namespace CMD.Controllers
         [HttpGet Route("")]
         public CommonResponse Get(int id)
         {
-            LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-            _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = userId;
-
-            return _logic.GetByID(id);
+           return _logic.GetByID(id);
         }
 
         // POST: api/Base
@@ -52,10 +47,6 @@ namespace CMD.Controllers
             try
             {
                 entity = JsonConvert.DeserializeObject<Entity>(value);
-
-                LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-                _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = userId;
 
                 return _logic.Add(entity);
             }
@@ -74,10 +65,6 @@ namespace CMD.Controllers
             Entity entity;
             try
             {
-                LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-                _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = userId;
-
                 Type parentType = Type.GetType("CMDLogic.EF." + type + ", CMDLogic", true);
                 entity = JsonConvert.DeserializeObject<Entity>(value);
 
@@ -108,10 +95,6 @@ namespace CMD.Controllers
             {
                 entity = JsonConvert.DeserializeObject<Entity>(value);
 
-                LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-                _logic.byUserId = loggedUser.UserID;
-                _logic.byUserId = userId;
-
                 return _logic.Update(entity);
             }
             catch (Exception e)
@@ -123,11 +106,49 @@ namespace CMD.Controllers
         // DELETE: api/Base/5
         public CommonResponse Delete(int id)
         {
-            LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
-            _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = userId;
-
             return _logic.Remove(id);
+        }
+
+        [HttpGet Route("GetAvailableForEntity/{sEntityType}/{id}")]
+        public CommonResponse GetAvailableObjectivesForDashboard(string sEntityType, int id)
+        {
+            CommonResponse response = new CommonResponse();
+
+            try
+            {
+                Type forEntityType = Type.GetType("CMDLogic.EF." + sEntityType + ", CMDLogic", true);
+                
+                MethodInfo method = _logic.GetType().GetMethod("GetAvailableFor");
+                MethodInfo generic = method.MakeGenericMethod(forEntityType);
+                response = (CommonResponse)generic.Invoke(_logic, new object[] { id });
+                return response;
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.Message, e);
+            }
+        }
+
+        [HttpPost Route("RemoveFromParent/{type}/{parentId}")]
+        public CommonResponse RemoveFromParent(string type, int parentId, [FromBody]string value)
+        {
+            CommonResponse response = new CommonResponse();
+
+            Entity entity;
+            try
+            {
+                Type parentType = Type.GetType("CMDLogic.EF." + type + ", CMDLogic", true);
+                entity = JsonConvert.DeserializeObject<Entity>(value);
+
+                MethodInfo method = _logic.GetType().GetMethod("RemoveFromParent");
+                MethodInfo generic = method.MakeGenericMethod(parentType);
+                response = (CommonResponse)generic.Invoke(_logic, new object[] { parentId, entity });
+                return response;
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.Message, e);
+            }
         }
     }
 }

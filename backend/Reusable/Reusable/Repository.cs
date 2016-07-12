@@ -216,8 +216,8 @@ namespace Reusable
         public virtual T GetByID(int id)
         {
             DbSet<T> set = context.Set<T>();
-            var item = set.Find(id);
-
+            T item = set.Find(id);
+            
             /*DOCUMENT*/
             if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
             {
@@ -322,38 +322,100 @@ namespace Reusable
 
             if (!childrenCollection.CurrentValue.Contains(entity))
             {
+                string sPropID = typeof(T).Name + "Key";
+                int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
+
                 childrenCollection.CurrentValue.Add(entity);
+                if (id > 0)
+                {
+                    context.Entry(entity).State = EntityState.Modified;
+
+                    /*DOCUMENT*/
+                    if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+                    {
+                        var document = entity as BaseDocument;
+                        document.InfoTrack = context.Set<Track>()
+                                            .AsNoTracking()
+                                            .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
+
+                        if (document.InfoTrack != null)
+                        {
+                            document.InfoTrack.User_LastEditedByKey = byUserId;
+                            document.InfoTrack.Date_EditedOn = DateTime.Now;
+
+                            context.Entry(document.InfoTrack).State = EntityState.Modified;
+                        }
+                    }
+                }
+                else
+                {
+                    context.Entry(entity).State = EntityState.Added;
+
+                    /*DOCUMENT*/
+                    if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
+                    {
+                        var document = entity as BaseDocument;
+                        document.InfoTrack = new Track();
+                        //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
+                        document.InfoTrack.Date_CreatedOn = DateTime.Now;
+                        document.InfoTrack.Entity_ID = document.id;
+                        document.InfoTrack.Entity_Kind = document.AAA_EntityName;
+                        document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
+
+                        context.Entry(document.InfoTrack).State = EntityState.Added;
+                    }
+                }
+
                 context.SaveChanges();
-                
+            }
+        }
+
+        public void RemoveFromParent<P>(int parentId, T entity) where P : class
+        {
+            DbSet<P> parentSet = context.Set<P>();
+            P parent = parentSet.Find(parentId);
+            if (parent == null)
+            {
+                throw new Exception("Non-existent Parent Entity.");
+            }
+            if (parent is BaseDocument)
+            {
+                if ((parent as BaseDocument).sys_active == false)
+                {
+                    throw new Exception("Non-existent Parent Entity.");
+                }
+            }
+
+            string navigationPropertyName = typeof(T).Name + "s";
+            
+            DbCollectionEntry<P, T> childrenCollection = context.Entry(parent).Collection<T>(navigationPropertyName);
+            childrenCollection.Load();
+
+            if (childrenCollection.CurrentValue.Contains(entity))
+            {
+                childrenCollection.CurrentValue.Remove(entity);
+                context.SaveChanges();
+
                 /*DOCUMENT*/
                 if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
                 {
                     var document = entity as BaseDocument;
-                    document.InfoTrack = new Track();
-                    //(entity as Trackable).InfoTrack = trackRepository.GetSingle(context, t => t.Entity_ID == entity.ID && t.Entity_Kind == entity.AAA_EntityName);
-                    document.InfoTrack.Date_CreatedOn = DateTime.Now;
-                    document.InfoTrack.Entity_ID = document.id;
-                    document.InfoTrack.Entity_Kind = document.AAA_EntityName;
-                    document.InfoTrack.User_CreatedByKey = byUserId ?? 0;
 
-                    context.Entry(document.InfoTrack).State = EntityState.Added;
+                    document.InfoTrack = context.Set<Track>()
+                                        .AsNoTracking()
+                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
+
+                    if (document.InfoTrack != null)
+                    {
+                        document.InfoTrack.User_LastEditedByKey = byUserId;
+                        document.InfoTrack.Date_EditedOn = DateTime.Now;
+
+                        context.Entry(document.InfoTrack).State = EntityState.Modified;
+                    }
+                    
                     context.SaveChanges();
                 }
             }
-
-            //string sPropID = typeof(T).Name + "Key";
-            //int id = (int)context.Entry(entity).Property(sPropID).CurrentValue;
-
-            //context.Entry(parent).State = EntityState.Unchanged;
-
-            //if (id > 0)
-            //{
-            //    Update(entity);
-            //}
-            //else
-            //{
-            //    Add(entity);
-            //}
         }
 
         public virtual T GetSingleByParent<P>(int parentID) where P : class

@@ -35,6 +35,13 @@
             ResponseDescription = sMessage;
             return this;
         }
+
+        public CommonResponse Success(string sMessage = "OK")
+        {
+            ErrorThrown = false;
+            ResponseDescription = sMessage;
+            return this;
+        }
     }
 
     class ValidationResult

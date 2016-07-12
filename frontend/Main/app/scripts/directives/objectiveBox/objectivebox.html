@@ -1,5 +1,5 @@
 <div class="ObjectiveBox">
-    <h2>{{item.Title}}</h2>
+    <h2>{{objective.Title}}</h2>
     <table class="table table-striped table-hover">
         <thead>
             <tr>
@@ -10,7 +10,7 @@
             </tr>
         </thead>
         <tbody>
-            <tr ng-repeat="metric in item.Metrics">
+            <tr ng-repeat="metric in objective.Metrics">
                 <td>{{metric.Description}}</td>
                 <td>{{metric.CurrentValue}}</td>
                 <td>{{metric.GoalValue}}</td>

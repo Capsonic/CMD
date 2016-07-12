@@ -1,1 +1,45 @@
-<p>This is the dashboard-objectives view.</p>
+<div class="container Relationator">
+    <br>
+    <div class="well well-sm">
+        <form class="form-horizontal">
+            <h4>Current Dashboard:</h4>
+            <div class="form-group">
+                <div class="col-sm-4 col-xs-12">
+                    <label>Name</label>
+                    <p class="form-control-static">
+                        {{baseEntity.Name}}
+                    </p>
+                </div>
+                <div class="col-sm-8 col-xs-12">
+                    <label>Description</label>
+                    <p class="form-control-static">
+                        {{baseEntity.Description}}
+                    </p>
+                </div>
+            </div>
+        </form>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4>Objectives in Dashboard</h4>
+            <ul class="list-group well" dragula='"objectives-bag"' dragula-model="baseEntity.Objectives">
+                <li id={{objective.id}} class="list-group-item" ng-repeat="objective in baseEntity.Objectives">
+                    <span ng-show="objective.expanded == '+'">{{objective.Title}}</span>
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="objective.expanded = '+'" ng-value="objective.expanded" ng-click="objective.expanded = objective.expanded == '+' ? '-':'+'">
+                    <span ng-show="objective.expanded == '-'"><objective-box></objective-box></span>
+                </li>
+            </ul>
+        </div>
+        <div class="col-sm-6">
+            <h4>Objectives Available</h4>
+            <ul class="list-group well" dragula='"objectives-bag"' dragula-model="availableObjectives">
+                <li id={{objective.id}} class="list-group-item" ng-repeat="objective in availableObjectives">
+                    <span ng-show="objective.expanded == '+'">{{objective.Title}}</span>
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="objective.expanded = '+'" ng-value="objective.expanded" ng-click="objective.expanded = objective.expanded == '+' ? '-':'+'">
+                    <span ng-show="objective.expanded == '-'"><objective-box></objective-box></span>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>

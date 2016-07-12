@@ -54,20 +54,23 @@ namespace CMDLogic.Logic
 
         protected override void onSaving(DbContext context, Objective entity)
         {
-            entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
-            entity.InfoGridster.Gridster_Entity_ID = entity.id;
-            entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
-            entity.InfoGridster.Gridster_User_ID = (int)byUserId;
+            if (entity.InfoGridster != null)
+            {
+                entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
+                entity.InfoGridster.Gridster_Entity_ID = entity.id;
+                entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
+                entity.InfoGridster.Gridster_User_ID = (int)byUserId;
 
-            if (entity.InfoGridster.id > 0)
-            {
-                context.Entry(entity.InfoGridster).State = EntityState.Modified;
+                if (entity.InfoGridster.id > 0)
+                {
+                    context.Entry(entity.InfoGridster).State = EntityState.Modified;
+                }
+                else
+                {
+                    context.Entry(entity.InfoGridster).State = EntityState.Added;
+                }
+                context.SaveChanges();
             }
-            else
-            {
-                context.Entry(entity.InfoGridster).State = EntityState.Added;
-            }
-            context.SaveChanges();
         }
 
         protected override void onCreate(Objective entity)

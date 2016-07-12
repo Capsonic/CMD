@@ -839,14 +839,6 @@ angular.module('inspiracode.crudFactory', [])
                             log.debug(response);
                             deferred.reject(backendResponse);
                         } else {
-                            if (angular.isArray(backendResponse.Result)) {
-                                for (var i = 0; i < backendResponse.Result.length; i++) {
-                                    mainEntity.adapterIn(backendResponse.Result[i]);
-                                }
-                            } else {
-                                mainEntity.adapterIn(backendResponse.Result);
-                            }
-
                             deferred.resolve(backendResponse.Result);
                         }
                     } else {
@@ -1108,12 +1100,12 @@ angular.module('inspiracode.crudFactory', [])
             remove: _remove, //Removes a single Entity.
             removeSelected: _removeSelected, //Removes a batch of Entities. (to be depricated)
             removeBatch: _removeBatch, //Removes a batch of Entities.
-            customPost: _customPost, //Request a custom name method via Post.
             customGet: _customGet, //Request a custom name method via Post.            
             take: _take, //Set a user responsible for an Entity.
             finalize: _finalize, //Entity is validated with bFinalize=true paramter, then status is changed to Completed, and entity is locked out.
 
             //After Implementation with Generic Repository and Entity Framework:
+            customPost: _customPost, //Request a custom name method via Post.
             createEntity: _createEntity, //Gets a new instance of entity from the backend.
             addToParent: _addToParent //Saves an entity and attaches to parent specified.
         };

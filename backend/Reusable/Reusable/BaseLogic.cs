@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Entity;
-using System.Reflection;
+using System.Linq;
 using static Reusable.BaseEntity;
 
 namespace Reusable
@@ -292,6 +292,69 @@ namespace Reusable
             }
 
             return response.Success(entities);
+        }
+
+        public virtual CommonResponse GetAvailableFor<ForEntity>(int id) where ForEntity : BaseEntity
+        {
+            CommonResponse response = new CommonResponse();
+            IEnumerable<Entity> availableEntities;
+            try
+            {
+                repository.byUserId = byUserId;
+
+                IRepository<ForEntity> oRepository = new Repository<ForEntity>(context);
+                oRepository.byUserId = byUserId;
+
+
+                ForEntity forEntity = oRepository.GetByID(id);
+                if (forEntity == null)
+                {
+                    throw new Exception("Entity " + forEntity.AAA_EntityName + " not found.");
+                }
+
+                IList<Entity> childrenInForEntity = repository.GetListByParent<ForEntity>(id);
+
+                IList<Entity> allEntities = repository.GetAll();
+
+                availableEntities = allEntities.Where(e => !childrenInForEntity.Any(o => o.id == e.id));
+
+                loadNavigationProperties(context, availableEntities.ToList());
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.Message);
+            }
+
+            return response.Success(availableEntities);
+        }
+
+        public virtual CommonResponse RemoveFromParent<Parent>(int parentID, Entity entity) where Parent : BaseEntity
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                using (var transaction = context.Database.BeginTransaction())
+                {
+                    try
+                    {
+                        repository.byUserId = byUserId;
+                        repository.RemoveFromParent<Parent>(parentID, entity);
+
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        transaction.Rollback();
+                        return response.Error(ex.Message);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.Message);
+            }
+
+            return response.Success();
         }
 
         public CommonResponse CreateInstance()

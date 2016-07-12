@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Reusable
+﻿namespace Reusable
 {
     public interface IBaseLogic<Entity> where Entity : BaseEntity
     {
@@ -17,6 +11,8 @@ namespace Reusable
         CommonResponse Update(Entity entity);
         CommonResponse AddToParent<ParentType>(int parentID, Entity entity) where ParentType : BaseEntity;
         CommonResponse GetAllByParent<ParentType>(int parentID) where ParentType : BaseEntity;
+        CommonResponse RemoveFromParent<Parent>(int parentID, Entity entity) where Parent : BaseEntity;
         CommonResponse CreateInstance();
+        CommonResponse GetAvailableFor<ForEntity>(int id) where ForEntity : BaseEntity;
     }
 }
