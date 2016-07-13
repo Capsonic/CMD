@@ -56,8 +56,6 @@ angular.module('mainApp').controller('DashboardObjectivesCtrl', function($scope,
 
     load();
 
-
-
     $scope.$on('objectives-bag.drop-model', function(e, el, source) {
         var id = Number(el.attr('id'));
         var objectiveFoundInAvailable = $scope.availableObjectives.find(function(o) {
@@ -69,15 +67,18 @@ angular.module('mainApp').controller('DashboardObjectivesCtrl', function($scope,
         });
 
 
-
+        var expanded;
         if (objectiveFoundInAvailable) {
+            expanded = objectiveFoundInAvailable.expanded;
             objectiveService.customPost('RemoveFromParent/Dashboard/' + $scope.baseEntity.id, objectiveFoundInAvailable).then(function(data) {
+                objectiveFoundInAvailable.expanded = expanded;
                 alertify.success('Moved successfully.');
             });
         } else if (objectiveFoundInOccuppied) {
-            var expanded = objectiveFoundInOccuppied.expanded;
+            expanded = objectiveFoundInOccuppied.expanded;
             objectiveService.addToParent('Dashboard', $scope.baseEntity.id, objectiveFoundInOccuppied).then(function(data) {
-                data.expanded = expanded;
+                objectiveFoundInOccuppied.expanded = expanded;
+                objectiveFoundInOccuppied.Dashboards = [];
                 alertify.success('Moved successfully.');
             });
         } else {

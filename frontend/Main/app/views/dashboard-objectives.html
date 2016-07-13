@@ -27,7 +27,7 @@
                 <li id={{objective.id}} class="list-group-item" ng-repeat="objective in baseEntity.Objectives">
                     <span ng-show="objective.expanded == '+'">{{objective.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="objective.expanded = '+'" ng-value="objective.expanded" ng-click="objective.expanded = objective.expanded == '+' ? '-':'+'">
-                    <span ng-show="objective.expanded == '-'"><objective-box></objective-box></span>
+                    <div ng-show="objective.expanded == '-'"><objective-box></objective-box></div>
                 </li>
             </ul>
         </div>
@@ -37,7 +37,7 @@
                 <li id={{objective.id}} class="list-group-item" ng-repeat="objective in availableObjectives">
                     <span ng-show="objective.expanded == '+'">{{objective.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="objective.expanded = '+'" ng-value="objective.expanded" ng-click="objective.expanded = objective.expanded == '+' ? '-':'+'">
-                    <span ng-show="objective.expanded == '-'"><objective-box></objective-box></span>
+                    <div ng-show="objective.expanded == '-'"><objective-box></objective-box></div>
                 </li>
             </ul>
         </div>

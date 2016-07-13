@@ -328,7 +328,7 @@ namespace Reusable
                 childrenCollection.CurrentValue.Add(entity);
                 if (id > 0)
                 {
-                    context.Entry(entity).State = EntityState.Modified;
+                    context.Entry(entity).State = EntityState.Unchanged;
 
                     /*DOCUMENT*/
                     if (typeof(T).IsSubclassOf(typeof(BaseDocument)))

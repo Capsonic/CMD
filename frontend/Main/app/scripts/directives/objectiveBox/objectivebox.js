@@ -11,12 +11,14 @@ angular.module('mainApp').directive('objectiveBox', function($timeout) {
         templateUrl: 'scripts/directives/objectiveBox/objectivebox.html',
         restrict: 'E',
         link: function postLink(scope, element, attrs) {
-
+            element.hide();
             $timeout(function() {
                 scope.$watch(function() {
                     return element.parent().width() + element.parent().height() + angular.element(window).width() + angular.element(window).height();
                 }, function() {
+                    element.hide();
                     resetSizes();
+                    element.show();
                 });
             }, 200);
 

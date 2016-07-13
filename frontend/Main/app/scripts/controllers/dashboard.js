@@ -74,7 +74,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         adaptForGridster(theOnScreenEntity.Objectives);
 
         addOneByOne();
-
     };
 
     var adaptForGridster = function(items) {
@@ -193,10 +192,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     if (screenfull.enabled) {
-        document.addEventListener(screenfull.raw.fullscreenchange, () => {
+        document.addEventListener(screenfull.raw.fullscreenchange, function() {
             if (screenfull.isFullscreen) {
                 angular.element('.Dashboard').css('top', 0);
-
             } else {
                 angular.element('.Dashboard').css('top', 50);
             }
