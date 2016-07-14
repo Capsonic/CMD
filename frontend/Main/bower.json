@@ -2,21 +2,22 @@
   "name": "main",
   "version": "0.0.0",
   "dependencies": {
-    "angular": "^1.4.0",
+    "angular": "^1.5.7",
     "bootstrap-sass-official": "^3.2.0",
-    "angular-animate": "^1.4.0",
-    "angular-route": "^1.4.0",
-    "angular-sanitize": "^1.4.0",
-    "angular-touch": "^1.4.0",
+    "angular-animate": "^1.5.7",
+    "angular-route": "^1.5.7",
+    "angular-sanitize": "^1.5.7",
+    "angular-touch": "^1.5.7",
     "jquery": "1.9.1",
     "alertify-js": "^1.7.1",
     "angular-gridster2": "^1.1.2",
     "angular-dragula": "^1.2.7",
     "screenfull.js": "https://github.com/sindresorhus/screenfull.js.git#^3.0.0",
-    "angular-smart-table": "^2.1.8"
+    "angular-smart-table": "^2.1.8",
+    "ngActivityIndicator": "^0.1.10"
   },
   "devDependencies": {
-    "angular-mocks": "^1.4.0"
+    "angular-mocks": "^1.5.7"
   },
   "appPath": "app",
   "moduleName": "mainApp",
@@ -28,5 +29,8 @@
         "dist/js/bootstrap.js"
       ]
     }
+  },
+  "resolutions": {
+    "angular": "^1.5.7"
   }
 }

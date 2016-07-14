@@ -24,15 +24,15 @@ angular.module('mainApp').directive('objectiveBox', function($timeout) {
 
             function resetSizes() {
                 switch (true) {
-                    case element.parent().width() > 1200:
+                    case element.parent().width() > 1600:
                         element.css('font-size', 42);
                         element.find('h2').css('font-size', 56);
                         break;
-                    case element.parent().width() > 900:
+                    case element.parent().width() > 1300:
                         element.css('font-size', 36);
                         element.find('h2').css('font-size', 40);
                         break;
-                    case element.parent().width() > 700:
+                    case element.parent().width() > 900:
                         element.css('font-size', 18);
                         element.find('h2').css('font-size', 21);
                         break;

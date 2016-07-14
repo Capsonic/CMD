@@ -17,6 +17,7 @@ angular.module('mainApp', [
     'CMD.CRUDServices',
     'angular-gridster2',
     'smart-table',
+    'ngActivityIndicator',
     angularDragula(angular)
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';

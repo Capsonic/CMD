@@ -26,12 +26,12 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     function itemChange(gridsterItem, scope) {
-        scope.item.InfoGridster.cols = scope.item.cols;
-        scope.item.InfoGridster.rows = scope.item.rows;
-        scope.item.InfoGridster.x = scope.item.x;
-        scope.item.InfoGridster.y = scope.item.y;
-        if (scope.item.EF_State != 1) {
-            scope.item.EF_State = 2;
+        scope.objective.InfoGridster.cols = scope.objective.cols;
+        scope.objective.InfoGridster.rows = scope.objective.rows;
+        scope.objective.InfoGridster.x = scope.objective.x;
+        scope.objective.InfoGridster.y = scope.objective.y;
+        if (scope.objective.EF_State != 1) {
+            scope.objective.EF_State = 2;
         }
     };
 
@@ -139,7 +139,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
                 current.areGridsterPropertiesMissing = false;
                 current.initCallback = null;
-                a.item = current;
+                // a.item = current;
             }
         }
     };

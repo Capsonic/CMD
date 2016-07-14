@@ -7,18 +7,16 @@
  * # DashboardsCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboardService) {
+angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboardService, listController) {
 
-    dashboardService.loadAll().then(function() {
-        $scope.dashboards = dashboardService.getAll();
-    });
-
-    $scope.open = function(item) {
-        alert('hola')
-    };
-
-    $scope.remove = function(item) {
-        dashboardService.remove(item);
-    };
+    var list = new listController({
+        entityName: 'Dashboard',
+        baseService: dashboardService,
+        modalName: 'modal-itemToSave',
+        scope: $scope,
+        afterLoad: function() {
+            $scope.baseList = dashboardService.getAll()
+        },
+    }).load();
 
 });
