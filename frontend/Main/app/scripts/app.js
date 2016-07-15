@@ -50,21 +50,32 @@ angular.module('mainApp', [
             controllerAs: 'administration'
         })
         .when('/dashboard-objectives', {
-          templateUrl: 'views/dashboard-objectives.html',
-          controller: 'DashboardObjectivesCtrl',
-          controllerAs: 'dashboardObjectives'
+            templateUrl: 'views/dashboard-objectives.html',
+            controller: 'DashboardObjectivesCtrl',
+            controllerAs: 'dashboardObjectives'
         })
         .when('/objectives', {
-          templateUrl: 'views/objectives.html',
-          controller: 'ObjectivesCtrl',
-          controllerAs: 'objectives'
+            templateUrl: 'views/objectives.html',
+            controller: 'ObjectivesCtrl',
+            controllerAs: 'objectives'
         })
         .when('/objective-dashboards', {
-          templateUrl: 'views/objective-dashboards.html',
-          controller: 'ObjectiveDashboardsCtrl',
-          controllerAs: 'objectiveDashboards'
+            templateUrl: 'views/objective-dashboards.html',
+            controller: 'ObjectiveDashboardsCtrl',
+            controllerAs: 'objectiveDashboards'
+        })
+        .when('/metrics', {
+            templateUrl: 'views/metrics.html',
+            controller: 'MetricsCtrl',
+            controllerAs: 'metrics'
         })
         .otherwise({
             redirectTo: '/dashboards'
         });
+}).run(function($rootScope, $location) {
+    $rootScope.$on('$routeChangeSuccess', function() {
+        alertify.closeAll();
+        $('.modal').modal('hide');
+        $('.modal-backdrop.fade.in').remove();
+    });
 });

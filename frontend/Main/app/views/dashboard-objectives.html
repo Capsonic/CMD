@@ -1,3 +1,24 @@
+<div class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#/">CMD</a>
+        </div>
+        <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#/">Dashboards</a></li>
+                <li><a ng-href="#/objectives">Objectives</a></li>
+                <li><a ng-href="#/metrics">Metrics</a></li>
+                <li><a ng-href="#/initiatives">Initiatives</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
 <div class="container Relationator">
     <br>
     <div class="well well-sm">
@@ -26,7 +47,7 @@
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="occuppiedEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in occuppiedEntities">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+'" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';objective = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <objective-box></objective-box>
                     </div>
@@ -34,11 +55,11 @@
             </ul>
         </div>
         <div class="col-sm-6">
-            <h4>{{relatedEntityName}} Available</h4>
+            <h4>{{relatedEntityName}}s Available</h4>
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="availableEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in availableEntities">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+'" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';objective = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <objective-box></objective-box>
                     </div>

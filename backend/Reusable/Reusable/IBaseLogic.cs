@@ -14,5 +14,6 @@
         CommonResponse RemoveFromParent<Parent>(int parentID, Entity entity) where Parent : BaseEntity;
         CommonResponse CreateInstance();
         CommonResponse GetAvailableFor<ForEntity>(int id) where ForEntity : BaseEntity;
+        CommonResponse GetCatalogs();
     }
 }

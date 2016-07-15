@@ -20,7 +20,7 @@ namespace CMD.Controllers
 
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = 5;
+            _logic.byUserId = 2;
         }
 
         // GET: api/Base
@@ -35,6 +35,13 @@ namespace CMD.Controllers
         public CommonResponse Get(int id)
         {
            return _logic.GetByID(id);
+        }
+
+        // GET: api/Base
+        [HttpGet Route("getCatalogs")]
+        public CommonResponse getCatalogs()
+        {
+            return _logic.GetCatalogs();
         }
 
         // POST: api/Base

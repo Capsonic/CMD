@@ -13,10 +13,7 @@ angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboar
         entityName: 'Dashboard',
         baseService: dashboardService,
         modalName: 'modal-itemToSave',
-        scope: $scope,
-        afterLoad: function() {
-            $scope.baseList = dashboardService.getAll()
-        },
+        scope: $scope
     }).load();
 
 });

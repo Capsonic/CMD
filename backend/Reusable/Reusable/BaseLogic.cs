@@ -62,7 +62,7 @@ namespace Reusable
                     catch (Exception ex)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error(ex.ToString());
                     }
                 }
             }
@@ -363,6 +363,22 @@ namespace Reusable
             Entity entity = new Entity();
             onCreate(entity);
             return response.Success(entity);
+        }
+
+        protected virtual ICatalogContainer LoadCatalogs() { return null; }
+
+        public virtual CommonResponse GetCatalogs()
+        {
+            CommonResponse response = new CommonResponse();
+            try
+            {
+                response.Success(LoadCatalogs());
+            }
+            catch (Exception ex)
+            {
+                return response.Error(ex.Message);
+            }
+            return response.Success();
         }
     }
 }

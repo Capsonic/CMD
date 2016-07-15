@@ -12,9 +12,6 @@ angular.module('mainApp').controller('ObjectivesCtrl', function($scope, objectiv
         entityName: 'Objective',
         baseService: objectiveService,
         modalName: 'modal-itemToSave',
-        scope: $scope,
-        afterLoad: function() {
-            $scope.baseList = objectiveService.getAll()
-        },
+        scope: $scope
     }).load();
 });

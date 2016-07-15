@@ -384,10 +384,20 @@ angular.module('inspiracode.crudFactory', [])
 
         var _arrAllRecords = [];
 
+
+        var _populateCatalogValues = function(entity) {
+            for (var catalog in _catalogs) {
+                if (_catalogs.hasOwnProperty(catalog)) {
+                    entity['' + catalog] = _catalogs[catalog].getById(entity['' + catalog + 'Key']);
+                }
+            }
+            return entity;
+        };
+
         var _getById = function(theId) {
             for (var i = 0; i < _arrAllRecords.length; i++) {
                 if (theId == _arrAllRecords[i].id) {
-                    return _adapter(_arrAllRecords[i], _self);
+                    return _populateCatalogValues(_adapter(_arrAllRecords[i], _self));
                 }
             }
             return null;
@@ -397,7 +407,7 @@ angular.module('inspiracode.crudFactory', [])
             var result = [];
             for (var i = 0; i < _arrAllRecords.length; i++) {
                 if (theParentId == _arrAllRecords[i][mainEntity.parentField]) {
-                    result.push(_adapter(_arrAllRecords[i], _self));
+                    result.push(_populateCatalogValues(_adapter(_arrAllRecords[i], _self)));
                 }
             }
             return result;
@@ -406,7 +416,7 @@ angular.module('inspiracode.crudFactory', [])
         var _getSingleByParentId = function(theParentId) {
             for (var i = 0; i < _arrAllRecords.length; i++) {
                 if (theParentId == _arrAllRecords[i][mainEntity.parentField]) {
-                    return _adapter(_arrAllRecords[i], _self);
+                    return _populateCatalogValues(_adapter(_arrAllRecords[i], _self));
                 }
             }
             return null;
@@ -415,7 +425,7 @@ angular.module('inspiracode.crudFactory', [])
         var _getRecursiveBySeedId = function(theSeedId) {
             for (var i = 0; i < _arrAllRecords.length; i++) {
                 if (theSeedId == _arrAllRecords[i][mainEntity.seedField]) {
-                    return _adapter(_arrAllRecords[i], _self);
+                    return _populateCatalogValues(_adapter(_arrAllRecords[i], _self));
                 }
             }
             return null;
@@ -423,7 +433,7 @@ angular.module('inspiracode.crudFactory', [])
 
         var _getAll = function() {
             for (var i = 0; i < _arrAllRecords.length; i++) {
-                _arrAllRecords[i] = _adapter(_arrAllRecords[i], _self);
+                _arrAllRecords[i] = _populateCatalogValues(_adapter(_arrAllRecords[i], _self));
             }
             return _arrAllRecords;
         };
@@ -445,7 +455,7 @@ angular.module('inspiracode.crudFactory', [])
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
                                 if (!backendResponse.ErrorThrown) {
-                                    _adapter(backendResponse.Result, _self);
+                                    _populateCatalogValues(_adapter(backendResponse.Result, _self));
                                     angular.copy(backendResponse.Result, theEntity);
                                     if (angular.isArray(theArrayBelonging)) {
                                         var theEntityCopy = angular.copy(theEntity);
@@ -459,7 +469,8 @@ angular.module('inspiracode.crudFactory', [])
                                     }, 100);
                                     deferred.resolve(response.data);
                                 } else {
-                                    alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                                    var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                    alertify.alert(alertifyContent).set('modal', true);
                                     log.debug(response);
                                     deferred.reject(response.data);
                                 }
@@ -493,7 +504,8 @@ angular.module('inspiracode.crudFactory', [])
                                     }, 100);
                                     deferred.resolve(response.data);
                                 } else {
-                                    alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                                    var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                    alertify.alert(alertifyContent).set('modal', true);
                                     log.debug(response);
                                     deferred.reject(response.data);
                                 }
@@ -567,7 +579,8 @@ angular.module('inspiracode.crudFactory', [])
                             }, 100);
                             deferred.resolve(response.data);
                         } else {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             log.debug(response);
                             deferred.reject(response.data);
                         }
@@ -623,7 +636,8 @@ angular.module('inspiracode.crudFactory', [])
                     .success(function(data) {
                         var backendResponse = data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             log.debug(data);
                             deferred.reject(data);
                         } else {
@@ -667,7 +681,8 @@ angular.module('inspiracode.crudFactory', [])
                     .success(function(data) {
                         var backendResponse = data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             log.debug(data);
                             deferred.reject(data);
                         } else {
@@ -711,7 +726,8 @@ angular.module('inspiracode.crudFactory', [])
                         .success(function(data) {
                             var backendResponse = data;
                             if (backendResponse.ErrorThrown) {
-                                alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
                                 log.debug(response);
                                 deferred.reject(data);
                             } else {
@@ -773,7 +789,8 @@ angular.module('inspiracode.crudFactory', [])
                     function(response) {
                         var backendResponse = response.data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             deferred.reject(response);
                         } else {
                             for (var i = 0; i < backendResponse.Result.length; i++) {
@@ -802,7 +819,8 @@ angular.module('inspiracode.crudFactory', [])
                     function(response) {
                         var backendResponse = response.data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             deferred.reject(response);
                         } else {
                             if (backendResponse.Result != null) {
@@ -866,7 +884,8 @@ angular.module('inspiracode.crudFactory', [])
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             log.debug(response);
                             deferred.reject(backendResponse);
                         } else {
@@ -902,7 +921,8 @@ angular.module('inspiracode.crudFactory', [])
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;
                         if (backendResponse.ErrorThrown) {
-                            alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
                             log.debug(response);
                             deferred.reject(response);
                         } else {
@@ -1030,7 +1050,7 @@ angular.module('inspiracode.crudFactory', [])
                         if (typeof response.data === 'object') {
                             var backendResponse = response.data;
                             if (!backendResponse.ErrorThrown) {
-                                _adapter(backendResponse.Result, _self);
+                                _populateCatalogValues(_adapter(backendResponse.Result, _self));
                                 angular.copy(backendResponse.Result, theEntity);
                                 theEntity.EF_State = 0;
 
@@ -1043,7 +1063,8 @@ angular.module('inspiracode.crudFactory', [])
                                 }
                                 deferred.resolve(theEntity);
                             } else {
-                                alertify.alert(backendResponse.ResponseDescription).set('modal', true);
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
                                 log.debug(response);
                                 deferred.reject(response.data);
                             }

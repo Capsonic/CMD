@@ -47,6 +47,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
         //let's use normal variables (without underscore) so they can be
         //accessed in view normally
         scope.listTitle = oMainConfig.entityName != '' ? oMainConfig.entityName + 's' : '';
+        scope.entityName = oMainConfig.entityName != '' ? oMainConfig.entityName : '';
         scope.search = {};
         scope.remove = function(oEntity, arrBelongingList) {
             alertify.confirm(
@@ -119,6 +120,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
                 angular.copy(scope.itemToSave, scope.selectedItem);
                 angular.element('#' + _modalName).off('hidden.bs.modal');
                 angular.element('#' + _modalName).modal('hide');
+                scope.baseList = _baseService.getAll();
                 $activityIndicator.stopAnimating();
             });
         };
@@ -126,10 +128,10 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             oItem.editMode = true;
         };
         scope.on_closeModal = function() {
-            if (scope.modeSave != 'Create') {
-                var originalItem = _baseService.getById(scope.itemToSave.id);
-                angular.copy(originalItem, scope.selectedItem);
-            }
+            // if (scope.modeSave != 'Create') {
+            //     var originalItem = _baseService.getById(scope.itemToSave.id);
+            //     angular.copy(originalItem, scope.selectedItem);
+            // }
         };
         scope.undoItem = function(oItem) {
             var originalItem = _baseService.getById(oItem.id);
@@ -174,11 +176,6 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
         };
 
         var _afterLoad = function() {
-            // for (catalog in _baseService.catalogs) {
-            //  if (_baseService.catalogs.hasOwnProperty(catalog)) {
-            //      scope["the" + catalog + "s"] = _baseService.catalogs[catalog].getAll();
-            //  }
-            // }
             _afterLoadCallBack();
             scope.selectedCount = _getSelectedCount();
             $activityIndicator.stopAnimating();
@@ -189,6 +186,12 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             alertify.closeAll();
             _baseService.loadAll(true).then(function(data) {
                 scope.$evalAsync(function() {
+                    for (var catalog in _baseService.catalogs) {
+                        if (_baseService.catalogs.hasOwnProperty(catalog)) {
+                            scope["cat" + catalog] = _baseService.catalogs[catalog].getAll();
+                        }
+                    }
+                    scope.baseList = _baseService.getAll()
                     _afterLoad();
                 });
             });
