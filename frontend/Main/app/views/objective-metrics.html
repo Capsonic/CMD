@@ -11,8 +11,8 @@
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
             <ul class="nav navbar-nav">
-                <li class="active"><a href="#/">Dashboards</a></li>
-                <li><a ng-href="#/objectives">Objectives</a></li>
+                <li><a href="#/">Dashboards</a></li>
+                <li class="active"><a ng-href="#/objectives">Objectives</a></li>
                 <li><a ng-href="#/metrics">Metrics</a></li>
                 <li><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
@@ -40,14 +40,22 @@
             <h4>{{relatedEntityName}}s in {{entityName}}</h4>
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="occuppiedEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in occuppiedEntities">
-                    <span ng-show="entity.expanded == '+'">{{entity.Name}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';dashboard = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <span ng-show="entity.expanded == '+'">{{entity.Description}}</span>
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';metric = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <div class="form-group">
-                            <label>Name</label>
-                            <p class="form-control-static">{{dashboard.Name}}</p>
                             <label>Description</label>
-                            <p class="form-control-static">{{dashboard.Description}}</p>
+                            <p class="form-control-static">{{metric.Description}}</p>
+                            <label>Current Value</label>
+                            <p class="form-control-static">{{metric.CurrentValue}}</p>
+                            <label>Goal Value</label>
+                            <p class="form-control-static">{{metric.GoalValue}}</p>
+                            <label>Format</label>
+                            <p class="form-control-static">{{metric.MetricFormat.Value}}</p>
+                            <label>Basis</label>
+                            <p class="form-control-static">{{metric.MetricBasis.Value}}</p>
+                            <label>Comparator Method</label>
+                            <p class="form-control-static">{{metric.ComparatorMethod.Value}}</p>
                         </div>
                     </div>
                 </li>
@@ -57,14 +65,22 @@
             <h4>{{relatedEntityName}}s Available</h4>
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="availableEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in availableEntities">
-                    <span ng-show="entity.expanded == '+'">{{entity.Name}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';dashboard = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <span ng-show="entity.expanded == '+'">{{entity.Description}}</span>
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';metric = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <div class="form-group">
-                            <label>Name</label>
-                            <p class="form-control-static">{{dashboard.Name}}</p>
                             <label>Description</label>
-                            <p class="form-control-static">{{dashboard.Description}}</p>
+                            <p class="form-control-static">{{metric.Description}}</p>
+                            <label>Current Value</label>
+                            <p class="form-control-static">{{metric.CurrentValue}}</p>
+                            <label>Goal Value</label>
+                            <p class="form-control-static">{{metric.GoalValue}}</p>
+                            <label>Format</label>
+                            <p class="form-control-static">{{metric.MetricFormat.Value}}</p>
+                            <label>Basis</label>
+                            <p class="form-control-static">{{metric.MetricBasis.Value}}</p>
+                            <label>Comparator Method</label>
+                            <p class="form-control-static">{{metric.ComparatorMethod.Value}}</p>
                         </div>
                     </div>
                 </li>

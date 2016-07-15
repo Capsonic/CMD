@@ -66,7 +66,7 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                 expanded = entitiesFoundInOccuppied.expanded;
                 _baseRelatedService.addToParent(oMainConfig.entityName, scope.baseEntity.id, entitiesFoundInOccuppied).then(function(data) {
                     entitiesFoundInOccuppied.expanded = expanded;
-                    entitiesFoundInOccuppied.Dashboards = [];
+                    entitiesFoundInOccuppied[oMainConfig.entityName + 's'] = [];
                     alertify.success('Moved successfully.');
                 });
             } else {
@@ -99,15 +99,36 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                             return;
                         }
 
+
+                        for (var catalog in _baseService.catalogs) {
+                            if (_baseService.catalogs.hasOwnProperty(catalog)) {
+                                scope["cat" + catalog] = _baseService.catalogs[catalog].getAll();
+                            }
+                        }
+
                         //Loading Available Related Entities
-                        _baseRelatedService.customGet('GetAvailableForEntity/' + oMainConfig.entityName + '/' + $routeParams.id).then(function(data) {
-                            scope.baseEntity = angular.copy(theOriginalEntity);
-                            scope.occuppiedEntities = scope.baseEntity[('' + oMainConfig.relatedEntityName + 's')];
-                            scope.availableEntities = data;
-                            _afterLoad();
+                        _baseRelatedService.loadCatalogs().then(function() {
+                            _baseRelatedService.customGet('GetAvailableForEntity/' + oMainConfig.entityName + '/' + $routeParams.id).then(function(data) {
+                                for (var catalog in _baseRelatedService.catalogs) {
+                                    if (_baseRelatedService.catalogs.hasOwnProperty(catalog)) {
+                                        scope["cat" + catalog] = _baseRelatedService.catalogs[catalog].getAll();
+                                    }
+                                }
+                                scope.baseEntity = angular.copy(theOriginalEntity);
+
+
+                                scope.occuppiedEntities = scope.baseEntity[('' + oMainConfig.relatedEntityName + 's')];
+                                scope.occuppiedEntities.forEach(function(entity) {
+                                    return _baseRelatedService.adapt(entity);
+                                });
+
+                                scope.availableEntities = data;
+                                scope.availableEntities.forEach(function(entity) {
+                                    return _baseRelatedService.adapt(entity);
+                                });
+                                _afterLoad();
+                            });
                         });
-
-
                     });
                     break;
 

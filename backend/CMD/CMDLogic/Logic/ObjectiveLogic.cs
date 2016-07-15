@@ -13,16 +13,19 @@ namespace CMDLogic.Logic
         private readonly IRepository<Initiative> initiativeRepository;
         private readonly IRepository<Metric> metricRepository;
         private readonly IRepository<Gridster> gridsterRepository;
+        private readonly IRepository<Dashboard> dashboardRepository;
 
         public ObjectiveLogic(DbContext context,
             IRepository<Objective> repository,
             IRepository<Initiative> initiativeRepository,
             IRepository<Metric> metricRepository,
-            IRepository<Gridster> gridsterRepository) : base(context, repository)
+            IRepository<Gridster> gridsterRepository,
+            IRepository<Dashboard> dashboardRepository) : base(context, repository)
         {
             this.initiativeRepository = initiativeRepository;
             this.metricRepository = metricRepository;
             this.gridsterRepository = gridsterRepository;
+            this.dashboardRepository = dashboardRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Objective> entities)
@@ -33,11 +36,13 @@ namespace CMDLogic.Logic
 
             foreach (Objective item in entities)
             {
+                item.Dashboards = dashboardRepository.GetListByParent<Objective>(item.id);
                 item.Initiatives = initiativeRepository.GetListByParent<Objective>(item.id);
                 item.Metrics = metricRepository.GetListByParent<Objective>(item.id);
                 item.InfoGridster = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
                                                                 && e.Gridster_Entity_Kind == item.AAA_EntityName
                                                                 && e.Gridster_User_ID == byUserId);
+                
                 //if (item.InfoGridster == null)
                 //{
                 //    Gridster gridsterFromFirstCreator = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id

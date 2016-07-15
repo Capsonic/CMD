@@ -261,7 +261,7 @@ namespace Reusable
             string tName = typeof(T).Name + "s";
             list = context.Entry(parent).Collection<T>(tName)
                 .Query()
-                .AsNoTracking()
+                //.AsNoTracking()
                 .ToList<T>();
 
             /*DOCUMENT*/

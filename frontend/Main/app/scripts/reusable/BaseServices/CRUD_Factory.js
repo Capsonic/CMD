@@ -394,6 +394,10 @@ angular.module('inspiracode.crudFactory', [])
             return entity;
         };
 
+        var _adapt = function(entity) {
+            return _populateCatalogValues(_adapter(entity));
+        }
+
         var _getById = function(theId) {
             for (var i = 0; i < _arrAllRecords.length; i++) {
                 if (theId == _arrAllRecords[i].id) {
@@ -1050,17 +1054,6 @@ angular.module('inspiracode.crudFactory', [])
                         if (typeof response.data === 'object') {
                             var backendResponse = response.data;
                             if (!backendResponse.ErrorThrown) {
-                                _populateCatalogValues(_adapter(backendResponse.Result, _self));
-                                angular.copy(backendResponse.Result, theEntity);
-                                theEntity.EF_State = 0;
-
-                                if (angular.isArray(theArrayBelonging)) {
-                                    var theEntityCopy = angular.copy(theEntity);
-                                    _arrAllRecords.push(theEntityCopy);
-                                    theArrayBelonging.push(theEntity);
-                                } else {
-                                    _arrAllRecords.push(theEntity);
-                                }
                                 deferred.resolve(theEntity);
                             } else {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
@@ -1090,6 +1083,10 @@ angular.module('inspiracode.crudFactory', [])
             return _arrAllRecords;
         };
 
+        var _setRawAll = function(arr) {
+            _arrAllRecords = arr;
+        };
+
         // Public crudFactory API:////////////////////////////////////////////////////////////
         var oAPI = {
 
@@ -1105,8 +1102,10 @@ angular.module('inspiracode.crudFactory', [])
             getSingleByParentId: _getSingleByParentId, //Gets single Entity by ParentID from local array.
             getRecursiveBySeedId: _getRecursiveBySeedId, //Function for recursive lists, gets a single entity with all recursive children by SeedID
             getAll: _getAll, //Returns all Entities from local array.
-            getRawAll: _getRawAll, //TODO find a better solution.
+            getRawAll: _getRawAll, //TODO find a better solution, coz' we are manipulating a private variable.
+            setRawAll: _setRawAll, //TODO find a better solution, coz' we are manipulating a private variable.
             catalogs: _catalogs, //Stores catalogs defined on configuration.
+            adapt: _adapt, //adapt entity using _adapt and _populateCatalogs
 
             //Server transactions:
             loadDependencies: _loadDependencies, //Pull dependencies defined on configuration.

@@ -69,6 +69,16 @@ angular.module('mainApp', [
             controller: 'MetricsCtrl',
             controllerAs: 'metrics'
         })
+        .when('/objective-metrics', {
+          templateUrl: 'views/objective-metrics.html',
+          controller: 'ObjectiveMetricsCtrl',
+          controllerAs: 'objectiveMetrics'
+        })
+        .when('/objective-initiatives', {
+          templateUrl: 'views/objective-initiatives.html',
+          controller: 'ObjectiveInitiativesCtrl',
+          controllerAs: 'objectiveInitiatives'
+        })
         .otherwise({
             redirectTo: '/dashboards'
         });
