@@ -54,6 +54,16 @@ angular.module('mainApp', [
           controller: 'DashboardObjectivesCtrl',
           controllerAs: 'dashboardObjectives'
         })
+        .when('/objectives', {
+          templateUrl: 'views/objectives.html',
+          controller: 'ObjectivesCtrl',
+          controllerAs: 'objectives'
+        })
+        .when('/objective-dashboards', {
+          templateUrl: 'views/objective-dashboards.html',
+          controller: 'ObjectiveDashboardsCtrl',
+          controllerAs: 'objectiveDashboards'
+        })
         .otherwise({
             redirectTo: '/dashboards'
         });
