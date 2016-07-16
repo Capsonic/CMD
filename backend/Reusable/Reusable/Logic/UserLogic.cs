@@ -33,11 +33,10 @@ namespace Reusable
                 return response.Success(entity);
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
-
     }
 }

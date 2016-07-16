@@ -16,8 +16,8 @@
                 <li><a ng-href="#/metrics">Metrics</a></li>
                 <li><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
-            <button class="btn btn-default navbar-btn navbar-right" ng-click="create()">New {{entityName}}</button>
         </div>
+        <button class="btn btn-default navbar-btn navbar-right" style="position:fixed;right:70px;top:0px;" ng-click="create()">New {{entityName}}</button>
     </div>
 </div>
 <div class="CRUDList container">
@@ -61,7 +61,7 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">{{modeSave}} {{EntityName}}</h4>
+                <h4 class="modal-title">{{modeSave}} {{entityName}}</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">

@@ -66,9 +66,9 @@ namespace Reusable
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(entity);
@@ -87,9 +87,9 @@ namespace Reusable
 
                 loadNavigationProperties(context, entities);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(entities);
@@ -117,9 +117,9 @@ namespace Reusable
                     return response.Error("Entity not found.");
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
 
@@ -138,17 +138,17 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error("ERROR: " + e.ToString());
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
             return response.Success(id, repository.EntityName + " removed successfully.");
         }
@@ -167,17 +167,17 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error("ERROR: " + e.ToString());
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
             return response.Success(id);
         }
@@ -199,18 +199,18 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error("ERROR: " + e.ToString());
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
 
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(entity);
@@ -252,17 +252,17 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error("ERROR: " + e.ToString());
                     }
                 }
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(entity);
@@ -286,9 +286,9 @@ namespace Reusable
                 //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(entities);
@@ -320,9 +320,9 @@ namespace Reusable
 
                 loadNavigationProperties(context, availableEntities.ToList());
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success(availableEntities);
@@ -342,16 +342,16 @@ namespace Reusable
 
                         transaction.Commit();
                     }
-                    catch (Exception ex)
+                    catch (Exception e)
                     {
                         transaction.Rollback();
-                        return response.Error(ex.Message);
+                        return response.Error("ERROR: " + e.ToString());
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
 
             return response.Success();
@@ -374,9 +374,9 @@ namespace Reusable
             {
                 response.Success(LoadCatalogs());
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                return response.Error(ex.Message);
+                return response.Error("ERROR: " + e.ToString());
             }
             return response.Success();
         }

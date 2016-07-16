@@ -79,6 +79,11 @@ angular.module('mainApp', [
           controller: 'ObjectiveInitiativesCtrl',
           controllerAs: 'objectiveInitiatives'
         })
+        .when('/initiatives', {
+          templateUrl: 'views/initiatives.html',
+          controller: 'InitiativesCtrl',
+          controllerAs: 'initiatives'
+        })
         .otherwise({
             redirectTo: '/dashboards'
         });

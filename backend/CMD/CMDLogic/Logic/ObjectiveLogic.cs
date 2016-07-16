@@ -81,7 +81,7 @@ namespace CMDLogic.Logic
         protected override void onCreate(Objective entity)
         {
             base.onCreate(entity);
-            entity.InfoGridster = new Gridster();
+            //entity.InfoGridster = new Gridster();
         }
     }
 }

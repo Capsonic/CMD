@@ -8,10 +8,12 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="">CMD</a>
-            <p class="navbar-text">{{baseEntity.Name}}</p>
-            <p class="navbar-text">{{baseEntity.Description}}</p>
+            <p class="navbar-brand navbar-right" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
+            <ul class="nav navbar-nav navbar-right">
+                <li><a href="#/dashboards">Administration</a></li>
+            </ul>
             <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
             <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Objective</button> -->
             <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>

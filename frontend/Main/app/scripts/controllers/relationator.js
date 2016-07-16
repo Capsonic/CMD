@@ -64,9 +64,9 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                 });
             } else if (entitiesFoundInOccuppied) {
                 expanded = entitiesFoundInOccuppied.expanded;
+                entitiesFoundInOccuppied[oMainConfig.entityName + 's'] = [];
                 _baseRelatedService.addToParent(oMainConfig.entityName, scope.baseEntity.id, entitiesFoundInOccuppied).then(function(data) {
                     entitiesFoundInOccuppied.expanded = expanded;
-                    entitiesFoundInOccuppied[oMainConfig.entityName + 's'] = [];
                     alertify.success('Moved successfully.');
                 });
             } else {

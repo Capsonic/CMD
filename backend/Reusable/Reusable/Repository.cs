@@ -183,9 +183,21 @@ namespace Reusable
         public virtual void Update(params T[] items)
         {
             DbSet<T> dbSet = context.Set<T>();
+
+            foreach (T item in items)
+            {
+                dbSet.Attach(item);
+            }
+
+            foreach (DbEntityEntry<BaseEntity> entry in context.ChangeTracker.Entries<BaseEntity>())
+            {
+                context.Entry(entry.Entity).State = EntityState.Unchanged;
+            }
+
             foreach (T item in items)
             {
                 //dbSet.Attach(item);
+                dbSet.Attach(item);
                 context.Entry(item).State = EntityState.Modified;
             }
 

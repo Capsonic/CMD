@@ -59,7 +59,7 @@ namespace CMD.Controllers
             }
             catch (Exception e)
             {
-                return response.Error("ERROR: " + e.Message, e);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
 
@@ -82,7 +82,7 @@ namespace CMD.Controllers
             }
             catch (Exception e)
             {
-                return response.Error("ERROR: " + e.Message, e);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
 
@@ -106,7 +106,7 @@ namespace CMD.Controllers
             }
             catch (Exception e)
             {
-                return response.Error("ERROR: " + e.Message, e);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
 
@@ -132,7 +132,7 @@ namespace CMD.Controllers
             }
             catch (Exception e)
             {
-                return response.Error("ERROR: " + e.Message, e);
+                return response.Error("ERROR: " + e.ToString());
             }
         }
 
