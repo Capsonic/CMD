@@ -12,7 +12,7 @@ namespace CMDLogic.EF
         public Initiative()
         {
             Gants = new HashSet<Gant>();
-            Objectives = new HashSet<Objective>();
+            Departments = new HashSet<Department>();
             sys_active = true;
         }
 
@@ -32,6 +32,6 @@ namespace CMDLogic.EF
         public virtual ICollection<Gant> Gants { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Objective> Objectives { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }

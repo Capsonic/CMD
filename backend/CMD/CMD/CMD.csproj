@@ -189,7 +189,7 @@
     <Compile Include="Controllers\BaseController.cs" />
     <Compile Include="Controllers\InitiativeController.cs" />
     <Compile Include="Controllers\MetricController.cs" />
-    <Compile Include="Controllers\ObjectiveController.cs" />
+    <Compile Include="Controllers\DepartmentController.cs" />
     <Compile Include="Controllers\DashboardController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="App_Start\Startup.cs" />
@@ -197,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+    <None Include="Properties\PublishProfiles\CMD RSSERVER.pubxml" />
     <None Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </None>

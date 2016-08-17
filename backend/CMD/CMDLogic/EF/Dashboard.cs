@@ -10,7 +10,7 @@ namespace CMDLogic.EF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Dashboard()
         {
-            Objectives = new HashSet<Objective>();
+            Departments = new HashSet<Department>();
             sys_active = true;
         }
 
@@ -24,6 +24,6 @@ namespace CMDLogic.EF
         public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Objective> Objectives { get; set; }
+        public virtual ICollection<Department> Departments { get; set; }
     }
 }

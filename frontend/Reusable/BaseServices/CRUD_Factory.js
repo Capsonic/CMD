@@ -395,7 +395,7 @@ angular.module('inspiracode.crudFactory', [])
         };
 
         var _adapt = function(entity) {
-            return _populateCatalogValues(_adapter(entity));
+            return _populateCatalogValues(_adapter(entity, _self));
         }
 
         var _getById = function(theId) {
@@ -500,6 +500,7 @@ angular.module('inspiracode.crudFactory', [])
                                 if (!backendResponse.ErrorThrown) {
                                     theEntity.editMode = false;
                                     var current = _getById(theEntity.id);
+                                    _populateCatalogValues(_adapter(theEntity, _self));
                                     if (!angular.equals(theEntity, current)) {
                                         angular.copy(theEntity, current);
                                     }

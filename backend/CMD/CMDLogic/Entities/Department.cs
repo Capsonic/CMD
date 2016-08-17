@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CMDLogic.EF
 {
-    public partial class Objective : BaseDocument
+    public partial class Department : BaseDocument
     {
         [NotMapped]
-        public override int id { get { return ObjectiveKey; } }
+        public override int id { get { return DepartmentKey; } }
 
         [NotMapped]
         public Gridster InfoGridster { get; set; }

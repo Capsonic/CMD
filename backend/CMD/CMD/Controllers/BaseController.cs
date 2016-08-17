@@ -20,7 +20,7 @@ namespace CMD.Controllers
 
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = 2;
+            _logic.byUserId = 1;
         }
 
         // GET: api/Base
@@ -117,7 +117,7 @@ namespace CMD.Controllers
         }
 
         [HttpGet Route("GetAvailableForEntity/{sEntityType}/{id}")]
-        public CommonResponse GetAvailableObjectivesForDashboard(string sEntityType, int id)
+        public CommonResponse GetAvailableForEntity(string sEntityType, int id)
         {
             CommonResponse response = new CommonResponse();
 

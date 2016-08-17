@@ -7,7 +7,7 @@
  * # RelationatorCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').factory('relationatorController', function($log, $activityIndicator, $routeParams) {
+angular.module('mainApp').factory('relationatorController', function($log, $activityIndicator, $routeParams, $filter) {
     var log = $log;
 
     return function(oMainConfig) {
@@ -45,34 +45,102 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
         //accessed in view normally
         scope.entityName = oMainConfig.entityName;
         scope.relatedEntityName = oMainConfig.relatedEntityName;
+        scope.occuppiedEntities = [];
+        scope.availableEntities = [];
+
         scope.$on(_dragulaBagName + '.drop-model', function(e, el, source) {
             var id = Number(el.attr('id'));
-            var entitiesFoundInAvailable = scope.availableEntities.find(function(o) {
+            var entityFoundInAvailable = scope.availableEntities.find(function(o) {
                 return o.id == id;
             });
 
-            var entitiesFoundInOccuppied = scope.occuppiedEntities.find(function(o) {
+            var entityFoundInOccuppied = scope.occuppiedEntities.find(function(o) {
                 return o.id == id;
             });
 
             var expanded;
-            if (entitiesFoundInAvailable) {
-                expanded = entitiesFoundInAvailable.expanded;
-                _baseRelatedService.customPost('RemoveFromParent/' + oMainConfig.entityName + '/' + scope.baseEntity.id, entitiesFoundInAvailable).then(function(data) {
-                    entitiesFoundInAvailable.expanded = expanded;
+            //Dropped in Available
+            if (entityFoundInAvailable) {
+                expanded = entityFoundInAvailable.expanded;
+                _baseRelatedService.customPost('RemoveFromParent/' + oMainConfig.entityName + '/' + scope.baseEntity.id, entityFoundInAvailable).then(function(data) {
+                    entityFoundInAvailable.expanded = expanded;
+                    // _synchronizeIfFilter(entityFoundInAvailable, 'available');
                     alertify.success('Moved successfully.');
                 });
-            } else if (entitiesFoundInOccuppied) {
-                expanded = entitiesFoundInOccuppied.expanded;
-                entitiesFoundInOccuppied[oMainConfig.entityName + 's'] = [];
-                _baseRelatedService.addToParent(oMainConfig.entityName, scope.baseEntity.id, entitiesFoundInOccuppied).then(function(data) {
-                    entitiesFoundInOccuppied.expanded = expanded;
+            }
+            //Dropped in Occuppied
+            else if (entityFoundInOccuppied) {
+                expanded = entityFoundInOccuppied.expanded;
+                entityFoundInOccuppied[oMainConfig.entityName + 's'] = [];
+                entityFoundInOccuppied['Dashboards'] = [];
+                entityFoundInOccuppied['Metrics'] = [];
+                entityFoundInOccuppied['Initiatives'] = [];
+                entityFoundInOccuppied['Departments'] = [];
+                _baseRelatedService.addToParent(oMainConfig.entityName, scope.baseEntity.id, entityFoundInOccuppied).then(function(data) {
+                    entityFoundInOccuppied.expanded = expanded;
+                    // _synchronizeIfFilter(entityFoundInOccuppied, 'occuppied');
                     alertify.success('Moved successfully.');
                 });
             } else {
                 alertify.error('Error. ' + oMainConfig.relatedEntityName + ' not found.');
             }
         });
+
+        // function _synchronizeIfFilter(entity, place) {
+        //     var oFound = null;
+        //     if (place == 'available') {
+        //         for (var i = 0; i < _occuppiedEntities.length; i++) {
+        //             var current = _occuppiedEntities[i];
+        //             if (current.id == entity.id) {
+        //                 oFound = _occuppiedEntities.splice(i, 1);
+        //                 break;
+        //             }
+        //         }
+        //         if (oFound != null) {
+        //             _availableEntities.push(oFound);
+        //         }
+        //     } else if (place == 'occuppied') {
+        //         for (var i = 0; i < _availableEntities.length; i++) {
+        //             var current = _availableEntities[i];
+        //             if (current.id == entity.id) {
+        //                 oFound = _availableEntities.splice(i, 1);
+        //                 break;
+        //             }
+        //         }
+        //         if (oFound != null) {
+        //             _occuppiedEntities.push(oFound);
+        //         }
+        //     }
+        //     scope.on_search();
+        // };
+
+        scope.on_search = function(sSearchValue) {
+            // if (scope.search != undefined && scope.search.length > 0) {
+            // scope.$evalAsync(function() {
+            // [].push.apply(scope.occuppiedEntities, $filter('filter')(_occuppiedEntities, scope.search));
+            // [].push.apply(scope.availableEntities, $filter('filter')(_availableEntities, scope.search));
+            // angular.copy($filter('filter')(_occuppiedEntities, scope.search), scope.occuppiedEntities)
+            // angular.copy($filter('filter')(_availableEntities, scope.search), scope.availableEntities)
+            // scope.availableEntities = $filter('filter')(_availableEntities, scope.search);
+            // });
+
+            // } else {
+            //     scope.$evalAsync(function() {
+            //         scope.occuppiedEntities = [];
+            //         scope.availableEntities = [];
+
+            //         angular.copy(_occuppiedEntities, scope.occuppiedEntities);
+            //         angular.copy(_availableEntities, scope.availableEntities);
+            //     });
+            // }
+
+            $('[dragula="\"entities-bag\""]').children().css('display', 'none');
+
+            $('[dragula="\"entities-bag\""]').children().filter(function() {
+                return $(this).children('span').text().toLowerCase().search(sSearchValue.toLowerCase()) > -1;
+            }).css('display', 'block');
+
+        };
 
         var _afterLoad = function() {
             // for (catalog in _baseService.catalogs) {
@@ -83,6 +151,9 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
             _afterLoadCallBack();
             $activityIndicator.stopAnimating();
         };
+
+        var _occuppiedEntities;
+        var _availableEntities;
 
         var _load = function() {
             $activityIndicator.startAnimating();
@@ -117,6 +188,18 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                                 scope.baseEntity = angular.copy(theOriginalEntity);
 
 
+                                // _occuppiedEntities = scope.baseEntity[('' + oMainConfig.relatedEntityName + 's')];
+                                // _occuppiedEntities.forEach(function(entity) {
+                                //     return _baseRelatedService.adapt(entity);
+                                // });
+
+
+                                // _availableEntities = data;
+                                // _availableEntities.forEach(function(entity) {
+                                //     return _baseRelatedService.adapt(entity);
+                                // });
+
+
                                 scope.occuppiedEntities = scope.baseEntity[('' + oMainConfig.relatedEntityName + 's')];
                                 scope.occuppiedEntities.forEach(function(entity) {
                                     return _baseRelatedService.adapt(entity);
@@ -126,7 +209,10 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                                 scope.availableEntities.forEach(function(entity) {
                                     return _baseRelatedService.adapt(entity);
                                 });
+
                                 _afterLoad();
+
+                                scope.on_search();
                             });
                         });
                     });

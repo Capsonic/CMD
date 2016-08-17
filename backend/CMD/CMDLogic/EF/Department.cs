@@ -4,11 +4,11 @@ namespace CMDLogic.EF
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
-    [Table("Objective")]
-    public partial class Objective
+    [Table("Department")]
+    public partial class Department
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Objective()
+        public Department()
         {
             Dashboards = new HashSet<Dashboard>();
             Initiatives = new HashSet<Initiative>();
@@ -17,7 +17,7 @@ namespace CMDLogic.EF
         }
 
         [Key]
-        public int ObjectiveKey { get; set; }
+        public int DepartmentKey { get; set; }
 
         [StringLength(250)]
         public string Title { get; set; }

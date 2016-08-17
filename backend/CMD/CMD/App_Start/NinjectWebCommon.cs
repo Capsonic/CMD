@@ -68,7 +68,7 @@ namespace CMD.App_Start
             kernel.Bind(typeof(IRepository<>)).To(typeof(Repository<>)).InRequestScope();
             kernel.Bind(typeof(BaseLogic<>)).ToSelf().InRequestScope();
             kernel.Bind<IDashboardLogic>().To<DashboardLogic>();
-            kernel.Bind<IObjectiveLogic>().To<ObjectiveLogic>();
+            kernel.Bind<IDepartmentLogic>().To<DepartmentLogic>();
             kernel.Bind<IMetricLogic>().To<MetricLogic>();
             kernel.Bind<IInitiativeLogic>().To<InitiativeLogic>();
             kernel.Bind(typeof(BaseController<>)).ToSelf().InRequestScope();

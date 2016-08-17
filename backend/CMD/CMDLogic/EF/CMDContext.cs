@@ -18,7 +18,7 @@ namespace CMDLogic.EF
         public virtual DbSet<Gant> Gants { get; set; }
         public virtual DbSet<Initiative> Initiatives { get; set; }
         public virtual DbSet<Metric> Metrics { get; set; }
-        public virtual DbSet<Objective> Objectives { get; set; }
+        public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Sort> Sorts { get; set; }
         public virtual DbSet<Track> Tracks { get; set; }
         public virtual DbSet<User> Users { get; set; }
@@ -37,9 +37,9 @@ namespace CMDLogic.EF
                 .HasForeignKey(e => e.FormatKey);
 
             modelBuilder.Entity<Dashboard>()
-                .HasMany(e => e.Objectives)
+                .HasMany(e => e.Departments)
                 .WithMany(e => e.Dashboards)
-                .Map(m => m.ToTable("cross_Dashboard_Objective").MapLeftKey("DashboardKey").MapRightKey("ObjectiveKey"));
+                .Map(m => m.ToTable("cross_Dashboard_Department").MapLeftKey("DashboardKey").MapRightKey("DepartmentKey"));
 
             modelBuilder.Entity<Gant>()
                 .Property(e => e.GantData)
@@ -55,9 +55,9 @@ namespace CMDLogic.EF
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Initiative>()
-                .HasMany(e => e.Objectives)
+                .HasMany(e => e.Departments)
                 .WithMany(e => e.Initiatives)
-                .Map(m => m.ToTable("cross_Objective_Initiative").MapLeftKey("InitiativeKey").MapRightKey("ObjectiveKey"));
+                .Map(m => m.ToTable("cross_Department_Initiative").MapLeftKey("InitiativeKey").MapRightKey("DepartmentKey"));
 
             modelBuilder.Entity<Metric>()
                 .Property(e => e.CurrentValue)
@@ -68,9 +68,9 @@ namespace CMDLogic.EF
                 .HasPrecision(15, 4);
 
             modelBuilder.Entity<Metric>()
-                .HasMany(e => e.Objectives)
+                .HasMany(e => e.Departments)
                 .WithMany(e => e.Metrics)
-                .Map(m => m.ToTable("cross_Objective_Metric").MapLeftKey("MetricKey").MapRightKey("ObjectiveKey"));
+                .Map(m => m.ToTable("cross_Department_Metric").MapLeftKey("MetricKey").MapRightKey("DepartmentKey"));
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Identicon64)

@@ -59,18 +59,18 @@
     <Compile Include="EF\Gant.cs" />
     <Compile Include="EF\Initiative.cs" />
     <Compile Include="EF\Metric.cs" />
-    <Compile Include="EF\Objective.cs" />
+    <Compile Include="EF\Department.cs" />
     <Compile Include="Entities\cat_MetricFormat.cs" />
     <Compile Include="Entities\cat_MetricBasis.cs" />
     <Compile Include="Entities\Metric.cs" />
     <Compile Include="Entities\Initiative.cs" />
     <Compile Include="Entities\Gant.cs" />
     <Compile Include="Entities\cat_ComparatorMethod.cs" />
-    <Compile Include="Entities\Objective.cs" />
+    <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
     <Compile Include="Logic\MetricLogic.cs" />
-    <Compile Include="Logic\ObjectiveLogic.cs" />
+    <Compile Include="Logic\DepartmentLogic.cs" />
     <Compile Include="Logic\DashboardLogic.cs" />
     <Compile Include="MainContext.cs" />
     <Compile Include="Migrations\201606162006001_Initial.cs" />
@@ -88,6 +88,10 @@
     <Compile Include="Migrations\201607071957563_Adding-Gridster.cs" />
     <Compile Include="Migrations\201607071957563_Adding-Gridster.Designer.cs">
       <DependentUpon>201607071957563_Adding-Gridster.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608062103457_RefactoringObjectiveToDepartment.cs" />
+    <Compile Include="Migrations\201608062103457_RefactoringObjectiveToDepartment.Designer.cs">
+      <DependentUpon>201608062103457_RefactoringObjectiveToDepartment.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,6 +112,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201607071957563_Adding-Gridster.resx">
       <DependentUpon>201607071957563_Adding-Gridster.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608062103457_RefactoringObjectiveToDepartment.resx">
+      <DependentUpon>201608062103457_RefactoringObjectiveToDepartment.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

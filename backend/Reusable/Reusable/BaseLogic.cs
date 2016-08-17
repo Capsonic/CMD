@@ -85,7 +85,7 @@ namespace Reusable
                 repository.byUserId = byUserId;
                 entities = repository.GetAll();
 
-                loadNavigationProperties(context, entities);
+                //loadNavigationProperties(context, entities);
             }
             catch (Exception e)
             {

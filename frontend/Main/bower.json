@@ -11,10 +11,10 @@
     "jquery": "1.9.1",
     "alertify-js": "^1.7.1",
     "angular-gridster2": "^1.1.2",
-    "angular-dragula": "^1.2.7",
     "screenfull.js": "https://github.com/sindresorhus/screenfull.js.git#^3.0.0",
     "angular-smart-table": "^2.1.8",
-    "ngActivityIndicator": "^0.1.10"
+    "ngActivityIndicator": "^0.1.10",
+    "angular-dragula": "^1.2.7"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.7"

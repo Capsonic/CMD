@@ -7,10 +7,10 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, objectiveService, filterFilter, $q, $timeout) {
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout) {
 
     $scope.options = {
-        gridType: 'fit',
+        gridType: 'scrollVertical', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
         margin: 10,
         outerMargin: true,
@@ -26,12 +26,12 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     function itemChange(gridsterItem, scope) {
-        scope.objective.InfoGridster.cols = scope.objective.cols;
-        scope.objective.InfoGridster.rows = scope.objective.rows;
-        scope.objective.InfoGridster.x = scope.objective.x;
-        scope.objective.InfoGridster.y = scope.objective.y;
-        if (scope.objective.EF_State != 1) {
-            scope.objective.EF_State = 2;
+        scope.department.InfoGridster.cols = scope.department.cols;
+        scope.department.InfoGridster.rows = scope.department.rows;
+        scope.department.InfoGridster.x = scope.department.x;
+        scope.department.InfoGridster.y = scope.department.y;
+        if (scope.department.EF_State != 1) {
+            scope.department.EF_State = 2;
         }
     };
 
@@ -67,11 +67,11 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.afterLoadData = function() {
 
         var tempCopy = angular.copy(theOnScreenEntity);
-        tempCopy.Objectives = [];
+        tempCopy.Departments = [];
 
         $scope.baseEntity = tempCopy
 
-        adaptForGridster(theOnScreenEntity.Objectives);
+        adaptForGridster(theOnScreenEntity.Departments);
 
         addOneByOne();
     };
@@ -103,9 +103,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         if (index === undefined) {
             index = 0;
         }
-        if (theOnScreenEntity.Objectives[index]) {
+        if (theOnScreenEntity.Departments[index]) {
             $timeout(function() {
-                $scope.baseEntity.Objectives.push(theOnScreenEntity.Objectives[index]);
+                $scope.baseEntity.Departments.push(theOnScreenEntity.Departments[index]);
                 addOneByOne(++index);
             }, 50);
         } else {
@@ -115,17 +115,17 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
 
     $scope.addItem = function() {
-        objectiveService.createEntity().then(function(data) {
+        departmentService.createEntity().then(function(data) {
             var item = data;
             item.areGridsterPropertiesMissing = true;
             item.initCallback = onItemInit;
-            $scope.baseEntity.Objectives.push(item);
+            $scope.baseEntity.Departments.push(item);
         });
     };
 
     function onItemInit(a, b, c) {
-        for (var i = 0; i < $scope.baseEntity.Objectives.length; i++) {
-            var current = $scope.baseEntity.Objectives[i];
+        for (var i = 0; i < $scope.baseEntity.Departments.length; i++) {
+            var current = $scope.baseEntity.Departments[i];
             if (current.areGridsterPropertiesMissing) {
                 current.InfoGridster.cols = a.cols;
                 current.InfoGridster.rows = a.rows;
@@ -145,8 +145,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     function itemsToSave() {
-        if ($scope.baseEntity && $scope.baseEntity.Objectives) {
-            return filterFilter($scope.baseEntity.Objectives, genericItemsToBeSaved);
+        if ($scope.baseEntity && $scope.baseEntity.Departments) {
+            return filterFilter($scope.baseEntity.Departments, genericItemsToBeSaved);
         }
     };
 
@@ -179,7 +179,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.saveItem = function(item) {
-        return objectiveService.addToParent('Dashboard', $scope.baseEntity.id, item);
+        return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item);
     };
 
 
@@ -187,7 +187,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         if (screenfull.enabled) {
             screenfull.request(angular.element('#fullscreenMe')[0]);
             angular.element('.Dashboard').css('top', 0);
-
         }
     };
 

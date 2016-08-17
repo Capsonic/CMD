@@ -18,6 +18,7 @@ angular.module('mainApp', [
     'angular-gridster2',
     'smart-table',
     'ngActivityIndicator',
+    'reusable',
     angularDragula(angular)
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';
@@ -49,40 +50,40 @@ angular.module('mainApp', [
             controller: 'AdministrationCtrl',
             controllerAs: 'administration'
         })
-        .when('/dashboard-objectives', {
-            templateUrl: 'views/dashboard-objectives.html',
-            controller: 'DashboardObjectivesCtrl',
-            controllerAs: 'dashboardObjectives'
+        .when('/dashboard-departments', {
+            templateUrl: 'views/dashboard-departments.html',
+            controller: 'DashboardDepartmentsCtrl',
+            controllerAs: 'dashboardDepartments'
         })
-        .when('/objectives', {
-            templateUrl: 'views/objectives.html',
-            controller: 'ObjectivesCtrl',
-            controllerAs: 'objectives'
+        .when('/departments', {
+            templateUrl: 'views/departments.html',
+            controller: 'DepartmentsCtrl',
+            controllerAs: 'departments'
         })
-        .when('/objective-dashboards', {
-            templateUrl: 'views/objective-dashboards.html',
-            controller: 'ObjectiveDashboardsCtrl',
-            controllerAs: 'objectiveDashboards'
+        .when('/department-dashboards', {
+            templateUrl: 'views/department-dashboards.html',
+            controller: 'DepartmentDashboardsCtrl',
+            controllerAs: 'departmentDashboards'
         })
         .when('/metrics', {
             templateUrl: 'views/metrics.html',
             controller: 'MetricsCtrl',
             controllerAs: 'metrics'
         })
-        .when('/objective-metrics', {
-          templateUrl: 'views/objective-metrics.html',
-          controller: 'ObjectiveMetricsCtrl',
-          controllerAs: 'objectiveMetrics'
+        .when('/department-metrics', {
+            templateUrl: 'views/department-metrics.html',
+            controller: 'DepartmentMetricsCtrl',
+            controllerAs: 'departmentMetrics'
         })
-        .when('/objective-initiatives', {
-          templateUrl: 'views/objective-initiatives.html',
-          controller: 'ObjectiveInitiativesCtrl',
-          controllerAs: 'objectiveInitiatives'
+        .when('/department-initiatives', {
+            templateUrl: 'views/department-initiatives.html',
+            controller: 'DepartmentInitiativesCtrl',
+            controllerAs: 'departmentInitiatives'
         })
         .when('/initiatives', {
-          templateUrl: 'views/initiatives.html',
-          controller: 'InitiativesCtrl',
-          controllerAs: 'initiatives'
+            templateUrl: 'views/initiatives.html',
+            controller: 'InitiativesCtrl',
+            controllerAs: 'initiatives'
         })
         .otherwise({
             redirectTo: '/dashboards'

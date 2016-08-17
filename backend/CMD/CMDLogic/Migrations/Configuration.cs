@@ -41,6 +41,17 @@ namespace CMDLogic.Migrations
                 new cat_MetricFormat() { MetricFormatKey = 3, Value = "Percentage" }
             );
 
+            context.cat_MetricBasis.AddOrUpdate(
+                new cat_MetricBasis() { MetricBasisKey = 1, Value = "Hourly"},
+                new cat_MetricBasis() { MetricBasisKey = 2, Value = "Daily" },
+                new cat_MetricBasis() { MetricBasisKey = 3, Value = "Weekly" },
+                new cat_MetricBasis() { MetricBasisKey = 4, Value = "Monthly" },
+                new cat_MetricBasis() { MetricBasisKey = 5, Value = "Bimonthly" },
+                new cat_MetricBasis() { MetricBasisKey = 6, Value = "Quarterly" },
+                new cat_MetricBasis() { MetricBasisKey = 7, Value = "Biannual" },
+                new cat_MetricBasis() { MetricBasisKey = 8, Value = "Yearly" }
+            );
+
 
             #endregion
 

@@ -7,7 +7,7 @@
  * # AdministrationCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('AdministrationCtrl', function($scope, dashboardService, objectiveService) {
+angular.module('mainApp').controller('AdministrationCtrl', function($scope, dashboardService, departmentService) {
     dashboardService.loadAll().then(function() {
         $scope.dashboards = dashboardService.getAll();
     });

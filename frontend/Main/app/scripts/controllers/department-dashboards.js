@@ -2,16 +2,16 @@
 
 /**
  * @ngdoc function
- * @name mainApp.controller:ObjectiveDashboardsCtrl
+ * @name mainApp.controller:DepartmentDashboardsCtrl
  * @description
- * # ObjectiveDashboardsCtrl
+ * # DepartmentDashboardsCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('ObjectiveDashboardsCtrl', function($scope, relationatorController, dashboardService, objectiveService) {
+angular.module('mainApp').controller('DepartmentDashboardsCtrl', function($scope, relationatorController, dashboardService, departmentService) {
 
     var relationator = new relationatorController({
-        baseService: objectiveService,
-        entityName: 'Objective',
+        baseService: departmentService,
+        entityName: 'Department',
         baseRelatedService: dashboardService,
         relatedEntityName: 'Dashboard',
         dragulaBagName: 'entities-bag',

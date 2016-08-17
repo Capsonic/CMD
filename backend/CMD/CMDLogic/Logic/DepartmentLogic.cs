@@ -6,17 +6,17 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public interface IObjectiveLogic : IBaseLogic<Objective> { }
+    public interface IDepartmentLogic : IBaseLogic<Department> { }
 
-    public class ObjectiveLogic : BaseLogic<Objective>, IObjectiveLogic
+    public class DepartmentLogic : BaseLogic<Department>, IDepartmentLogic
     {
         private readonly IRepository<Initiative> initiativeRepository;
         private readonly IRepository<Metric> metricRepository;
         private readonly IRepository<Gridster> gridsterRepository;
         private readonly IRepository<Dashboard> dashboardRepository;
 
-        public ObjectiveLogic(DbContext context,
-            IRepository<Objective> repository,
+        public DepartmentLogic(DbContext context,
+            IRepository<Department> repository,
             IRepository<Initiative> initiativeRepository,
             IRepository<Metric> metricRepository,
             IRepository<Gridster> gridsterRepository,
@@ -28,17 +28,17 @@ namespace CMDLogic.Logic
             this.dashboardRepository = dashboardRepository;
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<Objective> entities)
+        protected override void loadNavigationProperties(DbContext context, IList<Department> entities)
         {
             initiativeRepository.byUserId = byUserId;
             metricRepository.byUserId = byUserId;
             gridsterRepository.byUserId = byUserId;
 
-            foreach (Objective item in entities)
+            foreach (Department item in entities)
             {
-                item.Dashboards = dashboardRepository.GetListByParent<Objective>(item.id);
-                item.Initiatives = initiativeRepository.GetListByParent<Objective>(item.id);
-                item.Metrics = metricRepository.GetListByParent<Objective>(item.id);
+                item.Dashboards = dashboardRepository.GetListByParent<Department>(item.id);
+                item.Initiatives = initiativeRepository.GetListByParent<Department>(item.id);
+                item.Metrics = metricRepository.GetListByParent<Department>(item.id);
                 item.InfoGridster = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
                                                                 && e.Gridster_Entity_Kind == item.AAA_EntityName
                                                                 && e.Gridster_User_ID == byUserId);
@@ -57,7 +57,7 @@ namespace CMDLogic.Logic
             }
         }
 
-        protected override void onSaving(DbContext context, Objective entity)
+        protected override void onSaving(DbContext context, Department entity)
         {
             if (entity.InfoGridster != null)
             {
@@ -78,7 +78,7 @@ namespace CMDLogic.Logic
             }
         }
 
-        protected override void onCreate(Objective entity)
+        protected override void onCreate(Department entity)
         {
             base.onCreate(entity);
             //entity.InfoGridster = new Gridster();

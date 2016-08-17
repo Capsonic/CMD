@@ -7,7 +7,7 @@
  * # listController
  * Factory in the mainApp.
  */
-angular.module('mainApp').factory('listController', function($log, $activityIndicator) {
+angular.module('mainApp').factory('listController', function($log, $activityIndicator, $timeout) {
     var log = $log;
 
     return function(oMainConfig) {
@@ -91,11 +91,23 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             $activityIndicator.startAnimating();
             _baseService.createEntity().then(function(data) {
                 scope.itemToSave = data;
+                scope.itemToSave.isOpened = true;
                 scope.modeSave = 'Create';
                 _afterCreateCallBack(data);
+                angular.element('#' + _modalName).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+                    scope.$apply(function() {
+                        scope.on_closeModal();
+                    });
+                });
                 angular.element('#' + _modalName).modal('show');
+                $timeout(function() {
+                    angular.element('#' + _modalName).find('input').filter(':input:visible:first').focus();
+                }, 500);
                 $activityIndicator.stopAnimating();
             });
+        };
+        scope.on_closeModal = function() {
+            scope.itemToSave = null;
         };
 
         //Updating items:*******************************
@@ -115,7 +127,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             });
         };
         scope.saveModal = function() {
-            //todo scope.itemToSave.Objectives = [];
+            //todo scope.itemToSave.Departments = [];
             $activityIndicator.startAnimating();
             _baseService.save(scope.itemToSave).then(function(data) {
                 angular.copy(scope.itemToSave, scope.selectedItem);
@@ -127,12 +139,6 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
         };
         scope.on_input_change = function(oItem) {
             oItem.editMode = true;
-        };
-        scope.on_closeModal = function() {
-            // if (scope.modeSave != 'Create') {
-            //     var originalItem = _baseService.getById(scope.itemToSave.id);
-            //     angular.copy(originalItem, scope.selectedItem);
-            // }
         };
         scope.undoItem = function(oItem) {
             var originalItem = _baseService.getById(oItem.id);

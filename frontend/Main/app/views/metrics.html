@@ -1,4 +1,4 @@
-<div class="navbar navbar-default" role="navigation">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -12,7 +12,7 @@
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
             <ul class="nav navbar-nav">
                 <li><a href="#/">Dashboards</a></li>
-                <li><a href="#/objectives">Objectives</a></li>
+                <li><a href="#/departments">Departments</a></li>
                 <li class="active"><a ng-href="#/metrics">Metrics</a></li>
                 <li><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
@@ -20,6 +20,9 @@
         <button class="btn btn-default navbar-btn navbar-right" style="position:fixed;right:70px;top:0px;" ng-click="create()">New {{entityName}}</button>
     </div>
 </div>
+<br>
+<br>
+<br>
 <div class="CRUDList container">
     <h2>{{listTitle}}</h2>
     <br>
@@ -35,13 +38,11 @@
             <table class="table table-striped table-hover">
                 <thead>
                     <tr>
-                        <th style="text-align:center;width:180px;"></th>
+                        <th style="text-align:center;width:100px;"></th>
                         <th st-sort="Description" st-skip-natural="true">Description</th>
                         <th st-sort="CurrentValue" st-skip-natural="true">Current Value</th>
                         <th st-sort="GoalValue" st-skip-natural="true">Goal Value</th>
-                        <th st-sort="MetricFormat.Value" st-skip-natural="true">Format</th>
                         <th st-sort="MetricBasis.Value" st-skip-natural="true">Basis</th>
-                        <th st-sort="ComparatorMethod.Value" st-skip-natural="true">Comparator Method</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -49,14 +50,12 @@
                         <td style="text-align:center;">
                             <span class="btn btn-sm glyphicon glyphicon-remove" aria-hidden="true" ng-click="remove(item);"></span>
                             <span class="btn btn-sm glyphicon glyphicon-pencil" aria-hidden="true" ng-click="openEditItem(item);"></span>
-                            <a href="" class="btn btn-sm btn-default" ng-href="#/metric-objectives?id={{item.id}}">Objectives</a>
+                            <!-- <a href="" class="btn btn-sm btn-default" ng-href="#/metric-departments?id={{item.id}}">Departments</a> -->
                         </td>
                         <td>{{item.Description}}</td>
-                        <td>{{item.CurrentValue}}</td>
-                        <td>{{item.GoalValue}}</td>
-                        <td>{{item.MetricFormat.Value}}</td>
-                        <td>{{item.MetricBasis.Value}}</td>
-                        <td>{{item.ComparatorMethod.Value}}</td>
+                        <td style="text-align:right;">{{item.FormattedCurrentValue}}</td>
+                        <td style="text-align:right;">{{item.EqualityValue}} {{item.FormattedGoalValue}}</td>
+                        <td>{{item.BasisValue}}</td>
                     </tr>
                 </tbody>
             </table>

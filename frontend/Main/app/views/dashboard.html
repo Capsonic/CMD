@@ -11,19 +11,17 @@
             <p class="navbar-brand navbar-right" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <ul class="nav navbar-nav navbar-right">
-                <li><a href="#/dashboards">Administration</a></li>
-            </ul>
+            <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
             <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
-            <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Objective</button> -->
+            <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Department</button> -->
             <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>
         </div>
     </div>
 </div>
 <div class="Dashboard" id="fullscreenMe">
     <div gridster="options">
-        <div gridster-item="objective" ng-repeat="objective in baseEntity.Objectives">
-            <objective-box></objective-box>
+        <div gridster-item="department" ng-repeat="department in baseEntity.Departments">
+            <department-box></department-box>
         </div>
     </div>
 </div>

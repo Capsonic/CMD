@@ -9,20 +9,20 @@ namespace CMDLogic.Logic
 
     public class DashboardLogic : BaseLogic<Dashboard>, IDashboardLogic
     {
-        private readonly IObjectiveLogic objectiveLogic;
+        private readonly IDepartmentLogic departmentLogic;
 
-        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IObjectiveLogic objectiveLogic) : base(context, repository)
+        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IDepartmentLogic departmentLogic) : base(context, repository)
         {
-            this.objectiveLogic = objectiveLogic;
+            this.departmentLogic = departmentLogic;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
         {
-            objectiveLogic.byUserId = byUserId;
+            departmentLogic.byUserId = byUserId;
 
             foreach (Dashboard item in entities)
             {
-                item.Objectives = (ICollection<Objective>) objectiveLogic.GetAllByParent<Dashboard>(item.id).Result;
+                item.Departments = (ICollection<Department>) departmentLogic.GetAllByParent<Dashboard>(item.id).Result;
             }
         }
     }
