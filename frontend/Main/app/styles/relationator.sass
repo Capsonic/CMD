@@ -2,13 +2,18 @@
 	.Expander
 		width: 20px
 		height: 20px
-	li
-		min-height: 35px
-		> span
-			font-size: 12px
-			margin: 0 !important
-			display: inline-block
-			position: relative
-			padding: 0 4px
-			top: -1px
-	font-size: 12px
+		position: absolute
+		top: 7px
+		right: 7px
+		float: right
+	ul
+		overflow: auto
+		height: 400px
+		li
+			min-height: 39px
+			> span
+				white-space: nowrap
+				overflow: hidden
+				text-overflow: ellipsis
+				width: 90%
+		font-size: 12px

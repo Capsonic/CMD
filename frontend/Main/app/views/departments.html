@@ -17,7 +17,7 @@
                 <li><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
         </div>
-        <button class="btn btn-default navbar-btn navbar-right" style="position:fixed;right:70px;top:0px;" ng-click="create()">New {{entityName}}</button>
+        <button class="btn btn-default navbar-btn navbar-right btnNewItem" ng-click="create()">New {{entityName}}</button>
     </div>
 </div>
 <br>
@@ -51,7 +51,7 @@
                             <a href="" class="btn btn-sm btn-default" ng-href="#/department-metrics?id={{item.id}}">Metrics</a>
                             <a href="" class="btn btn-sm btn-default" ng-href="#/department-initiatives?id={{item.id}}">Initiatives</a>
                         </td>
-                        <td>{{item.Title}}</td>
+                        <td style="text-align:left;">{{item.Title}}</td>
                     </tr>
                 </tbody>
             </table>

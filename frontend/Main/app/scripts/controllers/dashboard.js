@@ -10,7 +10,7 @@
 angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout) {
 
     $scope.options = {
-        gridType: 'scrollVertical', //fit or scrollVertical or scrollHorizontal
+        gridType: 'fit', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
         margin: 10,
         outerMargin: true,
@@ -24,6 +24,18 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         },
         swap: true
     };
+
+    $scope.theGridTypes = [{
+        gridType: 'fit',
+        Value: 'Fit'
+    }, {
+        gridType: 'scrollVertical',
+        Value: 'Scroll Vertical'
+    }, {
+        gridType: 'scrollHorizontal',
+        Value: 'Scroll Horizontal'
+    }];
+
 
     function itemChange(gridsterItem, scope) {
         scope.department.InfoGridster.cols = scope.department.cols;
@@ -179,7 +191,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.saveItem = function(item) {
-        return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item);
+        return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item).then(function(data) {
+            item.InfoGridster = data.InfoGridster;
+        });
     };
 
 

@@ -1055,7 +1055,7 @@ angular.module('inspiracode.crudFactory', [])
                         if (typeof response.data === 'object') {
                             var backendResponse = response.data;
                             if (!backendResponse.ErrorThrown) {
-                                deferred.resolve(theEntity);
+                                deferred.resolve(backendResponse.Result);
                             } else {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                 alertify.alert(alertifyContent).set('modal', true);

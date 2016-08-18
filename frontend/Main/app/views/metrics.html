@@ -17,7 +17,7 @@
                 <li><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
         </div>
-        <button class="btn btn-default navbar-btn navbar-right" style="position:fixed;right:70px;top:0px;" ng-click="create()">New {{entityName}}</button>
+        <button class="btn btn-default navbar-btn navbar-right btnNewItem" ng-click="create()">New {{entityName}}</button>
     </div>
 </div>
 <br>
@@ -39,6 +39,7 @@
                 <thead>
                     <tr>
                         <th style="text-align:center;width:100px;"></th>
+                        <th st-sort="Title" st-skip-natural="true">Title</th>
                         <th st-sort="Description" st-skip-natural="true">Description</th>
                         <th st-sort="CurrentValue" st-skip-natural="true">Current Value</th>
                         <th st-sort="GoalValue" st-skip-natural="true">Goal Value</th>
@@ -52,7 +53,8 @@
                             <span class="btn btn-sm glyphicon glyphicon-pencil" aria-hidden="true" ng-click="openEditItem(item);"></span>
                             <!-- <a href="" class="btn btn-sm btn-default" ng-href="#/metric-departments?id={{item.id}}">Departments</a> -->
                         </td>
-                        <td>{{item.Description}}</td>
+                        <td style="text-align:left;">{{item.Title}}</td>
+                        <td style="text-align:left;">{{item.Description}}</td>
                         <td style="text-align:right;">{{item.FormattedCurrentValue}}</td>
                         <td style="text-align:right;">{{item.EqualityValue}} {{item.FormattedGoalValue}}</td>
                         <td>{{item.BasisValue}}</td>
@@ -71,6 +73,8 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="input" class="form-control" ng-model="itemToSave.Title">
                     <label>Description</label>
                     <input type="text" id="input" class="form-control" ng-model="itemToSave.Description">
                     <label>Current Value</label>

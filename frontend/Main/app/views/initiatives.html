@@ -17,7 +17,7 @@
                 <li class="active"><a ng-href="#/initiatives">Initiatives</a></li>
             </ul>
         </div>
-        <button class="btn btn-default navbar-btn navbar-right" style="position:fixed;right:70px;top:0px;" ng-click="create()">New {{entityName}}</button>
+        <button class="btn btn-default navbar-btn navbar-right btnNewItem" ng-click="create()">New {{entityName}}</button>
     </div>
 </div>
 <br>
@@ -52,7 +52,7 @@
                             <span class="btn btn-sm glyphicon glyphicon-pencil" aria-hidden="true" ng-click="openEditItem(item);"></span>
                             <!-- <a href="" class="btn btn-sm btn-default" ng-href="#/initiative-departments?id={{item.id}}">Departments</a> -->
                         </td>
-                        <td>{{item.Description}}</td>
+                        <td style="text-align:left;">{{item.Description}}</td>
                         <td>{{item.DueDate | date:'mediumDate'}}</td>
                         <td>{{item.ProgressValue | number:2}} %</td>
                         <td>{{item.ActualDate | date:'mediumDate'}}</td>

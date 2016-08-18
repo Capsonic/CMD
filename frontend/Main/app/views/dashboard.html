@@ -8,13 +8,28 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="">CMD</a>
-            <p class="navbar-brand navbar-right" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
+            <p class="navbar-brand navbar-right DashboardTitle" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
-            <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
-            <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Department</button> -->
-            <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>
+            <form class="navbar-form" style="position:absolute;right:270px;top:-6px;">
+                <div class="form-group" style="width:60px;">
+                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,6,7,8,9,10]"></select>
+                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Min Rows</label>
+                </div>
+                <div class="form-group" style="width:60px;">
+                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,6,7,8,9,10]"></select>
+                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Min Cols</label>
+                </div>
+                <div class="form-group" style="width:130px;">
+                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
+                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Scrollbar</label>
+                </div>
+            </form>
+            <div style="position:absolute;width:400px;right:5px;"><a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
+                <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
+                <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Department</button> -->
+                <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>
+            </div>
         </div>
     </div>
 </div>

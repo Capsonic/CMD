@@ -9,7 +9,60 @@
  */
 angular.module('CMD.CRUDServices', [])
 
-.service('dashboardService', function(crudFactory) {
+.service('dashboardService', function(crudFactory, $filter) {
+
+    function getFormattedValue(value, format) {
+        if (value != null && value != '') {
+            switch (format) {
+                case 1: //Numeric
+                    return $filter('number')(value, 2);
+                case 2: //Currency
+                    return '$ ' + $filter('number')(value, 2);
+                case 3: //Percentage
+                    return $filter('number')(value, 2) + '%';
+                default:
+                    return value;
+            }
+        }
+        return value;
+    };
+
+    function getFormattedEquality(equality) {
+        switch (equality) {
+            case 1:
+                return '>';
+            case 2:
+                return '<';
+            case 3:
+                return '<>';
+            default:
+                return '';
+        }
+    };
+
+    function getMetricsBasisValue(id) {
+        switch (id) {
+            case 1:
+                return 'Hourly';
+            case 2:
+                return 'Daily';
+            case 3:
+                return 'Weekly';
+            case 4:
+                return 'Monthly';
+            case 5:
+                return 'Bimonthy';
+            case 6:
+                return 'Quarterly';
+            case 7:
+                return 'Biannual';
+            case 8:
+                return 'Yearly';
+            default:
+                return '';
+        }
+    }
+
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
         entityName: "Dashboard",
@@ -17,6 +70,14 @@ angular.module('CMD.CRUDServices', [])
         catalogs: [],
 
         adapter: function(theEntity) {
+            theEntity.Departments.forEach(function(department) {
+                department.Metrics.forEach(function(metric) {
+                    metric.FormattedCurrentValue = getFormattedValue(metric.CurrentValue, metric.FormatKey);
+                    metric.FormattedGoalValue = getFormattedValue(metric.GoalValue, metric.FormatKey);
+                    metric.BasisValue = getMetricsBasisValue(metric.BasisKey);
+                    metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
+                });
+            });
             return theEntity;
         },
 
@@ -74,6 +135,7 @@ angular.module('CMD.CRUDServices', [])
                     return value;
             }
         }
+        return value;
     };
 
     function getFormattedEquality(equality) {

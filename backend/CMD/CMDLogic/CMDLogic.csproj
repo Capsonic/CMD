@@ -93,6 +93,10 @@
     <Compile Include="Migrations\201608062103457_RefactoringObjectiveToDepartment.Designer.cs">
       <DependentUpon>201608062103457_RefactoringObjectiveToDepartment.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608180002070_addTitleToMetricAndInitiative.cs" />
+    <Compile Include="Migrations\201608180002070_addTitleToMetricAndInitiative.Designer.cs">
+      <DependentUpon>201608180002070_addTitleToMetricAndInitiative.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -115,6 +119,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608062103457_RefactoringObjectiveToDepartment.resx">
       <DependentUpon>201608062103457_RefactoringObjectiveToDepartment.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608180002070_addTitleToMetricAndInitiative.resx">
+      <DependentUpon>201608180002070_addTitleToMetricAndInitiative.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

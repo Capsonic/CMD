@@ -142,6 +142,17 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
 
         };
 
+        scope.sortOccuppiedBy = function(propertyName) {
+            scope.reverseOccuppied = (scope.propertyNameOccuppied === propertyName) ? !scope.reverseOccuppied : false;
+            scope.propertyNameOccuppied = propertyName;
+        };
+        
+        scope.sortAvailableBy = function(propertyName) {
+            scope.reverseAvailable = (scope.propertyNameAvailable === propertyName) ? !scope.reverseAvailable : false;
+            scope.propertyNameAvailable = propertyName;
+        };
+
+
         var _afterLoad = function() {
             // for (catalog in _baseService.catalogs) {
             //  if (_baseService.catalogs.hasOwnProperty(catalog)) {
