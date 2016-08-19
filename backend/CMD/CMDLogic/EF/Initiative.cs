@@ -31,6 +31,8 @@ namespace CMDLogic.EF
 
         public DateTime? ActualDate { get; set; }
 
+        public string HiddenForDashboards { get; set; }
+
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Gant> Gants { get; set; }
 

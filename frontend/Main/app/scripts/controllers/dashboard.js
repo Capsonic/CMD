@@ -7,8 +7,8 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout) {
-
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService) {
+    $activityIndicator.startAnimating();
     $scope.options = {
         gridType: 'fit', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
@@ -55,17 +55,25 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     switch (true) {
         case $routeParams.id !== true && $routeParams.id > 0: //Get By id
             dashboardService.loadEntity($routeParams.id).then(function(data) {
-                // $activityIndicator.stopAnimating();
 
-                theOriginalEntity = dashboardService.getById($routeParams.id);
-                if (!theOriginalEntity) {
-                    alertify.alert('Nonexistent record.').set('modal', true).set('closable', false);
-                    $scope.openingMode = 'error';
-                    return;
-                }
+                metricService.loadCatalogs().then(function(data) {
 
-                theOnScreenEntity = angular.copy(theOriginalEntity);
-                $scope.afterLoadData();
+                    initiativeService.loadCatalogs().then(function(data) {
+                        $activityIndicator.stopAnimating();
+
+                        theOriginalEntity = dashboardService.getById($routeParams.id);
+                        if (!theOriginalEntity) {
+                            alertify.alert('Nonexistent record.').set('modal', true).set('closable', false);
+                            $scope.openingMode = 'error';
+                            return;
+                        }
+
+                        theOnScreenEntity = angular.copy(theOriginalEntity);
+                        $scope.afterLoadData();
+                    });
+
+                });
+
             });
             break;
 
@@ -77,6 +85,18 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.afterLoadData = function() {
+        $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
+        for (var catalog in metricService.catalogs) {
+            if (metricService.catalogs.hasOwnProperty(catalog)) {
+                $scope["cat" + catalog] = metricService.catalogs[catalog].getAll();
+            }
+        }
+
+        for (var catalog in initiativeService.catalogs) {
+            if (initiativeService.catalogs.hasOwnProperty(catalog)) {
+                $scope["cat" + catalog] = initiativeService.catalogs[catalog].getAll();
+            }
+        }
 
         var tempCopy = angular.copy(theOnScreenEntity);
         tempCopy.Departments = [];
@@ -206,7 +226,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     if (screenfull.enabled) {
         document.addEventListener(screenfull.raw.fullscreenchange, function() {
+            $scope.isFullScreen = screenfull.isFullscreen;
             if (screenfull.isFullscreen) {
+
                 angular.element('.Dashboard').css('top', 0);
             } else {
                 angular.element('.Dashboard').css('top', 50);
@@ -214,4 +236,36 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         });
     }
 
+    $scope.metricToSave = {};
+    $scope.initiativeToSave = {};
+
+    $scope.saveMetric = function(metric) {
+        $activityIndicator.startAnimating();
+        metricService.save(metric).then(function(data) {
+            angular.copy(metric, $scope.selectedMetric);
+            angular.element('#modal-metricToSave').off('hidden.bs.modal');
+            angular.element('#modal-metricToSave').modal('hide');
+            $activityIndicator.stopAnimating();
+        });
+    };
+
+    $scope.saveInitiative = function(initiative) {
+        $activityIndicator.startAnimating();
+        initiativeService.save(initiative).then(function(data) {
+            angular.copy(initiative, $scope.selectedInitiative);
+            angular.element('#modal-initiativeToSave').off('hidden.bs.modal');
+            angular.element('#modal-initiativeToSave').modal('hide');
+            $activityIndicator.stopAnimating();
+        });
+
+    };
+
+    $scope.loadDashboardsTags = function($query, currentList) {
+        return $scope.theDashboards.filter(function(item) {
+            return item.Value.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+    };
+    $scope.on_dashboardTag_Added = function(tagAdded, metric) {
+        // metric.HiddenForDashboardsTags = [tagAdded]
+    };
 });

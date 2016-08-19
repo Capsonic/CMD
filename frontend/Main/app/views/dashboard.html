@@ -25,7 +25,7 @@
                     <label style="font-size:8px;float:right;position:absolute;top:5px;">Scrollbar</label>
                 </div>
             </form>
-            <div style="position:absolute;width:400px;right:5px;"><a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
+            <div style="position:absolute;width:288px;right:5px;"><a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
                 <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
                 <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Department</button> -->
                 <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>
@@ -36,7 +36,91 @@
 <div class="Dashboard" id="fullscreenMe">
     <div gridster="options">
         <div gridster-item="department" ng-repeat="department in baseEntity.Departments">
-            <department-box></department-box>
+            <department-box department="department"></department-box>
         </div>
     </div>
 </div>
+<div class="modal" id="modal-metricToSave">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-Description">Update Metric</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Title</label>
+                    <input type="text" id="input" class="form-control" ng-model="metricToSave.Title">
+                    <br>
+                    <label>Description</label>
+                    <input type="text" id="input" class="form-control" ng-model="metricToSave.Description">
+                    <br>
+                    <label>Current Value</label>
+                    <input type="text" id="input" class="form-control" ng-model="metricToSave.CurrentValue">
+                    <br>
+                    <label>Goal Value</label>
+                    <input type="text" id="input" class="form-control" ng-model="metricToSave.GoalValue">
+                    <br>
+                    <label>Format</label>
+                    <select ng-model="metricToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat"></select>
+                    <br>
+                    <label>Basis</label>
+                    <select ng-model="metricToSave.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis"></select>
+                    <br>
+                    <label>Comparator Method</label>
+                    <select ng-model="metricToSave.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod"></select>
+                    <br>
+                    <label>Hidden for Dashboards</label>
+                    <tags-input template="tag-template" ng-model="metricToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, metricToSave);">
+                        <auto-complete source="loadDashboardsTags($query, metricToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveMetric(metricToSave)">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal" id="modal-initiativeToSave">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-Description">Update Initiative</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea class="form-control" rows="3" ng-model="initiativeToSave.Description"></textarea>
+                    <label>Due Date</label>
+                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.DueDate">
+                    <label>Progress Value</label>
+                    <div class="input-group">
+                        <input type="number" style="text-align:right;" class="form-control" ng-model="initiativeToSave.ProgressValue" placeholder="Percentage">
+                        <div class="input-group-addon">%</div>
+                    </div>
+                    <label>Target Date</label>
+                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ActualDate">
+                    <label>Hidden for Dashboards</label>
+                    <tags-input template="tag-template" ng-model="initiativeToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, initiativeToSave);">
+                        <auto-complete source="loadDashboardsTags($query, initiativeToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                    </tags-input>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveInitiative(initiativeToSave)">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/ng-template" id="tag-template">
+    <div class="tag-template">
+        <div class="right-panel">
+            <span>{{$getDisplayText()}}</span>
+            <a class="remove-button" ng-click="$removeTag()">x</a>
+        </div>
+    </div>
+</script>

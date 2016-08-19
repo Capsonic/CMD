@@ -49,7 +49,7 @@
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';department = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
-                        <department-box></department-box>
+                        <department-box department="department"></department-box>
                     </div>
                 </li>
             </ul>
@@ -61,7 +61,7 @@
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';department = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
-                        <department-box></department-box>
+                        <department-box department="department"></department-box>
                     </div>
                 </li>
             </ul>

@@ -379,6 +379,12 @@ angular.module('inspiracode.crudFactory', [])
         var _adapter = oMainConfig.adapter;
         var _arrDependencies = angular.copy(oMainConfig.dependencies);
         var _arrDependenciesAndThis = angular.copy(oMainConfig.dependencies); //almost at the end of the file we add "This"
+        var _adapterOut = oMainConfig.adapterOut;
+        if (!_adapterOut) {
+            _adapterOut = function(oEntity, self) {
+                return oEntity;
+            };
+        }
         //END CONFIG//////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -449,11 +455,10 @@ angular.module('inspiracode.crudFactory', [])
             }
 
             if (mainEntity.validate(theEntity)) {
+                _adapterOut(theEntity, _self);
 
                 // New Entity
                 if (theEntity.id < 1) {
-
-
                     $http.post(appConfig.API_URL + mainEntity.entityName + theParameters, "=" + escape(JSON.stringify(theEntity)))
                         .then(function(response) {
                             if (typeof response.data === 'object') {

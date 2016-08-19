@@ -7,5 +7,7 @@ namespace CMDLogic.EF
     {
         [NotMapped]
         public override int id { get { return DashboardKey; } }
+
+        public string Value { get { return Name; } }
     }
 }

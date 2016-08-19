@@ -14,7 +14,8 @@
     "screenfull.js": "https://github.com/sindresorhus/screenfull.js.git#^3.0.0",
     "angular-smart-table": "^2.1.8",
     "ngActivityIndicator": "^0.1.10",
-    "angular-dragula": "^1.2.7"
+    "angular-dragula": "^1.2.7",
+    "ng-tags-input": "^3.1.1"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.7"

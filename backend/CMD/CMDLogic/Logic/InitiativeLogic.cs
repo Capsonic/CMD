@@ -10,10 +10,14 @@ namespace CMDLogic.Logic
     public class InitiativeLogic : BaseLogic<Initiative>, IInitiativeLogic
     {
         private readonly IRepository<Gant> gantRepository;
+        IRepository<Dashboard> cat_Dashboards;
 
-        public InitiativeLogic(DbContext context, IRepository<Initiative> repository, IRepository<Gant> gantRepository) : base(context, repository)
+        public InitiativeLogic(DbContext context, IRepository<Initiative> repository,
+            IRepository<Gant> gantRepository,
+            IRepository<Dashboard> cat_Dashboards) : base(context, repository)
         {
             this.gantRepository = gantRepository;
+            this.cat_Dashboards = cat_Dashboards;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Initiative> entities)
@@ -22,6 +26,22 @@ namespace CMDLogic.Logic
             {
                 item.Gants = gantRepository.GetListByParent<Initiative>(item.id);
             }
+        }
+
+        protected override ICatalogContainer LoadCatalogs()
+        {
+            return new Catalogs()
+            {
+                Dashboards = cat_Dashboards.GetAll()
+            };
+        }
+
+        private class Catalogs : ICatalogContainer
+        {
+            public IList<cat_ComparatorMethod> ComparatorMethod { get; set; }
+            public IList<cat_MetricFormat> MetricFormat { get; set; }
+            public IList<cat_MetricBasis> MetricBasis { get; set; }
+            public IList<Dashboard> Dashboards { get; set; }
         }
     }
 }

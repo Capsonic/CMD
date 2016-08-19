@@ -13,15 +13,18 @@ namespace CMDLogic.Logic
         IRepository<cat_ComparatorMethod> cat_ComparatorMethodRepository;
         IRepository<cat_MetricBasis> cat_MetricBasisRepository;
         IRepository<cat_MetricFormat> cat_MetricFormatRepository;
+        IRepository<Dashboard> cat_Dashboards;
 
         public MetricLogic(DbContext context, IRepository<Metric> repository,
             IRepository<cat_ComparatorMethod> cat_ComparatorMethodRepository,
             IRepository<cat_MetricBasis> cat_MetricBasisRepository,
-            IRepository<cat_MetricFormat> cat_MetricFormatRepository) : base(context, repository)
+            IRepository<cat_MetricFormat> cat_MetricFormatRepository,
+            IRepository<Dashboard> cat_Dashboards) : base(context, repository)
         {
             this.cat_ComparatorMethodRepository = cat_ComparatorMethodRepository;
             this.cat_MetricBasisRepository = cat_MetricBasisRepository;
             this.cat_MetricFormatRepository = cat_MetricFormatRepository;
+            this.cat_Dashboards = cat_Dashboards;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Metric> entities)
@@ -35,7 +38,8 @@ namespace CMDLogic.Logic
             {
                 ComparatorMethod = cat_ComparatorMethodRepository.GetAll(),
                 MetricBasis = cat_MetricBasisRepository.GetAll(),
-                MetricFormat = cat_MetricFormatRepository.GetAll()
+                MetricFormat = cat_MetricFormatRepository.GetAll(),
+                Dashboards = cat_Dashboards.GetAll()
             };
         }
 
@@ -44,7 +48,7 @@ namespace CMDLogic.Logic
             public IList<cat_ComparatorMethod> ComparatorMethod { get; set; }
             public IList<cat_MetricFormat> MetricFormat { get; set; }
             public IList<cat_MetricBasis> MetricBasis { get; set; }
+            public IList<Dashboard> Dashboards { get; set; }
         }
-        
     }
 }

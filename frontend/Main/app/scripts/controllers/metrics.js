@@ -12,6 +12,18 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
         entityName: 'Metric',
         baseService: metricService,
         modalName: 'modal-itemToSave',
-        scope: $scope
+        scope: $scope,
+        afterLoad: function() {
+            $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
+        }
     }).load();
+
+    $scope.loadDashboardsTags = function($query, currentList) {
+        return $scope.theDashboards.filter(function(item) {
+            return item.Value.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+    };
+    $scope.on_dashboardTag_Added = function(tagAdded, metric) {
+        // metric.HiddenForDashboardsTags = [tagAdded]
+    };
 });

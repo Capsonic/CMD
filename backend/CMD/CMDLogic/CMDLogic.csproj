@@ -97,6 +97,10 @@
     <Compile Include="Migrations\201608180002070_addTitleToMetricAndInitiative.Designer.cs">
       <DependentUpon>201608180002070_addTitleToMetricAndInitiative.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608182124335_MetricsInitiativesHiddenDashboards.cs" />
+    <Compile Include="Migrations\201608182124335_MetricsInitiativesHiddenDashboards.Designer.cs">
+      <DependentUpon>201608182124335_MetricsInitiativesHiddenDashboards.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -122,6 +126,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608180002070_addTitleToMetricAndInitiative.resx">
       <DependentUpon>201608180002070_addTitleToMetricAndInitiative.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608182124335_MetricsInitiativesHiddenDashboards.resx">
+      <DependentUpon>201608182124335_MetricsInitiativesHiddenDashboards.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

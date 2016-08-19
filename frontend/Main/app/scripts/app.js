@@ -19,6 +19,7 @@ angular.module('mainApp', [
     'smart-table',
     'ngActivityIndicator',
     'reusable',
+    'ngTagsInput',
     angularDragula(angular)
 ], function($httpProvider) {
     $httpProvider.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=utf-8';

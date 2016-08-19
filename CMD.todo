@@ -5,12 +5,12 @@
   ✔ New metric button is floating @done (16-08-17 17:38)
   ✔ Format text on metric page @done (16-08-17 17:38)
   ✔ When many metrics have to scroll to add. (difficultly) @done (16-08-17 17:39)
-  ☐ How to add many "current"values (for each month for example)
+  ☐ How to add many "current" values (for each month for example)
   ✔ Dashboard tiles need scroll @done (16-08-17 17:43)
   ✔ On multi line metrics the "+" symbol does not line up. @done (16-08-17 17:43)
   ☐ Need to have some metrics that show up in executive dashboard and some that only show up in Department Dashboard. (Like a checkbox for visibility)
   ✔ Alphabetical sort of Metrics @done (16-08-18 09:44)
-  ☐ Executive Dashboard stopped displaying all of the departments selected
+  ✔ Executive Dashboard stopped displaying all of the departments selected @done (16-08-18 13:41)
   Others:
     ✔ Filter metrics by search box in Departments-Metrics view. @done (16-08-17 17:44)
     ✔ Fix Dashboards list too slow. @done (16-08-17 17:48)

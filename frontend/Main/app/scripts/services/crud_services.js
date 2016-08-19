@@ -9,7 +9,7 @@
  */
 angular.module('CMD.CRUDServices', [])
 
-.service('dashboardService', function(crudFactory, $filter) {
+.service('dashboardService', function(crudFactory, $filter, metricService) {
 
     function getFormattedValue(value, format) {
         if (value != null && value != '') {
@@ -76,6 +76,7 @@ angular.module('CMD.CRUDServices', [])
                     metric.FormattedGoalValue = getFormattedValue(metric.GoalValue, metric.FormatKey);
                     metric.BasisValue = getMetricsBasisValue(metric.BasisKey);
                     metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
+                    metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
                 });
             });
             return theEntity;
@@ -85,7 +86,7 @@ angular.module('CMD.CRUDServices', [])
             // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
-        adaptToServer: function(theEntity) {
+        adapterOut: function(theEntity, self) {
             //self.validate(theEntity);
         },
 
@@ -110,7 +111,7 @@ angular.module('CMD.CRUDServices', [])
             // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
-        adaptToServer: function(theEntity) {
+        adapterOut: function(theEntity, self) {
             //self.validate(theEntity);
         },
 
@@ -155,13 +156,14 @@ angular.module('CMD.CRUDServices', [])
         //Entity Name = WebService/API to call:
         entityName: "Metric",
 
-        catalogs: ['ComparatorMethod', 'MetricFormat', 'MetricBasis'],
+        catalogs: ['ComparatorMethod', 'MetricFormat', 'MetricBasis', 'Dashboards'],
 
         adapter: function(theEntity, self) {
             theEntity.FormattedCurrentValue = getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
             theEntity.FormattedGoalValue = getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
             theEntity.BasisValue = self.catalogs.MetricBasis.getById(theEntity.BasisKey).Value;
             theEntity.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
+            theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
             return theEntity;
         },
 
@@ -169,8 +171,8 @@ angular.module('CMD.CRUDServices', [])
             // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
-        adaptToServer: function(theEntity) {
-            //self.validate(theEntity);
+        adapterOut: function(theEntity, self) {
+            theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
         },
 
         dependencies: [
@@ -184,11 +186,12 @@ angular.module('CMD.CRUDServices', [])
         //Entity Name = WebService/API to call:
         entityName: "Initiative",
 
-        catalogs: [],
+        catalogs: ['Dashboards'],
 
         adapter: function(theEntity, self) {
             theEntity.ActualDate = new Date(theEntity.ActualDate);
             theEntity.DueDate = new Date(theEntity.DueDate);
+            theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
             return theEntity;
         },
 
@@ -196,8 +199,8 @@ angular.module('CMD.CRUDServices', [])
             // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
-        adaptToServer: function(theEntity) {
-            //self.validate(theEntity);
+        adapterOut: function(theEntity, self) {
+            theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
         },
 
         dependencies: [
@@ -207,3 +210,25 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 });
+
+function adaptHiddenForDashboards(theEntity) {
+    var result = [];
+    if (theEntity.HiddenForDashboardsTags) {
+        for (var i = 0; i < theEntity.HiddenForDashboardsTags.length; i++) {
+            var current = theEntity.HiddenForDashboardsTags[i];
+            result.push(current.id);
+        }
+    }
+    return result.join(',');
+}
+
+function getDashboardsFromIds(sIDs, dashboardsCatalog) {
+    if (sIDs != null && sIDs.length > 0) {
+        var arrIDs = sIDs.split(',');
+        return arrIDs.map(function(sID) {
+            return dashboardsCatalog.getById(sID);
+        });
+    } else {
+        return [];
+    }
+}

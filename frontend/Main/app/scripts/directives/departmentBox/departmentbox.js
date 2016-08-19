@@ -10,6 +10,9 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
     return {
         templateUrl: 'scripts/directives/departmentBox/departmentbox.html',
         restrict: 'E',
+        scope: {
+            department: '='
+        },
         link: function postLink(scope, element, attrs) {
             element.hide();
             $timeout(function() {
@@ -51,6 +54,18 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
             scope.theWidth = function() {
                 return element.parent().width();
             };
+
+            scope.editMetric = function(metric) {
+                scope.$parent.$parent.selectedMetric = metric;
+                angular.element('#modal-metricToSave').modal('show');
+                angular.copy(metric, scope.$parent.metricToSave);
+            };
+            scope.editInitiative = function(initiative) {
+                scope.$parent.$parent.selectedInitiative = initiative;
+                angular.element('#modal-initiativeToSave').modal('show');
+                angular.copy(initiative, scope.$parent.initiativeToSave);
+            };
+
         }
     };
 });
