@@ -48,7 +48,7 @@
             <h4>{{relatedEntityName}}s in {{entityName}}</h4>
             <input type="button" class="btn btn-link pull-right" style="position:absolute;top:5px;right:0;" value="Sort" ng-click="sortOccuppiedBy('Title');">
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="occuppiedEntities">
-                <li id={{entity.id}} class="list-group-item" ng-repeat="entity in occuppiedEntities | orderBy:propertyNameOccuppied:reverseOccuppied">
+                <li id={{entity.id}} class="list-group-item ListElementDraggable" ng-repeat="entity in occuppiedEntities | orderBy:propertyNameOccuppied:reverseOccuppied">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
@@ -72,7 +72,7 @@
             <h4>{{relatedEntityName}}s Available</h4>
             <input type="button" class="btn btn-link pull-right" style="position:absolute;top:5px;right:0;" value="Sort" ng-click="sortAvailableBy('Title');">
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="availableEntities">
-                <li id={{entity.id}} class="list-group-item" ng-repeat="entity in availableEntities | orderBy:propertyNameAvailable:reverseAvailable">
+                <li id={{entity.id}} class="list-group-item ListElementDraggable" ng-repeat="entity in availableEntities | orderBy:propertyNameAvailable:reverseAvailable">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">

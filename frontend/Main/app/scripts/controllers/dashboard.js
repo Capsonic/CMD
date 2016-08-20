@@ -117,7 +117,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             items.forEach(function(item) {
                 item.initCallback = onItemInit;
                 item.InfoGridster = {};
-                item.EF_State = 1; //1 means add, but we use addToParent which is going to add only it it is not added
+                item.EF_State = 1; //1 means add, but we use addToParent which is going to add only if it is not added
                 item.areGridsterPropertiesMissing = true;
             });
         } else {

@@ -11,24 +11,24 @@
             <p class="navbar-brand navbar-right DashboardTitle" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <form class="navbar-form" style="position:absolute;right:270px;top:-6px;">
-                <div class="form-group" style="width:60px;">
-                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,6,7,8,9,10]"></select>
-                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Min Rows</label>
+            <div class="navbar-form navbar-right">
+                <div class="form-group" style="width:60px;margin-top:-10px;">
+                    <label style="font-size:8px;margin:0;">Min Rows</label>
+                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
                 </div>
-                <div class="form-group" style="width:60px;">
-                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,6,7,8,9,10]"></select>
-                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Min Cols</label>
+                <div class="form-group" style="width:60px;margin-top:-10px;">
+                    <label style="font-size:8px;margin:0;">Min Cols</label>
+                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
                 </div>
-                <div class="form-group" style="width:130px;">
-                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;float:right;margin-right:5px;position:absolute;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
-                    <label style="font-size:8px;float:right;position:absolute;top:5px;">Scrollbar</label>
+                <div class="form-group" style="width:130px;margin-top:-10px;">
+                    <label style="font-size:8px;margin:0;">Scrollbar</label>
+                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
                 </div>
-            </form>
-            <div style="position:absolute;width:288px;right:5px;"><a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin-right:0;">Administration</a>
-                <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="modePresentation();" style="margin-right:5px;">Mode Presentation</button>
-                <!-- <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="addItem();" style="margin-right:5px;">Add Department</button> -->
-                <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" ng-click="saveAll();" style="margin-right:5px;">Save</button>
+                <div class="form-group" style="width:320px;margin-top:5px;">
+                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save</button>
+                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="modePresentation();">Mode Presentation</button>
+                    <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;">Administration</a>
+                </div>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
                     <input type="text" id="input" class="form-control" ng-model="metricToSave.Title">
                     <br>
                     <label>Description</label>
-                    <input type="text" id="input" class="form-control" ng-model="metricToSave.Description">
+                    <textarea class="form-control" rows="3" ng-model="metricToSave.Description"></textarea>
                     <br>
                     <label>Current Value</label>
                     <input type="text" id="input" class="form-control" ng-model="metricToSave.CurrentValue">
@@ -92,17 +92,25 @@
             </div>
             <div class="modal-body">
                 <div class="form-group">
+                    <br>
+                    <label>Title</label>
+                    <input type="text" id="input" class="form-control" ng-model="initiativeToSave.Title">
+                    <br>
                     <label>Description</label>
                     <textarea class="form-control" rows="3" ng-model="initiativeToSave.Description"></textarea>
+                    <br>
                     <label>Due Date</label>
                     <input type="date" id="input" class="form-control" ng-model="initiativeToSave.DueDate">
+                    <br>
                     <label>Progress Value</label>
                     <div class="input-group">
                         <input type="number" style="text-align:right;" class="form-control" ng-model="initiativeToSave.ProgressValue" placeholder="Percentage">
                         <div class="input-group-addon">%</div>
                     </div>
+                    <br>
                     <label>Target Date</label>
                     <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ActualDate">
+                    <br>
                     <label>Hidden for Dashboards</label>
                     <tags-input template="tag-template" ng-model="initiativeToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, initiativeToSave);">
                         <auto-complete source="loadDashboardsTags($query, initiativeToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>

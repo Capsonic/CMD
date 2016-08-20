@@ -21,10 +21,8 @@ namespace CMDLogic.EF
 
         public decimal ProgressValue { get; set; }
 
-        [StringLength(100)]
         public string Title { get; set; }
 
-        [StringLength(250)]
         public string Description { get; set; }
 
         public DateTime? DueDate { get; set; }

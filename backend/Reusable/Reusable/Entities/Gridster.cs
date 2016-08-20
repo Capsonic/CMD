@@ -29,6 +29,8 @@ namespace Reusable
 
         public virtual User User { get; set; }
 
+        public decimal FontSize { get; set; }
+
         public override int id { get { return GridsterKey; } }
 
         public override object Clone()
@@ -44,7 +46,8 @@ namespace Reusable
                 Gridster_User_ID = Gridster_User_ID,
                 rows = rows,
                 x = x,
-                y = y
+                y = y,
+                FontSize = FontSize
             };
         }
     }

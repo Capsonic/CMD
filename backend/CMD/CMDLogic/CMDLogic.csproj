@@ -101,6 +101,14 @@
     <Compile Include="Migrations\201608182124335_MetricsInitiativesHiddenDashboards.Designer.cs">
       <DependentUpon>201608182124335_MetricsInitiativesHiddenDashboards.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608191843223_GridsterFontSize.cs" />
+    <Compile Include="Migrations\201608191843223_GridsterFontSize.Designer.cs">
+      <DependentUpon>201608191843223_GridsterFontSize.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608191953325_RemoveMaxLengthTitleDescription.cs" />
+    <Compile Include="Migrations\201608191953325_RemoveMaxLengthTitleDescription.Designer.cs">
+      <DependentUpon>201608191953325_RemoveMaxLengthTitleDescription.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -129,6 +137,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608182124335_MetricsInitiativesHiddenDashboards.resx">
       <DependentUpon>201608182124335_MetricsInitiativesHiddenDashboards.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608191843223_GridsterFontSize.resx">
+      <DependentUpon>201608191843223_GridsterFontSize.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608191953325_RemoveMaxLengthTitleDescription.resx">
+      <DependentUpon>201608191953325_RemoveMaxLengthTitleDescription.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

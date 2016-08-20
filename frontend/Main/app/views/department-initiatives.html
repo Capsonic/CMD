@@ -35,15 +35,26 @@
         </form>
     </div>
     <br>
+    <form action="" class="form-horizontal" role="form">
+        <div class="form-group">
+            <label for="input" class="col-sm-2 control-label">Search:</label>
+            <div class="col-sm-10">
+                <input type="search" name="search" id="input" class="form-control" ng-model="search" ng-model-options="{debounce: 100}" ng-change="on_search(search)">
+            </div>
+        </div>
+    </form>
     <div class="row">
         <div class="col-sm-6">
             <h4>{{relatedEntityName}}s in {{entityName}}</h4>
+            <input type="button" class="btn btn-link pull-right" style="position:absolute;top:5px;right:0;" value="Sort" ng-click="sortOccuppiedBy('Title');">
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="occuppiedEntities">
-                <li id={{entity.id}} class="list-group-item" ng-repeat="entity in occuppiedEntities">
-                    <span ng-show="entity.expanded == '+'">{{entity.Description}}</span>
+                <li id={{entity.id}} class="list-group-item ListElementDraggable" ng-repeat="entity in occuppiedEntities | orderBy:propertyNameOccuppied:reverseOccuppied">
+                    <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';initiative = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <div class="form-group">
+                            <label>Title</label>
+                            <p class="form-control-static">{{initiative.Title}}</p>
                             <label>Description</label>
                             <p class="form-control-static">{{initiative.Description}}</p>
                             <label>Due Date</label>
@@ -59,12 +70,15 @@
         </div>
         <div class="col-sm-6">
             <h4>{{relatedEntityName}}s Available</h4>
+            <input type="button" class="btn btn-link pull-right" style="position:absolute;top:5px;right:0;" value="Sort" ng-click="sortAvailableBy('Title');">
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="availableEntities">
-                <li id={{entity.id}} class="list-group-item" ng-repeat="entity in availableEntities">
-                    <span ng-show="entity.expanded == '+'">{{entity.Description}}</span>
+                <li id={{entity.id}} class="list-group-item ListElementDraggable" ng-repeat="entity in availableEntities | orderBy:propertyNameAvailable:reverseAvailable">
+                    <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
                     <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';initiative = entity;" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
                     <div ng-show="entity.expanded == '-'">
                         <div class="form-group">
+                            <label>Title</label>
+                            <p class="form-control-static">{{initiative.Title}}</p>
                             <label>Description</label>
                             <p class="form-control-static">{{initiative.Description}}</p>
                             <label>Due Date</label>
