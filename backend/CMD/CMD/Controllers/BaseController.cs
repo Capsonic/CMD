@@ -25,28 +25,28 @@ namespace CMD.Controllers
 
         // GET: api/Base
         [HttpGet Route("")]
-        public CommonResponse Get()
+        virtual public CommonResponse Get()
         {
             return _logic.GetAll();
         }
 
         // GET: api/Base/5
         [HttpGet Route("")]
-        public CommonResponse Get(int id)
+        virtual public CommonResponse Get(int id)
         {
            return _logic.GetByID(id);
         }
 
         // GET: api/Base
         [HttpGet Route("getCatalogs")]
-        public CommonResponse getCatalogs()
+        virtual public CommonResponse getCatalogs()
         {
             return _logic.GetCatalogs();
         }
 
         // POST: api/Base
         [HttpPost Route("")]
-        public CommonResponse Post([FromBody]string value)
+        virtual public CommonResponse Post([FromBody]string value)
         {
             CommonResponse response = new CommonResponse();
             Entity entity;
@@ -65,7 +65,7 @@ namespace CMD.Controllers
 
         // POST: api/Base
         [HttpPost Route("AddToParent/{type}/{parentId}")]
-        public CommonResponse AddToParent(string type, int parentId, [FromBody]string value)
+        virtual public CommonResponse AddToParent(string type, int parentId, [FromBody]string value)
         {
             CommonResponse response = new CommonResponse();
 
@@ -87,13 +87,13 @@ namespace CMD.Controllers
         }
 
         [HttpPost Route("Create")]
-        public CommonResponse Create()
+        virtual public CommonResponse Create()
         {
             return _logic.CreateInstance();
         }
 
         // PUT: api/Base/5
-        public CommonResponse Put(int id, [FromBody]string value)
+        virtual public CommonResponse Put(int id, [FromBody]string value)
         {
             CommonResponse response = new CommonResponse();
             Entity entity;
@@ -111,13 +111,13 @@ namespace CMD.Controllers
         }
 
         // DELETE: api/Base/5
-        public CommonResponse Delete(int id)
+        virtual public CommonResponse Delete(int id)
         {
             return _logic.Remove(id);
         }
 
         [HttpGet Route("GetAvailableForEntity/{sEntityType}/{id}")]
-        public CommonResponse GetAvailableForEntity(string sEntityType, int id)
+        virtual public CommonResponse GetAvailableForEntity(string sEntityType, int id)
         {
             CommonResponse response = new CommonResponse();
 
@@ -137,7 +137,7 @@ namespace CMD.Controllers
         }
 
         [HttpPost Route("RemoveFromParent/{type}/{parentId}")]
-        public CommonResponse RemoveFromParent(string type, int parentId, [FromBody]string value)
+        virtual public CommonResponse RemoveFromParent(string type, int parentId, [FromBody]string value)
         {
             CommonResponse response = new CommonResponse();
 

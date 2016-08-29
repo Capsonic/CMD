@@ -6,9 +6,9 @@
  * @description
  * # departmentBox
  */
-angular.module('mainApp').directive('departmentBox', function($timeout) {
+angular.module('mainApp').directive('departmentBox', function($timeout, metricService, initiativeService) {
     return {
-        templateUrl: 'scripts/directives/departmentBox/departmentbox.html',
+        templateUrl: 'views/departmentbox.html',
         restrict: 'E',
         scope: {
             department: '='
@@ -46,8 +46,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
                 return element.parent().width();
             };
 
-            var currentDashboardId = function() {
-                return scope.$parent.$parent.baseEntity.id;
+            var currentDashboard = function() {
+                return scope.$parent.$parent.baseEntity;
             };
 
             scope.getMetrics = function() {
@@ -55,12 +55,17 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
                     return scope.isHiddenForCurrentDashboard(metric) == false;
                 });
             };
+            scope.getInitiatives = function() {
+                return scope.department.Initiatives.filter(function(initiative) {
+                    return scope.isHiddenForCurrentDashboard(initiative) == false;
+                });
+            };
 
             scope.isHiddenForCurrentDashboard = function(metricOrInitiative) {
                 if (metricOrInitiative.HiddenForDashboards) {
                     var hiddenDashboards = metricOrInitiative.HiddenForDashboards.split(',');
                     var oFound = hiddenDashboards.find(function(id) {
-                        return id == currentDashboardId();
+                        return id == currentDashboard().id;
                     });
                     return oFound != undefined;
                 } else {
@@ -68,12 +73,21 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
                 }
             };
 
-            scope.hideRow = function(metricOrInitiative) {
-                if (!metricOrInitiative.HiddenForDashboards) {
-                    metricOrInitiative.HiddenForDashboards = '';
+            scope.hideMetric = function(metric) {
+                if (!metric.HiddenForDashboardsTags) {
+                    metric.HiddenForDashboardsTags = [];
                 }
-                metricOrInitiative.HiddenForDashboards += ',' + currentDashboardId();
+                metric.HiddenForDashboardsTags.push(currentDashboard());
+                metricService.save(metric);
             };
+            scope.hideInitiative = function(initiative) {
+                if (!initiative.HiddenForDashboardsTags) {
+                    initiative.HiddenForDashboardsTags = [];
+                }
+                initiative.HiddenForDashboardsTags.push(currentDashboard());
+                initiativeService.save(initiative);
+            };
+
 
             scope.editMetric = function(metric) {
                 scope.$parent.$parent.selectedMetric = metric;
@@ -92,6 +106,17 @@ angular.module('mainApp').directive('departmentBox', function($timeout) {
                 angular.element('#modal-showHidden').modal('show');
                 angular.copy(department, scope.$parent.departmentToSave);
             };
+
+            scope.departmentToUpdate = function(dep) {
+                for (var i = 0; i < scope.$parent.$parent.baseEntity.Departments.length; i++) {
+                    var current = scope.$parent.$parent.baseEntity.Departments[i];
+                    if (current.id == dep.id) {
+                        current.editMode = true;
+                        scope.$parent.$parent.pendingToSave = scope.$parent.$parent.getPendingToSaveCount();
+                        break;
+                    }
+                }
+            }
 
         }
     };

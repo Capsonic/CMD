@@ -273,7 +273,7 @@ namespace Reusable
             string tName = typeof(T).Name + "s";
             list = context.Entry(parent).Collection<T>(tName)
                 .Query()
-                //.AsNoTracking()
+                .AsNoTracking()
                 .ToList<T>();
 
             /*DOCUMENT*/
@@ -290,6 +290,18 @@ namespace Reusable
                                         .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
 
                 }
+            }
+
+            //Removing Recurivity
+            string navigationPropertyName = typeof(P).Name + "s";
+            foreach (T item in list)
+            {
+                //PropertyInfo prop = item.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
+                //if (null != prop && prop.CanWrite)
+                //{
+                //    prop.SetValue(item, new List<P>());
+                //}
+                context.Entry(item).Collection<P>(navigationPropertyName).CurrentValue.Clear();
             }
 
             return list;

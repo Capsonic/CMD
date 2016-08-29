@@ -8,7 +8,8 @@ namespace CMDLogic.EF
         public CMDContext()
             : base("name=CMDContext")
         {
-            Configuration.LazyLoadingEnabled = false;            
+            Configuration.LazyLoadingEnabled = false;
+            Configuration.ProxyCreationEnabled = false;        
         }
 
         public virtual DbSet<cat_ComparatorMethod> cat_ComparatorMethod { get; set; }

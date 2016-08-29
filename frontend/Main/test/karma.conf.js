@@ -36,6 +36,7 @@ module.exports = function(config) {
       'bower_components/ngActivityIndicator/ngActivityIndicator.js',
       'bower_components/angular-dragula/dist/angular-dragula.js',
       'bower_components/ng-tags-input/ng-tags-input.js',
+      'bower_components/moment/moment.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',

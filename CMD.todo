@@ -1,6 +1,6 @@
 08/08/2016 - Dennis's Email:
   ☐ How to add many "current" values (for each month for example)
-  ☐ Need to have some metrics that show up in executive dashboard and some that only show up in Department Dashboard. (Like a checkbox for visibility)
+  ✔ Need to have some metrics that show up in executive dashboard and some that only show up in Department Dashboard. (Like a checkbox for visibility) @done (16-08-29 14:51)
   Others:
 
 
@@ -8,7 +8,7 @@
  ☐ I am thinking we need a mouse over for the description of the metric. Or some other option to show or not show the description.
  ✔ I am having an issue with the initiative description showing up in the dashboard. @done (16-08-19 11:55)
  ✔ Formating issues with initiatives on the department page. @done (16-08-19 16:28)
- ☐ I am having the same issue on the executive dashboard page again.  
+ ✔ I am having the same issue on the executive dashboard page again.   @done (16-08-29 14:51)
  Others:
    ✔ Allow user to set the font size individually on each box. @done (16-08-19 16:28)
    ✔ Titles are being displayed in only one row, if they are too long for the space, they will be cut with ... (ellipsis). @done (16-08-19 16:37)

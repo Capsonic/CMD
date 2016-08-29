@@ -29,7 +29,7 @@ namespace Reusable
 
         public virtual User User { get; set; }
 
-        public decimal FontSize { get; set; }
+        public decimal? FontSize { get; set; }
 
         public override int id { get { return GridsterKey; } }
 

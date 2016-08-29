@@ -109,11 +109,17 @@
     <Compile Include="Migrations\201608191953325_RemoveMaxLengthTitleDescription.Designer.cs">
       <DependentUpon>201608191953325_RemoveMaxLengthTitleDescription.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608230300149_GridsterFontSizeNullable.cs" />
+    <Compile Include="Migrations\201608230300149_GridsterFontSizeNullable.Designer.cs">
+      <DependentUpon>201608230300149_GridsterFontSizeNullable.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.Config" />
+    <None Include="App.Config">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -143,6 +149,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608191953325_RemoveMaxLengthTitleDescription.resx">
       <DependentUpon>201608191953325_RemoveMaxLengthTitleDescription.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608230300149_GridsterFontSizeNullable.resx">
+      <DependentUpon>201608230300149_GridsterFontSizeNullable.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

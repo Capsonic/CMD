@@ -9,7 +9,7 @@
  */
 angular.module('CMD.CRUDServices', [])
 
-.service('dashboardService', function(crudFactory, $filter, metricService) {
+.service('dashboardService', function(crudFactory, $filter, metricService, initiativeService) {
 
     function getFormattedValue(value, format) {
         if (value != null && value != '') {
@@ -78,12 +78,16 @@ angular.module('CMD.CRUDServices', [])
                     metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
                     metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
                 });
+                department.Initiatives.forEach(function(initiative) {
+                    initiative.ConvertedActualDate = initiative.ActualDate ? new Date(initiative.ActualDate) : null;
+                    initiative.ConvertedDueDate = initiative.DueDate ? new Date(initiative.DueDate) : null;
+                    initiative.HiddenForDashboardsTags = getDashboardsFromIds(initiative.HiddenForDashboards, initiativeService.catalogs.Dashboards);
+                });
             });
             return theEntity;
         },
 
         adapterIn: function(theEntity) {
-            // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
         adapterOut: function(theEntity, self) {
@@ -108,7 +112,6 @@ angular.module('CMD.CRUDServices', [])
         },
 
         adapterIn: function(theEntity) {
-            // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
         adapterOut: function(theEntity, self) {
@@ -168,7 +171,6 @@ angular.module('CMD.CRUDServices', [])
         },
 
         adapterIn: function(theEntity) {
-            // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
         adapterOut: function(theEntity, self) {
@@ -189,14 +191,13 @@ angular.module('CMD.CRUDServices', [])
         catalogs: ['Dashboards'],
 
         adapter: function(theEntity, self) {
-            theEntity.ActualDate = new Date(theEntity.ActualDate);
-            theEntity.DueDate = new Date(theEntity.DueDate);
+            theEntity.ConvertedActualDate = theEntity.ActualDate ? new Date(theEntity.ActualDate) : null;
+            theEntity.ConvertedDueDate = theEntity.DueDate ? new Date(theEntity.DueDate) : null;
             theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
             return theEntity;
         },
 
         adapterIn: function(theEntity) {
-            // theEntity.RevisionDate = moment(theEntity.RevisionDate, moment.ISO_8601).format('MM/DD/YYYY');
         },
 
         adapterOut: function(theEntity, self) {
@@ -219,6 +220,7 @@ function adaptHiddenForDashboards(theEntity) {
             result.push(current.id);
         }
     }
+    theEntity.HiddenForDashboardsTags = [];
     return result.join(',');
 }
 

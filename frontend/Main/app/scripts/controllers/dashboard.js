@@ -42,9 +42,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         scope.department.InfoGridster.rows = scope.department.rows;
         scope.department.InfoGridster.x = scope.department.x;
         scope.department.InfoGridster.y = scope.department.y;
-        if (scope.department.EF_State != 1) {
-            scope.department.EF_State = 2;
-        }
+        scope.department.editMode = true;
+        $scope.pendingToSave = $scope.getPendingToSaveCount();
     };
 
     function eventStop() {};
@@ -84,6 +83,17 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             return;
     };
 
+    $scope.getPendingToSaveCount = function() {
+        var result = 0;
+        for (var i = $scope.baseEntity.Departments.length - 1; i > -1; i--) {
+            var current = $scope.baseEntity.Departments[i];
+            if (current.editMode) {
+                result++;
+            }
+        }
+        return result;
+    };
+
     $scope.afterLoadData = function() {
         $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
         for (var catalog in metricService.catalogs) {
@@ -106,6 +116,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         adaptForGridster(theOnScreenEntity.Departments);
 
         addOneByOne();
+
+        $scope.pendingToSave = $scope.getPendingToSaveCount();
     };
 
     var adaptForGridster = function(items) {
@@ -117,7 +129,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             items.forEach(function(item) {
                 item.initCallback = onItemInit;
                 item.InfoGridster = {};
-                item.EF_State = 1; //1 means add, but we use addToParent which is going to add only if it is not added
+                item.editMode = true;
                 item.areGridsterPropertiesMissing = true;
             });
         } else {
@@ -183,7 +195,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     function genericItemsToBeSaved(item) {
-        return item.EF_State > 0;
+        return item.editMode == true;
     };
 
     $scope.saveAll = function() {
@@ -200,6 +212,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
         $q.serial(arrPromiseConstructors).then(function() {
             alertify.success('Dashboard saved successfully.');
+            $scope.pendingToSave = $scope.getPendingToSaveCount();
         });
     };
 
@@ -213,6 +226,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.saveItem = function(item) {
         return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item).then(function(data) {
             item.InfoGridster = data.InfoGridster;
+            item.editMode = false;
+            $scope.pendingToSave = $scope.getPendingToSaveCount();
         });
     };
 
@@ -238,6 +253,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.metricToSave = {};
     $scope.initiativeToSave = {};
+    $scope.departmentToSave = {};
 
     $scope.saveMetric = function(metric) {
         $activityIndicator.startAnimating();
@@ -245,6 +261,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             angular.copy(metric, $scope.selectedMetric);
             angular.element('#modal-metricToSave').off('hidden.bs.modal');
             angular.element('#modal-metricToSave').modal('hide');
+            $scope.pendingToSave = $scope.getPendingToSaveCount();
             $activityIndicator.stopAnimating();
         });
     };
@@ -255,9 +272,61 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             angular.copy(initiative, $scope.selectedInitiative);
             angular.element('#modal-initiativeToSave').off('hidden.bs.modal');
             angular.element('#modal-initiativeToSave').modal('hide');
+            $scope.pendingToSave = $scope.getPendingToSaveCount();
             $activityIndicator.stopAnimating();
         });
 
+    };
+
+
+    $scope.getHiddenMetrics = function() {
+        if ($scope.departmentToSave.Metrics) {
+            return $scope.departmentToSave.Metrics.filter(function(metric) {
+                return $scope.isHiddenForCurrentDashboard(metric);
+            });
+        }
+    };
+    $scope.getHiddenInitiatives = function() {
+        if ($scope.departmentToSave.Initiatives) {
+            return $scope.departmentToSave.Initiatives.filter(function(initiative) {
+                return $scope.isHiddenForCurrentDashboard(initiative);
+            });
+
+        }
+    };
+    $scope.isHiddenForCurrentDashboard = function(metricOrInitiative) {
+        if (metricOrInitiative.HiddenForDashboards) {
+            var hiddenDashboards = metricOrInitiative.HiddenForDashboards.split(',');
+            var oFound = hiddenDashboards.find(function(id) {
+                return id == $scope.baseEntity.id;
+            });
+            return oFound != undefined;
+        } else {
+            return false;
+        }
+    };
+
+
+
+    $scope.showMetric = function(metric) {
+        for (var i = 0; i < metric.HiddenForDashboardsTags.length; i++) {
+            var current = metric.HiddenForDashboardsTags[i];
+            if (current.id == $scope.baseEntity.id) {
+                metric.HiddenForDashboardsTags.splice(i, 1);
+                break;
+            }
+        }
+        metricService.save(metric);
+    };
+    $scope.showInitiative = function(initiative) {
+        for (var i = 0; i < initiative.HiddenForDashboardsTags.length; i++) {
+            var current = initiative.HiddenForDashboardsTags[i];
+            if (current.id == $scope.baseEntity.id) {
+                initiative.HiddenForDashboardsTags.splice(i, 1);
+                break;
+            }
+        }
+        initiativeService.save(initiative);
     };
 
     $scope.loadDashboardsTags = function($query, currentList) {

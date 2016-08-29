@@ -55,9 +55,9 @@
                         </td>
                         <td style="text-align:left;">{{item.Title}}</td>
                         <td style="text-align:left;">{{item.Description}}</td>
-                        <td>{{item.DueDate | date:'mediumDate'}}</td>
+                        <td>{{item.ConvertedDueDate | date:'mediumDate'}}</td>
                         <td>{{item.ProgressValue | number:2}} %</td>
-                        <td>{{item.ActualDate | date:'mediumDate'}}</td>
+                        <td>{{item.ConvertedActualDate | date:'mediumDate'}}</td>
                     </tr>
                 </tbody>
             </table>

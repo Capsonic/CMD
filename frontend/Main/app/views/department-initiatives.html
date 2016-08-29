@@ -58,11 +58,11 @@
                             <label>Description</label>
                             <p class="form-control-static">{{initiative.Description}}</p>
                             <label>Due Date</label>
-                            <p class="form-control-static">{{initiative.DueDate | date:'mediumDate'}}</p>
+                            <p class="form-control-static">{{initiative.ConvertedDueDate | date:'mediumDate'}}</p>
                             <label>Progress Value</label>
                             <p class="form-control-static">{{initiative.ProgressValue | number:2}} %</p>
                             <label>Target Date</label>
-                            <p class="form-control-static">{{initiative.ActualDate | date:'mediumDate'}}</p>
+                            <p class="form-control-static">{{initiative.ConvertedActualDate | date:'mediumDate'}}</p>
                         </div>
                     </div>
                 </li>
@@ -82,11 +82,11 @@
                             <label>Description</label>
                             <p class="form-control-static">{{initiative.Description}}</p>
                             <label>Due Date</label>
-                            <p class="form-control-static">{{initiative.DueDate | date:'mediumDate'}}</p>
+                            <p class="form-control-static">{{initiative.ConvertedDueDate | date:'mediumDate'}}</p>
                             <label>Progress Value</label>
                             <p class="form-control-static">{{initiative.ProgressValue | number:2}} %</p>
                             <label>Target Date</label>
-                            <p class="form-control-static">{{initiative.ActualDate | date:'mediumDate'}}</p>
+                            <p class="form-control-static">{{initiative.ConvertedActualDate | date:'mediumDate'}}</p>
                         </div>
                     </div>
                 </li>

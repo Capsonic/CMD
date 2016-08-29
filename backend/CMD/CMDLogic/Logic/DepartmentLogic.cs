@@ -36,13 +36,10 @@ namespace CMDLogic.Logic
 
             foreach (Department item in entities)
             {
-                item.Dashboards = dashboardRepository.GetListByParent<Department>(item.id);
+                //item.Dashboards = dashboardRepository.GetListByParent<Department>(item.id);
                 item.Initiatives = initiativeRepository.GetListByParent<Department>(item.id);
                 item.Metrics = metricRepository.GetListByParent<Department>(item.id);
-                item.InfoGridster = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
-                                                                && e.Gridster_Entity_Kind == item.AAA_EntityName
-                                                                && e.Gridster_User_ID == byUserId);
-                
+                                
                 //if (item.InfoGridster == null)
                 //{
                 //    Gridster gridsterFromFirstCreator = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id
@@ -57,14 +54,20 @@ namespace CMDLogic.Logic
             }
         }
 
-        protected override void onSaving(DbContext context, Department entity)
+        protected override void onSaving(DbContext context, Department entity, int? parentId = null)
         {
             if (entity.InfoGridster != null)
             {
+                entity.InfoGridster.Gridster_ManyToMany_ID = parentId;
                 entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
                 entity.InfoGridster.Gridster_Entity_ID = entity.id;
                 entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
                 entity.InfoGridster.Gridster_User_ID = (int)byUserId;
+
+                if (entity.InfoGridster.FontSize == 0 || entity.InfoGridster.FontSize == null)
+                {
+                    entity.InfoGridster.FontSize = 12m;
+                }
 
                 if (entity.InfoGridster.id > 0)
                 {

@@ -1,0 +1,30 @@
+.NeedsAttention {
+    background-color: #D9534F !important;
+    -webkit-animation: needsAttentionAnimation .8s infinite;
+    /* Chrome, Safari, Opera */
+    animation: needsAttentionAnimation .8s infinite;
+}
+
+
+/* Chrome, Safari, Opera */
+
+@-webkit-keyframes needsAttentionAnimation {
+    from {
+        background: #D9534F;
+    }
+    to {
+        background: #F2DEDE;
+    }
+}
+
+
+/* Standard syntax */
+
+@keyframes needsAttentionAnimation {
+    from {
+        background: #D9534F;
+    }
+    to {
+        background: #F2DEDE;
+    }
+}
