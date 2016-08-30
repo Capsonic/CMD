@@ -26,15 +26,18 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                 });
             });
 
+
             $timeout(function() {
                 scope.$watch(function() {
                     return element.parent().width() + element.parent().height() + angular.element(window).width() + angular.element(window).height();
                 }, function() {
-                    element.hide();
-                    resetSizes();
-                    element.show();
+                    if (scope.$parent.$parent.isLoading) {
+                        element.hide();
+                        resetSizes();
+                        element.show();
+                    }
                 });
-            }, 200);
+            });
 
             function resetSizes() {
                 $timeout(function() {
@@ -116,8 +119,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         break;
                     }
                 }
-            }
-
+            };
         }
     };
 });

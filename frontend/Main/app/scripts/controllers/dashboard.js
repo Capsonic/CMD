@@ -9,6 +9,7 @@
  */
 angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService) {
     $activityIndicator.startAnimating();
+    $scope.isLoading = true;
     $scope.options = {
         gridType: 'fit', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
@@ -153,6 +154,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
                 addOneByOne(++index);
             }, 50);
         } else {
+            $timeout(function() {
+                $scope.isLoading = false;
+            }, 500);
             return;
         }
     };
