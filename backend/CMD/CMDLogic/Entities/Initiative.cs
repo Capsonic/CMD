@@ -7,5 +7,8 @@ namespace CMDLogic.EF
     {
         [NotMapped]
         public override int id { get { return InitiativeKey; } }
+
+        [NotMapped]
+        public Sort InfoSort { get; set; }
     }
 }

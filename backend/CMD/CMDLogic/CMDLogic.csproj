@@ -113,6 +113,14 @@
     <Compile Include="Migrations\201608230300149_GridsterFontSizeNullable.Designer.cs">
       <DependentUpon>201608230300149_GridsterFontSizeNullable.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201609051759206_Sort_ManyToMany_EntityKind.cs" />
+    <Compile Include="Migrations\201609051759206_Sort_ManyToMany_EntityKind.Designer.cs">
+      <DependentUpon>201609051759206_Sort_ManyToMany_EntityKind.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201609051833346_sort_parentInfo.cs" />
+    <Compile Include="Migrations\201609051833346_sort_parentInfo.Designer.cs">
+      <DependentUpon>201609051833346_sort_parentInfo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -152,6 +160,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201608230300149_GridsterFontSizeNullable.resx">
       <DependentUpon>201608230300149_GridsterFontSizeNullable.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609051759206_Sort_ManyToMany_EntityKind.resx">
+      <DependentUpon>201609051759206_Sort_ManyToMany_EntityKind.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201609051833346_sort_parentInfo.resx">
+      <DependentUpon>201609051833346_sort_parentInfo.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

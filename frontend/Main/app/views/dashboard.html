@@ -12,12 +12,12 @@
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
             <div class="navbar-form navbar-right">
-                <div class="form-group" style="width:80px;margin-top:-5px;">
+                <div class="form-group" style="width:80px;margin-top:-5px;height: 40px;">
                     <label style="font-size:8px;margin:0;color:#ffffff;">
                         Sorting
                         <br>Metrics / Initiatives
                     </label>
-                    <input type="checkbox" value="" style="margin:0;padding:0;" ng-model="options.draggable.enabled">
+                    <input type="checkbox" value="" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives();">
                 </div>
                 <div class="form-group" style="width:60px;margin-top:-10px;">
                     <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
@@ -92,43 +92,44 @@
 </div>
 <div class="modal" id="modal-initiativeToSave">
     <div class="modal-dialog">
-        <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-Description">Update Initiative</h4>
-        </div>
-        <div class="modal-body">
-            <div class="form-group">
-                <br>
-                <label>Title</label>
-                <input type="text" id="input" class="form-control" ng-model="initiativeToSave.Title">
-                <br>
-                <label>Description</label>
-                <textarea class="form-control" rows="3" ng-model="initiativeToSave.Description"></textarea>
-                <br>
-                <label>Due Date</label>
-                <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedDueDate">
-                <br>
-                <label>Progress Value</label>
-                <div class="input-group">
-                    <input type="number" style="text-align:right;" class="form-control" ng-model="initiativeToSave.ProgressValue" placeholder="Percentage">
-                    <div class="input-group-addon">%</div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-Description">Update Initiative</h4>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <br>
+                    <label>Title</label>
+                    <input type="text" id="input" class="form-control" ng-model="initiativeToSave.Title">
+                    <br>
+                    <label>Description</label>
+                    <textarea class="form-control" rows="3" ng-model="initiativeToSave.Description"></textarea>
+                    <br>
+                    <label>Due Date</label>
+                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedDueDate">
+                    <br>
+                    <label>Progress Value</label>
+                    <div class="input-group">
+                        <input type="number" style="text-align:right;" class="form-control" ng-model="initiativeToSave.ProgressValue" placeholder="Percentage">
+                        <div class="input-group-addon">%</div>
+                    </div>
+                    <br>
+                    <label>Target Date</label>
+                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedActualDate">
+                    <br>
+                    <label>Hidden for Dashboards</label>
+                    <tags-input template="tag-template" ng-model="initiativeToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, initiativeToSave);">
+                        <auto-complete source="loadDashboardsTags($query, initiativeToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                    </tags-input>
                 </div>
-                <br>
-                <label>Target Date</label>
-                <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedActualDate">
-                <br>
-                <label>Hidden for Dashboards</label>
-                <tags-input template="tag-template" ng-model="initiativeToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, initiativeToSave);">
-                    <auto-complete source="loadDashboardsTags($query, initiativeToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
-                </tags-input>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveInitiative(initiativeToSave)">Save</button>
             </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" ng-click="saveInitiative(initiativeToSave)">Save</button>
-        </div>
     </div>
-</div>
 </div>
 <div class="modal fade" id="modal-showHidden">
     <div class="modal-dialog">

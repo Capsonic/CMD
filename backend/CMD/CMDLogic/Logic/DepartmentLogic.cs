@@ -79,6 +79,53 @@ namespace CMDLogic.Logic
                 }
                 context.SaveChanges();
             }
+
+
+            foreach (var metric in entity.Metrics)
+            {
+                if (metric.InfoSort != null)
+                {
+                    metric.InfoSort.Sort_Edited_On = DateTime.Now;
+                    metric.InfoSort.Sort_Entity_ID = metric.id;
+                    metric.InfoSort.Sort_Entity_Kind = metric.AAA_EntityName;
+                    metric.InfoSort.Sort_ParentInfo = "Dashboard_" + parentId + "_Department_" + entity.id; 
+                    metric.InfoSort.Sort_User_ID = (int)byUserId;
+
+                    if (metric.InfoSort.id > 0)
+                    {
+                        context.Entry(metric.InfoSort).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Entry(metric.InfoSort).State = EntityState.Added;
+                    }
+                    context.SaveChanges();
+                }
+            }
+
+            foreach (var initiative in entity.Initiatives)
+            {
+                if (initiative.InfoSort != null)
+                {
+                    initiative.InfoSort.Sort_Edited_On = DateTime.Now;
+                    initiative.InfoSort.Sort_Entity_ID = initiative.id;
+                    initiative.InfoSort.Sort_Entity_Kind = initiative.AAA_EntityName;
+                    initiative.InfoSort.Sort_ParentInfo = "Dashboard_" + parentId + "_Department_" + entity.id;
+                    initiative.InfoSort.Sort_User_ID = (int)byUserId;
+
+                    if (initiative.InfoSort.id > 0)
+                    {
+                        context.Entry(initiative.InfoSort).State = EntityState.Modified;
+                    }
+                    else
+                    {
+                        context.Entry(initiative.InfoSort).State = EntityState.Added;
+                    }
+                    context.SaveChanges();
+                }
+            }
+
+
         }
 
         protected override void onCreate(Department entity)

@@ -109,6 +109,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             }
         }
 
+        fulfillSortingInfo(theOnScreenEntity);
+
         var tempCopy = angular.copy(theOnScreenEntity);
         tempCopy.Departments = [];
 
@@ -117,8 +119,45 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         adaptForGridster(theOnScreenEntity.Departments);
 
         addOneByOne();
+    };
 
-        $scope.pendingToSave = $scope.getPendingToSaveCount();
+    function fulfillSortingInfo(oDashboard) {
+        oDashboard.Departments.forEach(function(oDepartment) {
+            var sortSequenceMetrics = 0;
+            var sortSequenceInitiatives = 0;
+
+            oDepartment.Metrics.sort(function(a, b) {
+                if (a.InfoSort && b.InfoSort) {
+                    return a.InfoSort.Sort_Sequence - b.InfoSort.Sort_Sequence;
+                }
+            }).forEach(function(oMetric) {
+                if (!oMetric.InfoSort) {
+                    oMetric.InfoSort = {
+                        SortKey: -1,
+                        Sort_Sequence: sortSequenceMetrics++
+                    };
+                    oDepartment.editMode = true;
+                }
+            });
+
+            oDepartment.Initiatives.sort(function(a, b) {
+                if (a.InfoSort && b.InfoSort) {
+                    return a.InfoSort.Sort_Sequence - b.InfoSort.Sort_Sequence;
+                }
+            }).forEach(function(oInitiative) {
+                if (!oInitiative.InfoSort) {
+                    oInitiative.InfoSort = {
+                        SortKey: -1,
+                        Sort_Sequence: sortSequenceMetrics++
+                    };
+                    oDepartment.editMode = true;
+                }
+            });
+
+
+        });
+
+
     };
 
     var adaptForGridster = function(items) {
@@ -156,6 +195,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         } else {
             $timeout(function() {
                 $scope.isLoading = false;
+                $scope.pendingToSave = $scope.getPendingToSaveCount();
             }, 500);
             return;
         }
@@ -310,8 +350,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         }
     };
 
-
-
     $scope.showMetric = function(metric) {
         for (var i = 0; i < metric.HiddenForDashboardsTags.length; i++) {
             var current = metric.HiddenForDashboardsTags[i];
@@ -320,7 +358,10 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
                 break;
             }
         }
-        metricService.save(metric);
+        metricService.save(metric).then(function() {
+            $scope.$broadcast("showMetric", metric);
+        });
+
     };
     $scope.showInitiative = function(initiative) {
         for (var i = 0; i < initiative.HiddenForDashboardsTags.length; i++) {
@@ -330,7 +371,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
                 break;
             }
         }
-        initiativeService.save(initiative);
+        initiativeService.save(initiative).then(function() {
+            $scope.$broadcast("showInitiative", initiative);
+        });
     };
 
     $scope.loadDashboardsTags = function($query, currentList) {
@@ -341,4 +384,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.on_dashboardTag_Added = function(tagAdded, metric) {
         // metric.HiddenForDashboardsTags = [tagAdded]
     };
+
+    $scope.on_change_sortingMetricsOrInitiatives = function() {
+        $scope.options.draggable.enabled = !$scope.sortingMetricsOrInitiatives;
+    };
+
 });

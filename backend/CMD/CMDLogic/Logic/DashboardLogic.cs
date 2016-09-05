@@ -13,11 +13,17 @@ namespace CMDLogic.Logic
     {
         private readonly IDepartmentLogic departmentLogic;
         private readonly Repository<Gridster> gridsterRepository;
+        private readonly Repository<Sort> sortRepository;
 
-        public DashboardLogic(DbContext context, IRepository<Dashboard> repository, IDepartmentLogic departmentLogic, Repository<Gridster> gridsterRepository) : base(context, repository)
+        public DashboardLogic(DbContext context,
+            IRepository<Dashboard> repository,
+            IDepartmentLogic departmentLogic,
+            Repository<Gridster> gridsterRepository,
+            Repository<Sort> sortRepository) : base(context, repository)
         {
             this.departmentLogic = departmentLogic;
             this.gridsterRepository = gridsterRepository;
+            this.sortRepository = sortRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
@@ -45,6 +51,22 @@ namespace CMDLogic.Logic
                                                                 && e.Gridster_Entity_Kind == department.AAA_EntityName
                                                                 && e.Gridster_User_ID == byUserId
                                                                 && e.Gridster_ManyToMany_ID == dashboard.id);
+
+                foreach (var metric in department.Metrics)
+                {
+                    metric.InfoSort = sortRepository.GetSingle(e => e.Sort_Entity_ID == metric.id
+                                                                && e.Sort_Entity_Kind == metric.AAA_EntityName
+                                                                && e.Sort_ParentInfo == "Dashboard_" + ID + "_Department_" + department.id
+                                                                && e.Sort_User_ID == byUserId);
+                }
+
+                foreach (var initiative in department.Initiatives)
+                {
+                    initiative.InfoSort = sortRepository.GetSingle(e => e.Sort_Entity_ID == initiative.id
+                                                                && e.Sort_Entity_Kind == initiative.AAA_EntityName
+                                                                && e.Sort_ParentInfo == "Dashboard_" + ID + "_Department_" + department.id
+                                                                && e.Sort_User_ID == byUserId);
+                }
             }
 
             return response;

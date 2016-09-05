@@ -14,8 +14,8 @@
                 <th>Basis</th>
             </tr>
         </thead>
-        <tbody dragula='"metrics-bag"'>
-            <tr ng-repeat="metric in getMetrics()">
+        <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
+            <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard">
                 <td class="columnMaxWidth">
                     <span class="btn btn-xs btn-default glyphicon glyphicon-cog" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
                     <span class="btn btn-xs btn-default" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
@@ -37,8 +37,8 @@
                 <th style="">Target Date</th>
             </tr>
         </thead>
-        <tbody dragula='"initiatives--bag"'>
-            <tr ng-repeat="initiative in getInitiatives()">
+        <tbody dragula='"initiatives-bag"' dragula-model="department.Initiatives">
+            <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard">
                 <td style="text-align:left;" class="columnMaxWidth">
                     <span class="btn btn-xs btn-default glyphicon glyphicon-cog" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
                     <span class="btn btn-xs btn-default" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> {{initiative.Title}}

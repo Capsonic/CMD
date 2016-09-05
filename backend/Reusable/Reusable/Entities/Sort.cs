@@ -5,7 +5,7 @@ namespace Reusable
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Sort")]
-    public partial class Sort
+    public partial class Sort : BaseEntity
     {
         [Key]
         public int SortKey { get; set; }
@@ -22,8 +22,10 @@ namespace Reusable
 
         public int? Sort_Sequence { get; set; }
 
-        public int? Sort_ManyToMany_ID { get; set; }
+        public string Sort_ParentInfo { get; set; }
 
         public virtual User User { get; set; }
+
+        public override int id { get { return SortKey; } }
     }
 }

@@ -53,26 +53,28 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                 return scope.$parent.$parent.baseEntity;
             };
 
-            scope.getMetrics = function() {
-                return scope.department.Metrics.filter(function(metric) {
-                    return scope.isHiddenForCurrentDashboard(metric) == false;
-                });
-            };
-            scope.getInitiatives = function() {
-                return scope.department.Initiatives.filter(function(initiative) {
-                    return scope.isHiddenForCurrentDashboard(initiative) == false;
-                });
-            };
+            // scope.getMetrics = function() {
+            //     return scope.department.Metrics.filter(function(metric) {
+            //         return scope.isHiddenForCurrentDashboard(metric) == false;
+            //     }).sort(function(a, b) {
+            //         return a.InfoSort.Sort_Sequence - b.InfoSort.Sort_Sequence;
+            //     });
+            // };
+            // scope.getInitiatives = function() {
+            //     return scope.department.Initiatives.filter(function(initiative) {
+            //         return scope.isHiddenForCurrentDashboard(initiative) == false;
+            //     });
+            // };
 
-            scope.isHiddenForCurrentDashboard = function(metricOrInitiative) {
+            scope.isShownForCurrentDashboard = function(metricOrInitiative) {
                 if (metricOrInitiative.HiddenForDashboards) {
                     var hiddenDashboards = metricOrInitiative.HiddenForDashboards.split(',');
                     var oFound = hiddenDashboards.find(function(id) {
                         return id == currentDashboard().id;
                     });
-                    return oFound != undefined;
+                    return oFound == undefined;
                 } else {
-                    return false;
+                    return true;
                 }
             };
 
@@ -120,6 +122,58 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     }
                 }
             };
+
+            scope.$on('metrics-bag.drop-model', function(e, el, source) {
+                var sortSequence = 0;
+                scope.department.Metrics.forEach(function(oMetric) {
+                    oMetric.InfoSort.Sort_Sequence = sortSequence++;
+                });
+
+                for (var i = 0; i < scope.$parent.$parent.baseEntity.Departments.length; i++) {
+                    var current = scope.$parent.$parent.baseEntity.Departments[i];
+                    if (current.id == scope.department.id) {
+                        current.editMode = true;
+                        scope.$parent.$parent.pendingToSave = scope.$parent.$parent.getPendingToSaveCount();
+                        break;
+                    }
+                }
+            });
+
+            scope.$on('initiatives-bag.drop-model', function(e, el, source) {
+                var sortSequence = 0;
+                scope.department.Initiatives.forEach(function(oMetric) {
+                    oMetric.InfoSort.Sort_Sequence = sortSequence++;
+                });
+
+                for (var i = 0; i < scope.$parent.$parent.baseEntity.Departments.length; i++) {
+                    var current = scope.$parent.$parent.baseEntity.Departments[i];
+                    if (current.id == scope.department.id) {
+                        current.editMode = true;
+                        scope.$parent.$parent.pendingToSave = scope.$parent.$parent.getPendingToSaveCount();
+                        break;
+                    }
+                }
+            });
+
+            scope.$on('showMetric', function(event, metric) {
+                scope.department.Metrics.forEach(function(oMetric) {
+                    if (oMetric.id == metric.id) {
+                        oMetric.HiddenForDashboardsTags = metric.HiddenForDashboardsTags;
+                        oMetric.HiddenForDashboards = metric.HiddenForDashboards;
+                    }
+                });
+            });
+            
+            scope.$on('showInitiative', function(event, initiative) {
+                scope.department.Initiatives.forEach(function(oInitiative) {
+                    if (oInitiative.id == initiative.id) {
+                        oInitiative.HiddenForDashboardsTags = initiative.HiddenForDashboardsTags;
+                        oInitiative.HiddenForDashboards = initiative.HiddenForDashboards;
+                    }
+                });
+            });
+
+
         }
     };
 });
