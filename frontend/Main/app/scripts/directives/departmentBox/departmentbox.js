@@ -14,7 +14,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
             department: '='
         },
         link: function postLink(scope, element, attrs) {
-            element.hide();
+            //element.hide();
 
             var sizer = element.find('.Sizer');
             var input = element.find('.Sizer.form-control');

@@ -10,6 +10,7 @@
 angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService) {
     $activityIndicator.startAnimating();
     $scope.isLoading = true;
+    $scope.isDesignMode = true;
     $scope.options = {
         gridType: 'fit', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
@@ -275,8 +276,11 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         });
     };
 
-
     $scope.modePresentation = function() {
+        $scope.isDesignMode = !$scope.isDesignMode;
+    };
+
+    $scope.fullScreen = function() {
         if (screenfull.enabled) {
             screenfull.request(angular.element('#fullscreenMe')[0]);
             angular.element('.Dashboard').css('top', 0);
@@ -285,9 +289,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     if (screenfull.enabled) {
         document.addEventListener(screenfull.raw.fullscreenchange, function() {
-            $scope.isFullScreen = screenfull.isFullscreen;
+            $scope.isDesignMode = !screenfull.isFullscreen;
             if (screenfull.isFullscreen) {
-
                 angular.element('.Dashboard').css('top', 0);
             } else {
                 angular.element('.Dashboard').css('top', 50);

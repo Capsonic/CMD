@@ -1,6 +1,6 @@
 <div class="DepartmentBox" ng-style="{fontSize:department.InfoGridster.FontSize}">
     <h2 ng-style="{fontSize:department.InfoGridster.FontSize * 1.5}">{{department.Title}}</h2>
-    <div class="well well-sm" ng-show="!$parent.$parent.isFullScreen" style="line-height: 0;position:relative;height:40px;width:320px;margin-top:10px;">
+    <div class="well well-sm" ng-show="$parent.$parent.isDesignMode" style="line-height: 0;position:relative;height:40px;width:220px;margin-top:10px;">
         <span style="font-size:10px;position:absolute;top:20px;">Size:</span>
         <input type="number" ng-model="department.InfoGridster.FontSize" class="form-control Sizer" ng-change="departmentToUpdate(department);" style="width:70px;padding:0;height:20px;text-align:right;height:20px;position:absolute;left:35px;top:10px;" ng-change="department.EF_State = 1;">
         <input type="button" class="btn btn-xs btn-default Sizer" value="Show Hidden" ng-click="showHidden(department)" style="height:20px;position:absolute;left:110px;top:10px;">
@@ -17,8 +17,8 @@
         <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
             <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard">
                 <td class="columnMaxWidth">
-                    <span class="btn btn-xs btn-default glyphicon glyphicon-cog" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
-                    <span class="btn btn-xs btn-default" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
+                    <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
+                    <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
                 </td>
                 <td>{{metric.FormattedCurrentValue}}</td>
                 <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td>
@@ -40,8 +40,8 @@
         <tbody dragula='"initiatives-bag"' dragula-model="department.Initiatives">
             <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard">
                 <td style="text-align:left;" class="columnMaxWidth">
-                    <span class="btn btn-xs btn-default glyphicon glyphicon-cog" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
-                    <span class="btn btn-xs btn-default" ng-if="!$parent.$parent.isFullScreen" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> {{initiative.Title}}
+                    <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
+                    <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> {{initiative.Title}}
                 </td>
                 <td>{{initiative.ConvertedDueDate | date:'mediumDate'}}</td>
                 <td>{{initiative.ProgressValue | number:2}} %</td>

@@ -9,7 +9,7 @@
  */
 angular.module('mainApp').controller('DashboardDepartmentsCtrl', function($scope, relationatorController, dashboardService, departmentService) {
 
-    $scope.isFullScreen = true;
+    $scope.isDesignMode = false;
     var relationator = new relationatorController({
         baseService: dashboardService,
         entityName: 'Dashboard',
