@@ -28,13 +28,13 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
 
         //After Load callback
         var _afterLoadCallBack = oMainConfig.afterLoad;
-        if (!_afterLoadCallBack || typeof _afterLoadCallBack != "function") {
+        if (!_afterLoadCallBack || typeof _afterLoadCallBack != 'function') {
             _afterLoadCallBack = function() {};
         }
 
         //After create entity callback
         var _afterCreateCallBack = oMainConfig.afterCreate;
-        if (!_afterCreateCallBack || typeof _afterCreateCallBack != "function") {
+        if (!_afterCreateCallBack || typeof _afterCreateCallBack != 'function') {
             _afterCreateCallBack = function() {};
         }
 
@@ -195,7 +195,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
                 scope.$evalAsync(function() {
                     for (var catalog in _baseService.catalogs) {
                         if (_baseService.catalogs.hasOwnProperty(catalog)) {
-                            scope["cat" + catalog] = _baseService.catalogs[catalog].getAll();
+                            scope['cat' + catalog] = _baseService.catalogs[catalog].getAll();
                         }
                     }
                     scope.baseList = _baseService.getAll()

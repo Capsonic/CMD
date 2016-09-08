@@ -459,7 +459,7 @@ angular.module('inspiracode.crudFactory', [])
 
                 // New Entity
                 if (theEntity.id < 1) {
-                    $http.post(appConfig.API_URL + mainEntity.entityName + theParameters, "=" + escape(JSON.stringify(theEntity)))
+                    $http.post(appConfig.API_URL + mainEntity.entityName + theParameters, '=' + escape(JSON.stringify(theEntity)))
                         .then(function(response) {
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
@@ -858,7 +858,7 @@ angular.module('inspiracode.crudFactory', [])
         var _customPost = function(sCustomMethod, oData) {
             var deferred = $q.defer();
 
-            $http.post(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod, "=" + escape(JSON.stringify(oData)))
+            $http.post(appConfig.API_URL + mainEntity.entityName + '/' + sCustomMethod, '=' + escape(JSON.stringify(oData)))
                 .then(function(response) {
                     if (typeof response.data === 'object') {
                         var backendResponse = response.data;

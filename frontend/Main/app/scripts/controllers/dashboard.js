@@ -100,13 +100,13 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
         for (var catalog in metricService.catalogs) {
             if (metricService.catalogs.hasOwnProperty(catalog)) {
-                $scope["cat" + catalog] = metricService.catalogs[catalog].getAll();
+                $scope['cat' + catalog] = metricService.catalogs[catalog].getAll();
             }
         }
 
         for (var catalog in initiativeService.catalogs) {
             if (initiativeService.catalogs.hasOwnProperty(catalog)) {
-                $scope["cat" + catalog] = initiativeService.catalogs[catalog].getAll();
+                $scope['cat' + catalog] = initiativeService.catalogs[catalog].getAll();
             }
         }
 
@@ -271,6 +271,20 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.saveItem = function(item) {
         return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item).then(function(data) {
             item.InfoGridster = data.InfoGridster;
+            item.Metrics.forEach(function(oMetric){
+                var oFound = data.Metrics.find(function(bMetric){
+                    return oMetric.id == bMetric.id;
+                })
+                oMetric.InfoSort = oFound.InfoSort;
+            });
+
+            item.Initiatives.forEach(function(oInitiative){
+                var oFound = data.Initiatives.find(function(bInitiative){
+                    return oInitiative.id == bInitiative.id;
+                })
+                oInitiative.InfoSort = oFound.InfoSort;
+            });
+
             item.editMode = false;
             $scope.pendingToSave = $scope.getPendingToSaveCount();
         });
@@ -362,7 +376,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             }
         }
         metricService.save(metric).then(function() {
-            $scope.$broadcast("showMetric", metric);
+            $scope.$broadcast('showMetric', metric);
         });
 
     };
@@ -375,7 +389,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             }
         }
         initiativeService.save(initiative).then(function() {
-            $scope.$broadcast("showInitiative", initiative);
+            $scope.$broadcast('showInitiative', initiative);
         });
     };
 
@@ -388,8 +402,8 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         // metric.HiddenForDashboardsTags = [tagAdded]
     };
 
-    $scope.on_change_sortingMetricsOrInitiatives = function() {
-        $scope.options.draggable.enabled = !$scope.sortingMetricsOrInitiatives;
+    $scope.on_change_sortingMetricsOrInitiatives = function(newValue) {
+        $scope.options.draggable.enabled = !newValue;
     };
 
 });

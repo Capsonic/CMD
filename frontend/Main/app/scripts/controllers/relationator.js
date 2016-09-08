@@ -33,7 +33,7 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
 
         //After Load callback
         var _afterLoadCallBack = oMainConfig.afterLoad;
-        if (!_afterLoadCallBack || typeof _afterLoadCallBack != "function") {
+        if (!_afterLoadCallBack || typeof _afterLoadCallBack != 'function') {
             _afterLoadCallBack = function() {};
         }
 
@@ -72,12 +72,27 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
             else if (entityFoundInOccuppied) {
                 expanded = entityFoundInOccuppied.expanded;
                 entityFoundInOccuppied[oMainConfig.entityName + 's'] = [];
-                entityFoundInOccuppied['Dashboards'] = [];
-                entityFoundInOccuppied['Metrics'] = [];
-                entityFoundInOccuppied['Initiatives'] = [];
-                entityFoundInOccuppied['Departments'] = [];
+                
+                var oNavProperties = {};
+                for (var prop in entityFoundInOccuppied) {
+                    if (entityFoundInOccuppied.hasOwnProperty(prop)) {
+                        if (Array.isArray(entityFoundInOccuppied[prop])) {
+                            oNavProperties[prop] = entityFoundInOccuppied[prop];
+                            entityFoundInOccuppied[prop] = [];
+                        }
+                    }
+                }
+                // entityFoundInOccuppied['Dashboards'] = [];
+                // entityFoundInOccuppied['Metrics'] = [];
+                // entityFoundInOccuppied['Initiatives'] = [];
+                // entityFoundInOccuppied['Departments'] = [];
                 _baseRelatedService.addToParent(oMainConfig.entityName, scope.baseEntity.id, entityFoundInOccuppied).then(function(data) {
                     entityFoundInOccuppied.expanded = expanded;
+                    for (var prop in oNavProperties) {
+                        if (oNavProperties.hasOwnProperty(prop)) {
+                            entityFoundInOccuppied[prop] = oNavProperties[prop];
+                        }
+                    }
                     // _synchronizeIfFilter(entityFoundInOccuppied, 'occuppied');
                     alertify.success('Moved successfully.');
                 });
@@ -154,11 +169,6 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
 
 
         var _afterLoad = function() {
-            // for (catalog in _baseService.catalogs) {
-            //  if (_baseService.catalogs.hasOwnProperty(catalog)) {
-            //      scope["the" + catalog + "s"] = _baseService.catalogs[catalog].getAll();
-            //  }
-            // }
             _afterLoadCallBack();
             $activityIndicator.stopAnimating();
         };
@@ -184,7 +194,7 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
 
                         for (var catalog in _baseService.catalogs) {
                             if (_baseService.catalogs.hasOwnProperty(catalog)) {
-                                scope["cat" + catalog] = _baseService.catalogs[catalog].getAll();
+                                scope['cat' + catalog] = _baseService.catalogs[catalog].getAll();
                             }
                         }
 
@@ -193,7 +203,7 @@ angular.module('mainApp').factory('relationatorController', function($log, $acti
                             _baseRelatedService.customGet('GetAvailableForEntity/' + oMainConfig.entityName + '/' + $routeParams.id).then(function(data) {
                                 for (var catalog in _baseRelatedService.catalogs) {
                                     if (_baseRelatedService.catalogs.hasOwnProperty(catalog)) {
-                                        scope["cat" + catalog] = _baseRelatedService.catalogs[catalog].getAll();
+                                        scope['cat' + catalog] = _baseRelatedService.catalogs[catalog].getAll();
                                     }
                                 }
                                 scope.baseEntity = angular.copy(theOriginalEntity);

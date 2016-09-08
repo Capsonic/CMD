@@ -31,11 +31,6 @@ angular.module('mainApp', [
     //     controller: 'MainCtrl',
     //     controllerAs: 'main'
     // })
-        .when('/about', {
-            templateUrl: 'views/about.html',
-            controller: 'AboutCtrl',
-            controllerAs: 'about'
-        })
         .when('/dashboards', {
             templateUrl: 'views/dashboards.html',
             controller: 'DashboardsCtrl',
@@ -45,11 +40,6 @@ angular.module('mainApp', [
             templateUrl: 'views/dashboard.html',
             controller: 'DashboardCtrl',
             controllerAs: 'dashboard'
-        })
-        .when('/administration', {
-            templateUrl: 'views/administration.html',
-            controller: 'AdministrationCtrl',
-            controllerAs: 'administration'
         })
         .when('/dashboard-departments', {
             templateUrl: 'views/dashboard-departments.html',

@@ -36,7 +36,7 @@ angular.module('mainApp').config(function($provide) {
                 if (!prevPromise) {
                     nextPromise = success();
                     if (!isPromiseLike(nextPromise)) {
-                        error.message = "Task " + key + " did not return a promise.";
+                        error.message = 'Task ' + key + ' did not return a promise.';
                         throw error;
                     }
                 } else {
@@ -49,7 +49,7 @@ angular.module('mainApp').config(function($provide) {
                             }
                             var ret = success(data);
                             if (!isPromiseLike(ret)) {
-                                error.message = "Task " + key + " did not return a promise.";
+                                error.message = 'Task ' + key + ' did not return a promise.';
                                 throw error;
                             }
                             return ret;
@@ -61,7 +61,7 @@ angular.module('mainApp').config(function($provide) {
                             }
                             var ret = fail(reason);
                             if (!isPromiseLike(ret)) {
-                                error.message = "Fail for task " + key + " did not return a promise.";
+                                error.message = 'Fail for task ' + key + ' did not return a promise.';
                                 throw error;
                             }
                             return ret;

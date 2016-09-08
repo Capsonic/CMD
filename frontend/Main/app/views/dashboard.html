@@ -8,7 +8,7 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="">CMD</a>
-            <p class="navbar-brand navbar-right DashboardTitle" style="font-weight:bold;margin:0;">{{baseEntity.Name}} - {{baseEntity.Description}}</p>
+            <p class="navbar-brand navbar-right DashboardTitle"><marquee>{{baseEntity.Name}} - {{baseEntity.Description}}</marquee></p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
             <div class="navbar-form navbar-right">
@@ -17,7 +17,7 @@
                         Sorting
                         <br>Metrics / Initiatives
                     </label>
-                    <input type="checkbox" value="" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives();">
+                    <input type="checkbox" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives(sortingMetricsOrInitiatives);">
                 </div>
                 <div class="form-group" style="width:60px;margin-top:-10px;">
                     <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
@@ -31,7 +31,7 @@
                     <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
                     <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
                 </div>
-                <div class="form-group" style="width:330px;margin-top:5px;">
+                <div class="form-group" style="width:330px;margin-top:5px;"> <!-- Take into account badge width with numbers are bigger than 9 -->
                     <button type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
                     <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Mode Design' : 'Mode Presentation'}}</button>
                     <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
@@ -152,7 +152,6 @@
                     <tbody>
                         <tr ng-repeat="metric in getHiddenMetrics()">
                             <td class="columnMaxWidth">
-                                <span class="btn btn-xs btn-default glyphicon glyphicon-cog" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
                                 <span class="btn btn-xs btn-default" style="position: relative;top: -2px;" ng-click="showMetric(metric);">Show</span> {{metric.Title}}
                             </td>
                             <td>{{metric.FormattedCurrentValue}}</td>
@@ -175,7 +174,6 @@
                     <tbody>
                         <tr ng-repeat="initiative in getHiddenInitiatives()">
                             <td style="text-align:left;" class="columnMaxWidth">
-                                <span class="btn btn-xs btn-default glyphicon glyphicon-cog" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
                                 <span class="btn btn-xs btn-default" style="position: relative;top: -2px;" ng-click="showInitiative(initiative);">Show</span> {{initiative.Title}}
                             </td>
                             <td>{{initiative.ConvertedDueDate | date:'mediumDate'}}</td>

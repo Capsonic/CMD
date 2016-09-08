@@ -65,7 +65,7 @@ angular.module('CMD.CRUDServices', [])
 
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: "Dashboard",
+        entityName: 'Dashboard',
 
         catalogs: [],
 
@@ -87,8 +87,7 @@ angular.module('CMD.CRUDServices', [])
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {
-        },
+        adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
             //self.validate(theEntity);
@@ -103,7 +102,7 @@ angular.module('CMD.CRUDServices', [])
 }).service('departmentService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: "Department",
+        entityName: 'Department',
 
         catalogs: [],
 
@@ -111,8 +110,7 @@ angular.module('CMD.CRUDServices', [])
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {
-        },
+        adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
             //self.validate(theEntity);
@@ -157,7 +155,7 @@ angular.module('CMD.CRUDServices', [])
 
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: "Metric",
+        entityName: 'Metric',
 
         catalogs: ['ComparatorMethod', 'MetricFormat', 'MetricBasis', 'Dashboards'],
 
@@ -170,8 +168,7 @@ angular.module('CMD.CRUDServices', [])
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {
-        },
+        adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
             theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
@@ -186,7 +183,7 @@ angular.module('CMD.CRUDServices', [])
 }).service('initiativeService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
-        entityName: "Initiative",
+        entityName: 'Initiative',
 
         catalogs: ['Dashboards'],
 
@@ -197,10 +194,11 @@ angular.module('CMD.CRUDServices', [])
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {
-        },
+        adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
+            theEntity.DueDate = theEntity.ConvertedDueDate ? theEntity.ConvertedDueDate.toJSON() : null;
+            theEntity.ActualDate = theEntity.ConvertedActualDate ? theEntity.ConvertedActualDate.toJSON() : null;
             theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
         },
 

@@ -163,7 +163,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     }
                 });
             });
-            
+
             scope.$on('showInitiative', function(event, initiative) {
                 scope.department.Initiatives.forEach(function(oInitiative) {
                     if (oInitiative.id == initiative.id) {
@@ -174,6 +174,46 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
             });
 
 
+            scope.getMetricStyle = function(oMetric) {
+
+                if (oMetric.CurrentValue && oMetric.GoalValue) {
+                    switch (oMetric.ComparatorMethodKey) {
+                        case 1: //Greater Than
+                            if (oMetric.CurrentValue < oMetric.GoalValue) {
+                                return 'GoingBad';
+                            }
+                            break;
+                        case 2: //Less Than
+                            if (oMetric.CurrentValue > oMetric.GoalValue) {
+                                return 'GoingBad';
+                            }
+                            break;
+                        case 3: //Around Than
+                            // statements_1
+                            // break;
+                        default:
+                            return '';
+                    }
+                    return 'GoingWell';
+                }
+                return '';
+            };
+
+            scope.getInitiativeStyle = function(oInitiative) {
+                if (oInitiative.ProgressValue < 100) {
+                    if (oInitiative.ConvertedActualDate < oInitiative.ConvertedDueDate) {
+                        return 'GoingBad';
+                    } else {
+                        return ''
+                    }
+                } else {
+                    if (oInitiative.ConvertedActualDate >= oInitiative.ConvertedDueDate) {
+                        return 'GoingWell';
+                    } else {
+                        return ''
+                    }
+                }
+            };
         }
     };
 });
