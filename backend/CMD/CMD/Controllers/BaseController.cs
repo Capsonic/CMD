@@ -20,7 +20,6 @@ namespace CMD.Controllers
 
             LoggedUser loggedUser = new LoggedUser((ClaimsIdentity)User.Identity);
             _logic.byUserId = loggedUser.UserID;
-            _logic.byUserId = 1;
         }
 
         // GET: api/Base

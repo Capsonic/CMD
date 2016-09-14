@@ -1,4 +1,4 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation" ng-if="!isLoading">
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
@@ -8,7 +8,9 @@
                 <span class="icon-bar"></span>
             </button>
             <a class="navbar-brand" href="">CMD</a>
-            <p class="navbar-brand navbar-right DashboardTitle"><marquee>{{baseEntity.Name}} - {{baseEntity.Description}}</marquee></p>
+            <p class="navbar-brand navbar-right DashboardTitle">
+                <marquee>{{baseEntity.Name}} - {{baseEntity.Description}}</marquee>
+            </p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
             <div class="navbar-form navbar-right">
@@ -31,13 +33,22 @@
                     <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
                     <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
                 </div>
-                <div class="form-group" style="width:330px;margin-top:5px;"> <!-- Take into account badge width with numbers are bigger than 9 -->
+                <div class="form-group" style="width:330px;margin-top:5px;">
+                    <!-- Take into account badge width with numbers are bigger than 9 -->
                     <button type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
                     <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Mode Design' : 'Mode Presentation'}}</button>
                     <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
                     <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
                 </div>
             </div>
+            <ul class="nav navbar-nav navbar-right">
+                <li class="dropdown">
+                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 20px 0 0 0;"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
+                    <ul class="dropdown-menu">
+                        <li><a href="" ng-click="logOut()">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
         </div>
     </div>
 </div>

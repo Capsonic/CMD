@@ -71,6 +71,7 @@ namespace CMD.App_Start
             kernel.Bind<IDepartmentLogic>().To<DepartmentLogic>();
             kernel.Bind<IMetricLogic>().To<MetricLogic>();
             kernel.Bind<IInitiativeLogic>().To<InitiativeLogic>();
+            kernel.Bind<IUserLogic>().To<UserLogic>();
             kernel.Bind(typeof(BaseController<>)).ToSelf().InRequestScope();
         }
     }

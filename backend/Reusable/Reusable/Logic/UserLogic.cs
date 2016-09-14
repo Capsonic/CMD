@@ -4,7 +4,11 @@ using System.Data.Entity;
 
 namespace Reusable
 {
-    public class UserLogic : BaseLogic<User>
+    public interface IUserLogic : IBaseLogic<User>
+    {
+    }
+
+    public class UserLogic : BaseLogic<User>, IUserLogic
     {
         public UserLogic(DbContext context, IRepository<User> repository) : base(context, repository)
         {

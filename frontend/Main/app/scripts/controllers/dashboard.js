@@ -406,4 +406,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         $scope.options.draggable.enabled = !newValue;
     };
 
+    $scope.pendingToSave = 0;
+
 });
