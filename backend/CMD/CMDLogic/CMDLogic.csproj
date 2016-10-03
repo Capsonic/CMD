@@ -58,6 +58,7 @@
     <Compile Include="EF\Dashboard.cs" />
     <Compile Include="EF\Gant.cs" />
     <Compile Include="EF\Initiative.cs" />
+    <Compile Include="EF\MetricHistory.cs" />
     <Compile Include="EF\Metric.cs" />
     <Compile Include="EF\Department.cs" />
     <Compile Include="Entities\cat_MetricFormat.cs" />
@@ -121,6 +122,10 @@
     <Compile Include="Migrations\201609051833346_sort_parentInfo.Designer.cs">
       <DependentUpon>201609051833346_sort_parentInfo.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610031807113_MetricHistory.cs" />
+    <Compile Include="Migrations\201610031807113_MetricHistory.Designer.cs">
+      <DependentUpon>201610031807113_MetricHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -166,6 +171,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201609051833346_sort_parentInfo.resx">
       <DependentUpon>201609051833346_sort_parentInfo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610031807113_MetricHistory.resx">
+      <DependentUpon>201610031807113_MetricHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

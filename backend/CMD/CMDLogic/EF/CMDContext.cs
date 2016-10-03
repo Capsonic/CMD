@@ -73,6 +73,16 @@ namespace CMDLogic.EF
                 .WithMany(e => e.Metrics)
                 .Map(m => m.ToTable("cross_Department_Metric").MapLeftKey("MetricKey").MapRightKey("DepartmentKey"));
 
+            modelBuilder.Entity<MetricHistory>()
+                .Property(e => e.CurrentValue)
+                .HasPrecision(15, 4);
+
+            modelBuilder.Entity<MetricHistory>()
+                .Property(e => e.GoalValue)
+                .HasPrecision(15, 4);
+
+
+            #region Reusable
             modelBuilder.Entity<User>()
                 .Property(e => e.Identicon64)
                 .IsUnicode(false);
@@ -111,6 +121,8 @@ namespace CMDLogic.EF
                 .HasMany(e => e.Tracks4)
                 .WithRequired(e => e.User_CreatedBy)
                 .HasForeignKey(e => e.User_CreatedByKey);
+
+            #endregion
         }
     }
 }

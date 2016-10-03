@@ -11,6 +11,7 @@ namespace CMDLogic.EF
         public Metric()
         {
             Departments = new HashSet<Department>();
+            MetricHistorys = new HashSet<MetricHistory>();
             sys_active = true;
         }
 
@@ -41,5 +42,7 @@ namespace CMDLogic.EF
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Department> Departments { get; set; }
+
+        public virtual ICollection<MetricHistory> MetricHistorys { get; set; }
     }
 }
