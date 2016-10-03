@@ -63,6 +63,7 @@
     <Compile Include="EF\Department.cs" />
     <Compile Include="Entities\cat_MetricFormat.cs" />
     <Compile Include="Entities\cat_MetricBasis.cs" />
+    <Compile Include="Entities\MetricHistory.cs" />
     <Compile Include="Entities\Metric.cs" />
     <Compile Include="Entities\Initiative.cs" />
     <Compile Include="Entities\Gant.cs" />
@@ -126,6 +127,10 @@
     <Compile Include="Migrations\201610031807113_MetricHistory.Designer.cs">
       <DependentUpon>201610031807113_MetricHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610032311413_MetricHistoryDate.cs" />
+    <Compile Include="Migrations\201610032311413_MetricHistoryDate.Designer.cs">
+      <DependentUpon>201610032311413_MetricHistoryDate.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -174,6 +179,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610031807113_MetricHistory.resx">
       <DependentUpon>201610031807113_MetricHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610032311413_MetricHistoryDate.resx">
+      <DependentUpon>201610032311413_MetricHistoryDate.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

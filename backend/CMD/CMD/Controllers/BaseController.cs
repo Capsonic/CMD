@@ -156,5 +156,26 @@ namespace CMD.Controllers
                 return response.Error("ERROR: " + e.Message, e);
             }
         }
+
+
+        // POST: api/Base
+        [HttpGet Route("GetSingleByParent/{parentType}/{parentId}")]
+        virtual public CommonResponse GetSingleByParent(string parentType, int parentId)
+        {
+            CommonResponse response = new CommonResponse();
+
+            try
+            {
+                Type parentClassName = Type.GetType("CMDLogic.EF." + parentType + ", CMDLogic", true);
+                MethodInfo method = _logic.GetType().GetMethod("GetSingleByParent");
+                MethodInfo generic = method.MakeGenericMethod(parentClassName);
+                response = (CommonResponse)generic.Invoke(_logic, new object[] { parentId });
+                return response;
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
     }
 }

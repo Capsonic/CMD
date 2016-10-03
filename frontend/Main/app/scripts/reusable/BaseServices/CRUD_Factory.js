@@ -652,6 +652,7 @@ angular.module('inspiracode.crudFactory', [])
                             deferred.reject(data);
                         } else {
                             mainEntity.adapterIn(backendResponse.Result);
+                            _populateCatalogValues(_adapter(backendResponse.Result, _self));
                             var oEntity = _getById(backendResponse.Result.id);
                             if (oEntity) { //Already exists, lets updated it.
                                 angular.copy(backendResponse.Result, oEntity);
@@ -1085,6 +1086,41 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _getSingleByParent = function(parentType, parentKey) {
+            var deferred = $q.defer();
+
+            $http.get(appConfig.API_URL + mainEntity.entityName + '/GetSingleByParent/' + parentType + '/' + parentKey + '?noCache=' + Number(new Date()))
+                .then(
+                    /*success*/
+                    function(response) {
+                        var backendResponse = response.data;
+                        if (backendResponse.ErrorThrown) {
+                            var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                            alertify.alert(alertifyContent).set('modal', true);
+                            deferred.reject(response);
+                        } else {
+                            if (backendResponse.Result != null) {
+                                mainEntity.adapterIn(backendResponse.Result);
+                                var oEntity = _getById(backendResponse.Result.id);
+                                if (oEntity) { //Already exists, lets updated it.
+                                    angular.copy(backendResponse.Result, oEntity);
+                                } else { //First time loaded, lets add it.
+                                    _arrAllRecords.push(backendResponse.Result);
+                                }
+                            }
+                            deferred.resolve(backendResponse.Result);
+                        }
+                    },
+                    /*error*/
+                    function(response) {
+                        alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                        log.debug(response);
+                        deferred.reject(response);
+                    });
+
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1133,7 +1169,8 @@ angular.module('inspiracode.crudFactory', [])
             //After Implementation with Generic Repository and Entity Framework:
             customPost: _customPost, //Request a custom name method via Post.
             createEntity: _createEntity, //Gets a new instance of entity from the backend.
-            addToParent: _addToParent //Saves an entity and attaches to parent specified.
+            addToParent: _addToParent, //Saves an entity and attaches to parent specified.
+            getSingleByParent: _getSingleByParent //Get single by parent
         };
         _arrDependenciesAndThis.push(oAPI);
         var _self = oAPI;

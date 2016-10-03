@@ -1,6 +1,6 @@
 namespace CMDLogic.EF
 {
-    using System.Collections.Generic;
+    using System;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
@@ -21,6 +21,8 @@ namespace CMDLogic.EF
         public decimal? CurrentValue { get; set; }
 
         public decimal? GoalValue { get; set; }
+
+        public DateTime? MetricDate { get; set; }
 
         public virtual Metric Metric { get; set; }
     }

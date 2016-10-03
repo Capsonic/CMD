@@ -28,7 +28,7 @@ namespace CMDLogic.Logic
             this.dashboardRepository = dashboardRepository;
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<Department> entities)
+        protected override void loadNavigationProperties(DbContext context, params Department[] entities)
         {
             initiativeRepository.byUserId = byUserId;
             metricRepository.byUserId = byUserId;
@@ -39,7 +39,7 @@ namespace CMDLogic.Logic
                 //item.Dashboards = dashboardRepository.GetListByParent<Department>(item.id);
                 item.Initiatives = initiativeRepository.GetListByParent<Department>(item.id);
                 item.Metrics = metricRepository.GetListByParent<Department>(item.id);
-                                
+
                 //if (item.InfoGridster == null)
                 //{
                 //    Gridster gridsterFromFirstCreator = gridsterRepository.GetSingle(e => e.Gridster_Entity_ID == item.id

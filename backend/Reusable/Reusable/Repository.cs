@@ -293,7 +293,7 @@ namespace Reusable
             }
 
             //Removing Recurivity
-            string navigationPropertyName = typeof(P).Name + "s";
+            string navigationPropertyName = typeof(P).Name;
             foreach (T item in list)
             {
                 //PropertyInfo prop = item.GetType().GetProperty(navigationPropertyName, BindingFlags.Public | BindingFlags.Instance);
@@ -301,7 +301,18 @@ namespace Reusable
                 //{
                 //    prop.SetValue(item, new List<P>());
                 //}
-                context.Entry(item).Collection<P>(navigationPropertyName).CurrentValue.Clear();
+
+                try
+                {
+                    //Trying for collection
+                    context.Entry(item).Collection<P>(navigationPropertyName + "s").CurrentValue.Clear();
+                }
+                catch (Exception)
+                {
+                    //Trying for reference
+                    //context.Entry(item).Reference<P>(navigationPropertyName).CurrentValue.
+                }
+                
             }
 
             return list;

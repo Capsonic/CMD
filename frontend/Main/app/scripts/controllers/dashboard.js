@@ -271,15 +271,15 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.saveItem = function(item) {
         return departmentService.addToParent('Dashboard', $scope.baseEntity.id, item).then(function(data) {
             item.InfoGridster = data.InfoGridster;
-            item.Metrics.forEach(function(oMetric){
-                var oFound = data.Metrics.find(function(bMetric){
+            item.Metrics.forEach(function(oMetric) {
+                var oFound = data.Metrics.find(function(bMetric) {
                     return oMetric.id == bMetric.id;
                 })
                 oMetric.InfoSort = oFound.InfoSort;
             });
 
-            item.Initiatives.forEach(function(oInitiative){
-                var oFound = data.Initiatives.find(function(bInitiative){
+            item.Initiatives.forEach(function(oInitiative) {
+                var oFound = data.Initiatives.find(function(bInitiative) {
                     return oInitiative.id == bInitiative.id;
                 })
                 oInitiative.InfoSort = oFound.InfoSort;
@@ -407,5 +407,34 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.pendingToSave = 0;
+
+
+
+
+    $scope.addMetricHistory = function(historyToAdd, metricSource) {
+        var newMetricHistory = {
+            FormattedCurrentValue: metricService.getFormattedValue(historyToAdd.CurrentValue, metricSource.FormatKey),
+            FormattedGoalValue: metricService.getFormattedValue(historyToAdd.GoalValue, metricSource.FormatKey),
+            EqualityValue: metricService.getFormattedEquality(metricSource.ComparatorMethodKey),
+            CurrentValue: historyToAdd.CurrentValue,
+            GoalValue: historyToAdd.GoalValue,
+            ConvertedMetricDate: historyToAdd.ConvertedMetricDate,
+            MetricDate: historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null
+        };
+        metricSource.MetricHistorys.push(newMetricHistory);
+
+        $scope.resetMetricHistoryToAdd();
+
+    };
+
+    $scope.resetMetricHistoryToAdd = function() {
+
+        $scope.metricToSave.metricHistoryToAdd = $scope.metricToSave.metricHistoryToAdd || {};
+        $scope.metricToSave.metricHistoryToAdd.CurrentValue = null;
+        $scope.metricToSave.metricHistoryToAdd.GoalValue = null;
+        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate = new Date();
+        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setSeconds(0);
+        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setMilliseconds(0);
+    }
 
 });

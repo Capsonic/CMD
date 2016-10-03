@@ -14,7 +14,7 @@ namespace Reusable
         {
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<User> entities)
+        protected override void loadNavigationProperties(DbContext context, params User[] entities)
         {
             //Empty
         }
@@ -32,7 +32,7 @@ namespace Reusable
                 if (entity != null)
                 {
                     entities.Add(entity);
-                    loadNavigationProperties(context, entities);
+                    loadNavigationProperties(context, entities.ToArray());
                 }
                 return response.Success(entity);
 

@@ -20,7 +20,7 @@ namespace Reusable
             //this.byUserId = byUserId;
         }
 
-        protected abstract void loadNavigationProperties(DbContext context, IList<Entity> entities);
+        protected abstract void loadNavigationProperties(DbContext context, params Entity[] entities);
 
         protected static EntityState GetEntityState(EF_EntityState state)
         {
@@ -109,7 +109,7 @@ namespace Reusable
                 {
                     repository.byUserId = byUserId;
                     entities.Add(entity);
-                    loadNavigationProperties(context, entities);
+                    loadNavigationProperties(context, entities.ToArray());
                     return response.Success(entity);
                 }
                 else
@@ -280,7 +280,7 @@ namespace Reusable
 
                 repository.byUserId = byUserId;
                 entities = repository.GetListByParent<ParentType>(parentID);
-                loadNavigationProperties(context, entities);
+                loadNavigationProperties(context, entities.ToArray());
                 //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
                 //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
                 //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
@@ -292,6 +292,30 @@ namespace Reusable
             }
 
             return response.Success(entities);
+        }
+
+        public virtual CommonResponse GetSingleByParent<ParentType>(int parentID) where ParentType : BaseEntity
+        {
+            CommonResponse response = new CommonResponse();
+            Entity entity;
+
+            try
+            {
+
+                repository.byUserId = byUserId;
+                entity = repository.GetSingleByParent<ParentType>(parentID);
+                loadNavigationProperties(context, entity);
+                //MethodInfo method = repository.GetType().GetMethod("GetListByParent");
+                //MethodInfo genericMethod = method.MakeGenericMethod(new Type[] { typeof(ParentType) });
+                //entities = (IList<Entity>) genericMethod.Invoke(repository, new object[] { parentID });
+
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+
+            return response.Success(entity);
         }
 
         public virtual CommonResponse GetAvailableFor<ForEntity>(int id) where ForEntity : BaseEntity
@@ -318,7 +342,7 @@ namespace Reusable
 
                 availableEntities = allEntities.Where(e => !childrenInForEntity.Any(o => o.id == e.id));
 
-                loadNavigationProperties(context, availableEntities.ToList());
+                loadNavigationProperties(context, availableEntities.ToArray());
             }
             catch (Exception e)
             {

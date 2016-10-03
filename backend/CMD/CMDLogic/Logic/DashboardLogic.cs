@@ -2,6 +2,7 @@
 using Reusable;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System;
 
 namespace CMDLogic.Logic
 {
@@ -26,7 +27,7 @@ namespace CMDLogic.Logic
             this.sortRepository = sortRepository;
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<Dashboard> entities)
+        protected override void loadNavigationProperties(DbContext context, params Dashboard[] entities)
         {
             departmentLogic.byUserId = byUserId;
 

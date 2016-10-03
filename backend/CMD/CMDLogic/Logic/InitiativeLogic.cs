@@ -2,6 +2,7 @@
 using Reusable;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System;
 
 namespace CMDLogic.Logic
 {
@@ -20,14 +21,14 @@ namespace CMDLogic.Logic
             this.cat_Dashboards = cat_Dashboards;
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<Initiative> entities)
+        protected override void loadNavigationProperties(DbContext context, params Initiative[] entities)
         {
             foreach (Initiative item in entities)
             {
                 item.Gants = gantRepository.GetListByParent<Initiative>(item.id);
             }
         }
-
+        
         protected override ICatalogContainer LoadCatalogs()
         {
             return new Catalogs()

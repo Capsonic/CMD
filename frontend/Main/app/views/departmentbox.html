@@ -11,7 +11,6 @@
                 <th style="text-align:left;" class="columnMaxWidth">Metrics</th>
                 <th>Current</th>
                 <th>Goal</th>
-                <th>Basis</th>
             </tr>
         </thead>
         <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
@@ -22,7 +21,6 @@
                 </td>
                 <td>{{metric.FormattedCurrentValue}}</td>
                 <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td>
-                <td>{{metric.BasisValue}}</td>
             </tr>
         </tbody>
     </table>

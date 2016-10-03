@@ -60,39 +60,85 @@
     </div>
 </div>
 <div class="modal" id="modal-metricToSave">
-    <div class="modal-dialog">
+    <div class="modal-dialog" style="max-width: 1200px;width:initial;">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-Description">Update Metric</h4>
+            <div class="modal-header" style="text-align: right;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveMetric(metricToSave)">Save</button>
+                <h4 class="modal-Description pull-left">Update Metric</h4>
             </div>
             <div class="modal-body">
-                <div class="form-group">
-                    <label>Title</label>
-                    <input type="text" id="input" class="form-control" ng-model="metricToSave.Title">
-                    <br>
-                    <label>Description</label>
-                    <textarea class="form-control" rows="3" ng-model="metricToSave.Description"></textarea>
-                    <br>
-                    <label>Current Value</label>
-                    <input type="text" id="input" class="form-control" ng-model="metricToSave.CurrentValue">
-                    <br>
-                    <label>Goal Value</label>
-                    <input type="text" id="input" class="form-control" ng-model="metricToSave.GoalValue">
-                    <br>
-                    <label>Format</label>
-                    <select ng-model="metricToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat"></select>
-                    <br>
-                    <label>Basis</label>
-                    <select ng-model="metricToSave.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis"></select>
-                    <br>
-                    <label>Comparator Method</label>
-                    <select ng-model="metricToSave.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod"></select>
-                    <br>
-                    <label>Hidden for Dashboards</label>
-                    <tags-input template="tag-template" ng-model="metricToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, metricToSave);">
-                        <auto-complete source="loadDashboardsTags($query, metricToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
-                    </tags-input>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <label>Title</label>
+                        <input type="text" class="form-control" ng-model="metricToSave.Title">
+                        <br>
+                        <label>Description</label>
+                        <textarea class="form-control" rows="3" ng-model="metricToSave.Description"></textarea>
+                        <!-- <div class="row">
+                            <div class="col-xs-6">
+                                <label>Current Value</label>
+                                <input type="text" class="form-control" ng-model="metricToSave.CurrentValue" style="text-align:right;">
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Goal Value</label>
+                                <input type="text" class="form-control" ng-model="metricToSave.GoalValue" style="text-align:right;">
+                            </div>
+                        </div> -->
+                        <br>
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <label>Format</label>
+                                <select ng-model="metricToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat"></select>
+                            </div>
+                            <div class="col-xs-6">
+                                <label>Comparator Method</label>
+                                <select ng-model="metricToSave.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod"></select>
+                            </div>
+                        </div>
+                        <br>
+                        <label>Basis</label>
+                        <select ng-model="metricToSave.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis"></select>
+                        <br>
+                        <label>Hidden for Dashboards</label>
+                        <tags-input template="tag-template" ng-model="metricToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, metricToSave);">
+                            <auto-complete source="loadDashboardsTags($query, metricToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                        </tags-input>
+                    </div>
+                    <div class="col-sm-7">
+                        <label>History</label>
+                        <table class="table table-striped table-hover table-bordered" style="margin-bottom: 0;">
+                            <thead>
+                                <tr>
+                                    <th>Date</th>
+                                    <th>Real Value</th>
+                                    <th>Goal Value</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToAdd.ConvertedMetricDate" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.CurrentValue" />
+                                    </td>
+                                    <td>
+                                        <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.GoalValue" />
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-default btn-sm" style="height:35px;" ng-click="addMetricHistory(metricToSave.metricHistoryToAdd, metricToSave);">Add</button>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat="metric in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'">
+                                    <td>{{metric.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
+                                    <td style="text-align:right;">{{metric.FormattedCurrentValue}}</td>
+                                    <td colspan="2" style="text-align:right;">{{metricToSave.EqualityValue}} {{metric.FormattedGoalValue}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
             <div class="modal-footer">
@@ -113,13 +159,13 @@
                 <div class="form-group">
                     <br>
                     <label>Title</label>
-                    <input type="text" id="input" class="form-control" ng-model="initiativeToSave.Title">
+                    <input type="text" class="form-control" ng-model="initiativeToSave.Title">
                     <br>
                     <label>Description</label>
                     <textarea class="form-control" rows="3" ng-model="initiativeToSave.Description"></textarea>
                     <br>
                     <label>Due Date</label>
-                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedDueDate">
+                    <input type="date" class="form-control" ng-model="initiativeToSave.ConvertedDueDate">
                     <br>
                     <label>Progress Value</label>
                     <div class="input-group">
@@ -128,7 +174,7 @@
                     </div>
                     <br>
                     <label>Target Date</label>
-                    <input type="date" id="input" class="form-control" ng-model="initiativeToSave.ConvertedActualDate">
+                    <input type="date" class="form-control" ng-model="initiativeToSave.ConvertedActualDate">
                     <br>
                     <label>Hidden for Dashboards</label>
                     <tags-input template="tag-template" ng-model="initiativeToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, initiativeToSave);">

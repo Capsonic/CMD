@@ -14,24 +14,30 @@ namespace CMDLogic.Logic
         IRepository<cat_MetricBasis> cat_MetricBasisRepository;
         IRepository<cat_MetricFormat> cat_MetricFormatRepository;
         IRepository<Dashboard> cat_Dashboards;
+        IRepository<MetricHistory> metricHistoryRepository;
 
         public MetricLogic(DbContext context, IRepository<Metric> repository,
             IRepository<cat_ComparatorMethod> cat_ComparatorMethodRepository,
             IRepository<cat_MetricBasis> cat_MetricBasisRepository,
             IRepository<cat_MetricFormat> cat_MetricFormatRepository,
-            IRepository<Dashboard> cat_Dashboards) : base(context, repository)
+            IRepository<Dashboard> cat_Dashboards,
+            IRepository<MetricHistory> metricHistoryRepository) : base(context, repository)
         {
             this.cat_ComparatorMethodRepository = cat_ComparatorMethodRepository;
             this.cat_MetricBasisRepository = cat_MetricBasisRepository;
             this.cat_MetricFormatRepository = cat_MetricFormatRepository;
             this.cat_Dashboards = cat_Dashboards;
+            this.metricHistoryRepository = metricHistoryRepository;
         }
 
-        protected override void loadNavigationProperties(DbContext context, IList<Metric> entities)
+        protected override void loadNavigationProperties(DbContext context, params Metric[] entities)
         {
-            //Empty by the momemnt.
+            foreach (var item in entities)
+            {
+                item.MetricHistorys = metricHistoryRepository.GetListByParent<Metric>(item.id);
+            }
         }
-
+        
         protected override ICatalogContainer LoadCatalogs()
         {
             return new Catalogs()
@@ -49,6 +55,18 @@ namespace CMDLogic.Logic
             public IList<cat_MetricFormat> MetricFormat { get; set; }
             public IList<cat_MetricBasis> MetricBasis { get; set; }
             public IList<Dashboard> Dashboards { get; set; }
+        }
+
+        protected override void onSaving(DbContext context, Metric entity, int? parentId = null)
+        {
+            foreach (var item in entity.MetricHistorys)
+            {
+                if (item.id < 1)
+                {
+                    context.Entry(item).State = EntityState.Added;
+                }
+            }
+            context.SaveChanges();
         }
     }
 }

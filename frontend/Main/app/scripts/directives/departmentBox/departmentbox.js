@@ -95,9 +95,12 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
 
             scope.editMetric = function(metric) {
-                scope.$parent.$parent.selectedMetric = metric;
-                angular.element('#modal-metricToSave').modal('show');
-                angular.copy(metric, scope.$parent.metricToSave);
+                metricService.loadEntity(metric.id).then(function(data) {
+                    scope.$parent.$parent.selectedMetric = data;
+                    angular.element('#modal-metricToSave').modal('show');
+                    angular.copy(data, scope.$parent.metricToSave);
+                    scope.$parent.$parent.resetMetricHistoryToAdd();
+                });
             };
 
             scope.editInitiative = function(initiative) {
