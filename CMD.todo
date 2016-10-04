@@ -16,9 +16,9 @@
 
 
 09/22/2013 - Dennis Webex:
- ☐ Mode Presentation by default
+ ✔ Mode Presentation by default @done (16-10-03 12:18)
  ☐ Monthly details shown when clicking a metric/initiative's title
- ☐ Hide Basis
+ ✔ Hide Basis @done (16-10-03 12:20)
  ☐ Show trend (last two months)
  ☐ Around field => "Range Value"
  ☐ Executive dashboard to be the same for all users and controlled by selected users.

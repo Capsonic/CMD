@@ -10,7 +10,7 @@
 angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService) {
     $activityIndicator.startAnimating();
     $scope.isLoading = true;
-    $scope.isDesignMode = true;
+    $scope.isDesignMode = false;
     $scope.options = {
         gridType: 'fit', //fit or scrollVertical or scrollHorizontal
         itemChangeCallback: itemChange,
@@ -419,11 +419,14 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             CurrentValue: historyToAdd.CurrentValue,
             GoalValue: historyToAdd.GoalValue,
             ConvertedMetricDate: historyToAdd.ConvertedMetricDate,
-            MetricDate: historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null
+            MetricDate: historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
+            Note: historyToAdd.Note
         };
         metricSource.MetricHistorys.push(newMetricHistory);
 
         $scope.resetMetricHistoryToAdd();
+
+        $('[data-toggle="tooltip"]').tooltip();
 
     };
 
@@ -432,9 +435,15 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         $scope.metricToSave.metricHistoryToAdd = $scope.metricToSave.metricHistoryToAdd || {};
         $scope.metricToSave.metricHistoryToAdd.CurrentValue = null;
         $scope.metricToSave.metricHistoryToAdd.GoalValue = null;
+        $scope.metricToSave.metricHistoryToAdd.Note = null;
         $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate = new Date();
         $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setSeconds(0);
         $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setMilliseconds(0);
-    }
+    };
 
 });
+
+
+function popoverMetricNote(element, sAction) {
+    $(element).popover(sAction);
+};
