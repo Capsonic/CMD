@@ -36,7 +36,7 @@
                 <div class="form-group" style="width:330px;margin-top:5px;">
                     <!-- Take into account badge width with numbers are bigger than 9 -->
                     <button type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
-                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Mode Design' : 'Mode Presentation'}}</button>
+                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
                     <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
                     <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
                 </div>
