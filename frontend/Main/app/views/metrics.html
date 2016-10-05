@@ -49,8 +49,6 @@
                         <th style="text-align:center;width:100px;"></th>
                         <th st-sort="Title" st-skip-natural="true">Title</th>
                         <th st-sort="Description" st-skip-natural="true">Description</th>
-                        <th st-sort="CurrentValue" st-skip-natural="true">Current Value</th>
-                        <th st-sort="GoalValue" st-skip-natural="true">Goal Value</th>
                         <th st-sort="MetricBasis.Value" st-skip-natural="true">Basis</th>
                     </tr>
                 </thead>
@@ -63,8 +61,6 @@
                         </td>
                         <td style="text-align:left;">{{item.Title}}</td>
                         <td style="text-align:left;">{{item.Description}}</td>
-                        <td style="text-align:right;">{{item.FormattedCurrentValue}}</td>
-                        <td style="text-align:right;">{{item.EqualityValue}} {{item.FormattedGoalValue}}</td>
                         <td>{{item.BasisValue}}</td>
                     </tr>
                 </tbody>
@@ -86,12 +82,6 @@
                     <br>
                     <label>Description</label>
                     <textarea class="form-control" rows="3" ng-model="itemToSave.Description"></textarea>
-                    <br>
-                    <label>Current Value</label>
-                    <input type="text" id="input" class="form-control" ng-model="itemToSave.CurrentValue">
-                    <br>
-                    <label>Goal Value</label>
-                    <input type="text" id="input" class="form-control" ng-model="itemToSave.GoalValue">
                     <br>
                     <label>Format</label>
                     <select ng-model="itemToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat"></select>

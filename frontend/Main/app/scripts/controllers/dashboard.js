@@ -304,6 +304,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     if (screenfull.enabled) {
         document.addEventListener(screenfull.raw.fullscreenchange, function() {
             $scope.isDesignMode = !screenfull.isFullscreen;
+            $scope.options.draggable.enabled = !screenfull.isFullscreen;
             if (screenfull.isFullscreen) {
                 angular.element('.Dashboard').css('top', 0);
             } else {
@@ -419,7 +420,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             CurrentValue: historyToAdd.CurrentValue,
             GoalValue: historyToAdd.GoalValue,
             ConvertedMetricDate: historyToAdd.ConvertedMetricDate,
-            MetricDate: null,// historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
+            MetricDate: null, // historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
             Note: historyToAdd.Note,
             MetricKey: metricSource.id
         };
