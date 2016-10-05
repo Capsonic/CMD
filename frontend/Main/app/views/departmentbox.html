@@ -10,21 +10,42 @@
             <thead>
                 <tr>
                     <th style="text-align:left;" class="columnMaxWidth">Metrics</th>
-                    <th>Current</th>
-                    <th>Goal</th>
+                    <!-- <th>Current</th>
+                    <th>Goal</th> -->
                     <th>Trend</th>
                 </tr>
             </thead>
             <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
-                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard" ng-class="getMetricStyle(metric);">
-                    <td class="columnMaxWidth">
+                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard">
+                    <td style="text-align: left;">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
                         <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
                     </td>
-                    <td>{{metric.FormattedCurrentValue}}</td>
-                    <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td>
+                    <!-- <td>{{metric.FormattedCurrentValue}}</td>
+                    <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td> -->
                     <td>
-                        <button class="btn btn-xs btn-default" style="padding:1px 5px;font-size: .7em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                        <div class="MetricBox" ng-repeat="metricBox in metric.LastMetrics" ng-class="getMetricStyle(metricBox, metric);">
+                            <table class="table MetricTable" style="width:inherit;">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" class="MonthTitle">
+                                            {{metricBox.ConvertedMetricDate | date:'medium'}}
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <th ng-style="{width:department.InfoGridster.FontSize * 7}">Real</th>
+                                        <th ng-style="{width:department.InfoGridster.FontSize * 7}">Goal</th>
+                                    </tr>
+                                    <tr>
+                                        <td ng-style="{width:department.InfoGridster.FontSize * 7}">{{metricBox.CurrentValue}}</td>
+                                        <td ng-style="{width:department.InfoGridster.FontSize * 7}">{{metricBox.EqualityValue}} {{metricBox.FormattedGoalValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="MetricBox" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
+                            <button class="btn btn-xs btn-default" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                        </div>
                     </td>
                 </tr>
             </tbody>

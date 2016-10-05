@@ -319,7 +319,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.saveMetric = function(metric) {
         $activityIndicator.startAnimating();
         metricService.save(metric).then(function(data) {
-            angular.copy(metric, $scope.selectedMetric);
+            angular.copy(data, $scope.selectedMetric);
             angular.element('#modal-metricToSave').off('hidden.bs.modal');
             angular.element('#modal-metricToSave').modal('hide');
             $scope.pendingToSave = $scope.getPendingToSaveCount();
@@ -419,8 +419,9 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             CurrentValue: historyToAdd.CurrentValue,
             GoalValue: historyToAdd.GoalValue,
             ConvertedMetricDate: historyToAdd.ConvertedMetricDate,
-            MetricDate: historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
-            Note: historyToAdd.Note
+            MetricDate: null,// historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
+            Note: historyToAdd.Note,
+            MetricKey: metricSource.id
         };
         metricSource.MetricHistorys.push(newMetricHistory);
 
@@ -432,13 +433,15 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.resetMetricHistoryToAdd = function() {
 
-        $scope.metricToSave.metricHistoryToAdd = $scope.metricToSave.metricHistoryToAdd || {};
-        $scope.metricToSave.metricHistoryToAdd.CurrentValue = null;
-        $scope.metricToSave.metricHistoryToAdd.GoalValue = null;
-        $scope.metricToSave.metricHistoryToAdd.Note = null;
-        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate = new Date();
+        $scope.metricToSave.metricHistoryToAdd = {
+            CurrentValue: null,
+            GoalValue: null,
+            Note: null,
+            ConvertedMetricDate: new Date()
+        };
         $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setSeconds(0);
         $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setMilliseconds(0);
+
     };
 
 });

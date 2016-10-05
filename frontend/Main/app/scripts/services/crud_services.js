@@ -71,12 +71,17 @@ angular.module('CMD.CRUDServices', [])
 
         adapter: function(theEntity) {
             theEntity.Departments.forEach(function(department) {
+                
+
+
                 department.Metrics.forEach(function(metric) {
-                    metric.FormattedCurrentValue = getFormattedValue(metric.CurrentValue, metric.FormatKey);
-                    metric.FormattedGoalValue = getFormattedValue(metric.GoalValue, metric.FormatKey);
-                    metric.BasisValue = getMetricsBasisValue(metric.BasisKey);
-                    metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
-                    metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
+                    metricService.adapt(metric);
+
+                    // metric.FormattedCurrentValue = getFormattedValue(metric.CurrentValue, metric.FormatKey);
+                    // metric.FormattedGoalValue = getFormattedValue(metric.GoalValue, metric.FormatKey);
+                    // metric.BasisValue = getMetricsBasisValue(metric.BasisKey);
+                    // metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
+                    // metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
                 });
                 department.Initiatives.forEach(function(initiative) {
                     initiative.ConvertedActualDate = initiative.ActualDate ? new Date(initiative.ActualDate) : null;
@@ -174,6 +179,12 @@ angular.module('CMD.CRUDServices', [])
                 item.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
                 item.ConvertedMetricDate = item.MetricDate ? new Date(item.MetricDate) : null;
             });
+
+            theEntity.MetricHistorys.sort(function(a, b){
+                return a.ConvertedMetricDate - b.ConvertedMetricDate;
+            });
+
+            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-2);
 
             return theEntity;
         },

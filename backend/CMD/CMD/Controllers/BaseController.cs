@@ -6,6 +6,7 @@ using System.Reflection;
 using System.Security.Claims;
 using System.Web.Http;
 using System.Web.Http.Cors;
+using System.Web.Script.Serialization;
 
 namespace CMD.Controllers
 {
@@ -99,7 +100,9 @@ namespace CMD.Controllers
 
             try
             {
-                entity = JsonConvert.DeserializeObject<Entity>(value);
+                JavaScriptSerializer jsonSerializer = new JavaScriptSerializer();
+                entity = jsonSerializer.Deserialize<Entity>(value);
+                //entity = JsonConvert.DeserializeObject<Entity>(value);
 
                 return _logic.Update(entity);
             }

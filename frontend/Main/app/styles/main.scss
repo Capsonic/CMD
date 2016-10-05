@@ -2,10 +2,10 @@ $icon-font-path: "../bower_components/bootstrap-sass-official/assets/fonts/boots
 // bower:scss
 @import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss";
 // endbower
+@import "departmentBox.sass";
 @import "theme-flatly.scss";
 @import "dashboard.sass";
 @import "crudList.sass";
-@import "departmentBox.sass";
 @import "relationator.sass";
 .browsehappy {
     margin: 0.2em 0;

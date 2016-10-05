@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Reusable
 {
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : BaseEntity
     {
         int? byUserId { get; set; }
         string EntityName { get; set; }
@@ -13,7 +13,7 @@ namespace Reusable
         T GetByID(int id);
         T GetSingle(Func<T, bool> where);
         void Add(params T[] items);
-        void Update(params T[] items);
+        void Update(T item);
         void Delete(int id);
 
         IList<T> GetListByParent<P>(int parentID) where P : class;

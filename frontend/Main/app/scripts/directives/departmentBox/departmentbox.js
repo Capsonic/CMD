@@ -96,7 +96,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
             scope.editMetric = function(metric) {
                 metricService.loadEntity(metric.id).then(function(data) {
-                    scope.$parent.$parent.selectedMetric = data;
+                    angular.copy(data, metric);
+                    scope.$parent.$parent.selectedMetric = metric;
                     angular.element('#modal-metricToSave').modal('show');
                     angular.copy(data, scope.$parent.metricToSave);
                     scope.$parent.$parent.resetMetricHistoryToAdd();
@@ -177,17 +178,17 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
             });
 
 
-            scope.getMetricStyle = function(oMetric) {
+            scope.getMetricStyle = function(oMetricHistory, oMetric) {
 
-                if (oMetric.CurrentValue && oMetric.GoalValue) {
+                if (oMetricHistory.CurrentValue && oMetricHistory.GoalValue) {
                     switch (oMetric.ComparatorMethodKey) {
                         case 1: //Greater Than
-                            if (oMetric.CurrentValue < oMetric.GoalValue) {
+                            if (oMetricHistory.CurrentValue < oMetricHistory.GoalValue) {
                                 return 'GoingBad';
                             }
                             break;
                         case 2: //Less Than
-                            if (oMetric.CurrentValue > oMetric.GoalValue) {
+                            if (oMetricHistory.CurrentValue > oMetricHistory.GoalValue) {
                                 return 'GoingBad';
                             }
                             break;
@@ -217,6 +218,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     }
                 }
             };
+
+
         }
     };
 });

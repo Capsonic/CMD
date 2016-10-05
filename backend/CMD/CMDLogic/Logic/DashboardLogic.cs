@@ -15,16 +15,19 @@ namespace CMDLogic.Logic
         private readonly IDepartmentLogic departmentLogic;
         private readonly Repository<Gridster> gridsterRepository;
         private readonly Repository<Sort> sortRepository;
+        private readonly Repository<MetricHistory> metricHistoryRepository;
 
         public DashboardLogic(DbContext context,
             IRepository<Dashboard> repository,
             IDepartmentLogic departmentLogic,
             Repository<Gridster> gridsterRepository,
-            Repository<Sort> sortRepository) : base(context, repository)
+            Repository<Sort> sortRepository,
+            Repository<MetricHistory> metricHistoryRepository) : base(context, repository)
         {
             this.departmentLogic = departmentLogic;
             this.gridsterRepository = gridsterRepository;
             this.sortRepository = sortRepository;
+            this.metricHistoryRepository = metricHistoryRepository;
         }
 
         protected override void loadNavigationProperties(DbContext context, params Dashboard[] entities)
@@ -59,6 +62,7 @@ namespace CMDLogic.Logic
                                                                 && e.Sort_Entity_Kind == metric.AAA_EntityName
                                                                 && e.Sort_ParentInfo == "Dashboard_" + ID + "_Department_" + department.id
                                                                 && e.Sort_User_ID == byUserId);
+                    metric.MetricHistorys = metricHistoryRepository.GetList(m => m.MetricKey == metric.MetricKey);
                 }
 
                 foreach (var initiative in department.Initiatives)

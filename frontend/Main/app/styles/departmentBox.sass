@@ -1,3 +1,5 @@
+@import "bootstrap-sass-official/assets/stylesheets/_bootstrap.scss"
+
 .DepartmentBox
 	height: 100%
 	width: 100%
@@ -17,8 +19,8 @@
 		overflow: hidden
 		text-overflow: ellipsis
 		white-space: nowrap
-		width: 55%
-		max-width: 55%
+		width: 40%
+		max-width: 40%
 .gu-mirror
 	.columnMaxWidth
 		text-align: left
@@ -40,7 +42,36 @@ li
 			width: 60px
 
 
+.MetricBox
+	display: inline-block
+	.MetricTable
+		margin: 0
+		background-color: transparent !important
+		font-size: .8em
+		tbody
+			td
+				padding: 0 5px !important
+				text-align: right
+			td.MonthTitle
+				text-align: center
+				border: solid 1px white
+			th
+				color: inherit
+				padding: 0
+				text-align: right
+
+
 .GoingWell
 	color: green
+	.MetricTable
+		.MonthTitle
+			color: #fff
+			background-color: #18bc9c
+
+
 .GoingBad
 	color: red
+	.MetricTable
+		.MonthTitle
+			color: #fff
+			background-color: #e74c3c

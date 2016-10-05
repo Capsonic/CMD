@@ -66,6 +66,7 @@
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveMetric(metricToSave)">Save</button>
                 <h4 class="modal-Description pull-left">Update Metric</h4>
+                {{metricToSave.id}}
             </div>
             <div class="modal-body">
                 <div class="row">
@@ -106,44 +107,46 @@
                         </tags-input>
                     </div>
                     <div class="col-sm-7">
-                        <label>History</label>
-                        <table class="table table-hover table-bordered" style="margin-bottom: 0;">
-                            <thead>
-                                <tr>
-                                    <th>Date</th>
-                                    <th>Real Value</th>
-                                    <th>Goal Value</th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>
-                                        <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToAdd.ConvertedMetricDate" tabindex="7" />
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.CurrentValue" tabindex="8" />
-                                    </td>
-                                    <td>
-                                        <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.GoalValue" tabindex="9" />
-                                    </td>
-                                    <td rowspan="2" style="vertical-align: middle;">
-                                        <button class="btn btn-default" tabindex="11" ng-click="addMetricHistory(metricToSave.metricHistoryToAdd, metricToSave);">Add</button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td colspan="3">
-                                        <label>Note</label>
-                                        <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToAdd.Note" tabindex="10"></textarea>
-                                    </td>
-                                </tr>
-                                <tr ng-repeat="metric in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'" data-toggle="popover" data-placement="top" data-trigger="focus" title="Note" data-content="{{metric.Note}}" onmouseover="popoverMetricNote(this, 'show')" onmouseout="popoverMetricNote(this, 'hide')">
-                                    <td>{{metric.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
-                                    <td style="text-align:right;">{{metric.FormattedCurrentValue}}</td>
-                                    <td colspan="2" style="text-align:right;">{{metricToSave.EqualityValue}} {{metric.FormattedGoalValue}}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div class=" well well-sm">
+                            <label>History</label>
+                            <table class="table table-hover table-bordered" style="margin-bottom: 0;">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Real Value</th>
+                                        <th>Goal Value</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToAdd.ConvertedMetricDate" tabindex="7" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.CurrentValue" tabindex="8" />
+                                        </td>
+                                        <td>
+                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.GoalValue" tabindex="9" />
+                                        </td>
+                                        <td rowspan="2" style="vertical-align: middle;">
+                                            <button class="btn btn-default" tabindex="11" ng-click="addMetricHistory(metricToSave.metricHistoryToAdd, metricToSave);">Add</button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="3">
+                                            <label>Note</label>
+                                            <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToAdd.Note" tabindex="10"></textarea>
+                                        </td>
+                                    </tr>
+                                    <tr ng-repeat="metric in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'" data-toggle="popover" data-placement="top" data-trigger="focus" title="Note" data-content="{{metric.Note}}" onmouseover="popoverMetricNote(this, 'show')" onmouseout="popoverMetricNote(this, 'hide')">
+                                        <td>{{metric.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
+                                        <td style="text-align:right;">{{metric.FormattedCurrentValue}}</td>
+                                        <td colspan="2" style="text-align:right;">{{metricToSave.EqualityValue}} {{metric.FormattedGoalValue}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
             </div>

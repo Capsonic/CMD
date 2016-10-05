@@ -63,10 +63,9 @@ namespace CMDLogic.Logic
             {
                 if (item.id < 1)
                 {
-                    context.Entry(item).State = EntityState.Added;
+                    metricHistoryRepository.AddToParent<Metric>(entity.id, item);
                 }
             }
-            context.SaveChanges();
         }
     }
 }

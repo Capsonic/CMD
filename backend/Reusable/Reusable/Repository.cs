@@ -7,7 +7,7 @@ using System.Reflection;
 
 namespace Reusable
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IRepository<T> where T : BaseEntity
     {
         protected readonly DbContext context;
         public int? byUserId { get; set; }
@@ -180,45 +180,33 @@ namespace Reusable
             }
         }
 
-        public virtual void Update(params T[] items)
+        public virtual void Update(T item) //Update only parent Entity, not children
         {
             DbSet<T> dbSet = context.Set<T>();
 
-            foreach (T item in items)
+            T originalEntity = dbSet.Find(item.id);
+            if (originalEntity == null)
             {
-                dbSet.Attach(item);
+                throw new Exception("Entity of type: [" + item.AAA_EntityName + "] with ID: [" + item.id + "] was not found.");
             }
 
-            foreach (DbEntityEntry<BaseEntity> entry in context.ChangeTracker.Entries<BaseEntity>())
-            {
-                context.Entry(entry.Entity).State = EntityState.Unchanged;
-            }
-
-            foreach (T item in items)
-            {
-                //dbSet.Attach(item);
-                dbSet.Attach(item);
-                context.Entry(item).State = EntityState.Modified;
-            }
-
+            context.Entry(originalEntity).CurrentValues.SetValues(item);
+            context.Entry(originalEntity).State = EntityState.Modified;
 
             /*DOCUMENT*/
             if (typeof(T).IsSubclassOf(typeof(BaseDocument)))
             {
-                foreach (T entity in items)
+                var document = originalEntity as BaseDocument;
+                document.InfoTrack = context.Set<Track>()
+                                    .AsNoTracking()
+                                    .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
+
+                if (document.InfoTrack != null)
                 {
-                    var document = entity as BaseDocument;
-                    document.InfoTrack = context.Set<Track>()
-                                        .AsNoTracking()
-                                        .FirstOrDefault(t => t.Entity_ID == document.id && t.Entity_Kind == document.AAA_EntityName);
+                    document.InfoTrack.User_LastEditedByKey = byUserId;
+                    document.InfoTrack.Date_EditedOn = DateTime.Now;
 
-                    if (document.InfoTrack != null)
-                    {
-                        document.InfoTrack.User_LastEditedByKey = byUserId;
-                        document.InfoTrack.Date_EditedOn = DateTime.Now;
-
-                        context.Entry(document.InfoTrack).State = EntityState.Modified;
-                    }
+                    context.Entry(document.InfoTrack).State = EntityState.Modified;
                 }
             }
 

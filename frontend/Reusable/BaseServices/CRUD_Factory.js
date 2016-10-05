@@ -503,16 +503,25 @@ angular.module('inspiracode.crudFactory', [])
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
                                 if (!backendResponse.ErrorThrown) {
-                                    theEntity.editMode = false;
-                                    var current = _getById(theEntity.id);
-                                    _populateCatalogValues(_adapter(theEntity, _self));
-                                    if (!angular.equals(theEntity, current)) {
-                                        angular.copy(theEntity, current);
+                                    
+                                    var entityFromServer = backendResponse.Result;
+                                    entityFromServer.editMode = false;
+                                    mainEntity.adapterIn(entityFromServer);
+                                    _populateCatalogValues(_adapter(entityFromServer, _self));
+                                    var oEntity = _getById(entityFromServer.id);
+                                    if (oEntity) { //Already exists, lets updated it if they are different.
+                                        if (!angular.equals(entityFromServer, oEntity)) {
+                                            angular.copy(entityFromServer, oEntity);
+                                        }
+                                        angular.copy(entityFromServer, oEntity);
+                                    } else { //First time loaded, lets add it.
+                                        _arrAllRecords.push(entityFromServer);
                                     }
+
                                     $timeout(function() {
                                         alertify.success(backendResponse.ResponseDescription);
                                     }, 100);
-                                    deferred.resolve(response.data);
+                                    deferred.resolve(entityFromServer);
                                 } else {
                                     var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                     alertify.alert(alertifyContent).set('modal', true);
@@ -664,9 +673,10 @@ angular.module('inspiracode.crudFactory', [])
                     })
                     .error(function(data) {
                         // something went wrong
-                        alertify.alert(data).set('modal', true);
+                        var alertifyContent = '<div style="word-wrap: break-word;">' + JSON.stringify(data) + '</div>';
+                        alertify.alert(alertifyContent).set('modal', true);
                         log.debug(data);
-                        deferred.reject(backendResponse.Result);
+                        deferred.reject();
                     });
             } else {
                 deferred.reject();
