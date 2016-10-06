@@ -135,6 +135,22 @@
     <Compile Include="Migrations\201610041904232_ForeignMetricKeyForHistory.Designer.cs">
       <DependentUpon>201610041904232_ForeignMetricKeyForHistory.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201610052226306_dashboard-owners.cs" />
+    <Compile Include="Migrations\201610052226306_dashboard-owners.Designer.cs">
+      <DependentUpon>201610052226306_dashboard-owners.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610052323433_dashboard-shared.cs" />
+    <Compile Include="Migrations\201610052323433_dashboard-shared.Designer.cs">
+      <DependentUpon>201610052323433_dashboard-shared.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610052344251_gridsterOptionalUser.cs" />
+    <Compile Include="Migrations\201610052344251_gridsterOptionalUser.Designer.cs">
+      <DependentUpon>201610052344251_gridsterOptionalUser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201610060020242_sortOptionalUser.cs" />
+    <Compile Include="Migrations\201610060020242_sortOptionalUser.Designer.cs">
+      <DependentUpon>201610060020242_sortOptionalUser.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -189,6 +205,18 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610041904232_ForeignMetricKeyForHistory.resx">
       <DependentUpon>201610041904232_ForeignMetricKeyForHistory.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610052226306_dashboard-owners.resx">
+      <DependentUpon>201610052226306_dashboard-owners.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610052323433_dashboard-shared.resx">
+      <DependentUpon>201610052323433_dashboard-shared.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610052344251_gridsterOptionalUser.resx">
+      <DependentUpon>201610052344251_gridsterOptionalUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201610060020242_sortOptionalUser.resx">
+      <DependentUpon>201610060020242_sortOptionalUser.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

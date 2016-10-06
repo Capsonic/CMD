@@ -306,7 +306,7 @@ namespace Reusable
             return list;
         }
 
-        public void AddToParent<P>(int parentId, T entity) where P : class
+        public P AddToParent<P>(int parentId, T entity) where P : class
         {
             //string sParentPropID = typeof(P).Name + "Key";
             //P parent = context.Database.SqlQuery<P>("select * from " + typeof(P).Name + " where " + sParentPropID + " = @p0", parentId).FirstOrDefault();
@@ -391,6 +391,8 @@ namespace Reusable
 
                 context.SaveChanges();
             }
+
+            return parent;
         }
 
         public void RemoveFromParent<P>(int parentId, T entity) where P : class

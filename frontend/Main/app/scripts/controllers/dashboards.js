@@ -13,7 +13,21 @@ angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboar
         entityName: 'Dashboard',
         baseService: dashboardService,
         modalName: 'modal-itemToSave',
-        scope: $scope
+        scope: $scope,
+        afterLoad: function() {
+            $scope.theUsers = dashboardService.catalogs.Users.getAll();
+        }
     }).load();
+
+
+    $scope.loadUsersTags = function($query, currentList) {
+        return $scope.theUsers.filter(function(item) {
+            return item.Value.toLowerCase().indexOf($query.toLowerCase()) != -1;
+        });
+    };
+    $scope.on_userTag_Added = function(tagAdded, metric) {
+        // metric.HiddenForUsersTags = [tagAdded]
+    };
+
 
 });

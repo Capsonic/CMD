@@ -1,7 +1,6 @@
 ﻿using CMDLogic.EF;
 using Reusable;
 using System;
-using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace CMDLogic.Logic
@@ -54,15 +53,27 @@ namespace CMDLogic.Logic
             }
         }
 
-        protected override void onSaving(DbContext context, Department entity, int? parentId = null)
+        protected override void onSaving(DbContext context, Department entity, BaseEntity parent = null)
         {
+            bool isShared = (parent as Dashboard).IsShared;
+
             if (entity.InfoGridster != null)
             {
-                entity.InfoGridster.Gridster_ManyToMany_ID = parentId;
+                entity.InfoGridster.IsShared = isShared;
+                if (isShared)
+                {
+                    entity.InfoGridster.Gridster_User_ID = null;
+                }
+                else
+                {
+                    entity.InfoGridster.Gridster_User_ID = (int)byUserId;
+                }
+
+                entity.InfoGridster.Gridster_ManyToMany_ID = parent.id;
                 entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
                 entity.InfoGridster.Gridster_Entity_ID = entity.id;
                 entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
-                entity.InfoGridster.Gridster_User_ID = (int)byUserId;
+
 
                 if (entity.InfoGridster.FontSize == 0 || entity.InfoGridster.FontSize == null)
                 {
@@ -85,11 +96,22 @@ namespace CMDLogic.Logic
             {
                 if (metric.InfoSort != null)
                 {
+                    metric.InfoSort.IsShared = isShared;
+
+                    if (isShared)
+                    {
+                        metric.InfoSort.Sort_User_ID = null;
+                    }
+                    else
+                    {
+                        metric.InfoSort.Sort_User_ID = (int)byUserId;
+                    }
+
                     metric.InfoSort.Sort_Edited_On = DateTime.Now;
                     metric.InfoSort.Sort_Entity_ID = metric.id;
                     metric.InfoSort.Sort_Entity_Kind = metric.AAA_EntityName;
-                    metric.InfoSort.Sort_ParentInfo = "Dashboard_" + parentId + "_Department_" + entity.id; 
-                    metric.InfoSort.Sort_User_ID = (int)byUserId;
+                    metric.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
+
 
                     if (metric.InfoSort.id > 0)
                     {
@@ -107,10 +129,21 @@ namespace CMDLogic.Logic
             {
                 if (initiative.InfoSort != null)
                 {
+                    initiative.InfoSort.IsShared = isShared;
+
+                    if (isShared)
+                    {
+                        initiative.InfoSort.Sort_User_ID = null;
+                    }
+                    else
+                    {
+                        initiative.InfoSort.Sort_User_ID = (int)byUserId;
+                    }
+
                     initiative.InfoSort.Sort_Edited_On = DateTime.Now;
                     initiative.InfoSort.Sort_Entity_ID = initiative.id;
                     initiative.InfoSort.Sort_Entity_Kind = initiative.AAA_EntityName;
-                    initiative.InfoSort.Sort_ParentInfo = "Dashboard_" + parentId + "_Department_" + entity.id;
+                    initiative.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
                     initiative.InfoSort.Sort_User_ID = (int)byUserId;
 
                     if (initiative.InfoSort.id > 0)

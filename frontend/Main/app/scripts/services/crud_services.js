@@ -67,12 +67,13 @@ angular.module('CMD.CRUDServices', [])
         //Entity Name = WebService/API to call:
         entityName: 'Dashboard',
 
-        catalogs: [],
+        catalogs: ['Users'],
 
-        adapter: function(theEntity) {
+        adapter: function(theEntity, self) {
+
+            theEntity.OwnersTags = getDashboardsFromIds(theEntity.Owners, self.catalogs.Users);
+
             theEntity.Departments.forEach(function(department) {
-                
-
 
                 department.Metrics.forEach(function(metric) {
                     metricService.adapt(metric);
@@ -88,14 +89,17 @@ angular.module('CMD.CRUDServices', [])
                     initiative.ConvertedDueDate = initiative.DueDate ? new Date(initiative.DueDate) : null;
                     initiative.HiddenForDashboardsTags = getDashboardsFromIds(initiative.HiddenForDashboards, initiativeService.catalogs.Dashboards);
                 });
+
             });
             return theEntity;
         },
 
-        adapterIn: function(theEntity) {},
+        adapterIn: function(theEntity) {
+
+        },
 
         adapterOut: function(theEntity, self) {
-            //self.validate(theEntity);
+            theEntity.Owners = adaptUsersTags(theEntity);
         },
 
         dependencies: [
@@ -180,7 +184,7 @@ angular.module('CMD.CRUDServices', [])
                 item.ConvertedMetricDate = item.MetricDate ? new Date(item.MetricDate) : null;
             });
 
-            theEntity.MetricHistorys.sort(function(a, b){
+            theEntity.MetricHistorys.sort(function(a, b) {
                 return a.ConvertedMetricDate - b.ConvertedMetricDate;
             });
 
@@ -300,6 +304,30 @@ function getDashboardsFromIds(sIDs, dashboardsCatalog) {
         var arrIDs = sIDs.split(',');
         return arrIDs.map(function(sID) {
             return dashboardsCatalog.getById(sID);
+        });
+    } else {
+        return [];
+    }
+}
+
+
+function adaptUsersTags(theEntity) {
+    var result = [];
+    if (theEntity.OwnersTags) {
+        for (var i = 0; i < theEntity.OwnersTags.length; i++) {
+            var current = theEntity.OwnersTags[i];
+            result.push(current.id);
+        }
+    }
+    theEntity.OwnersTags = [];
+    return result.join(',');
+}
+
+function getUsersFromIds(sIDs, usersCatalog) {
+    if (sIDs != null && sIDs.length > 0) {
+        var arrIDs = sIDs.split(',');
+        return arrIDs.map(function(sID) {
+            return usersCatalog.getById(sID);
         });
     } else {
         return [];

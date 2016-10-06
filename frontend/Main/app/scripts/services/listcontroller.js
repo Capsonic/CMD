@@ -130,7 +130,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             //todo scope.itemToSave.Departments = [];
             $activityIndicator.startAnimating();
             _baseService.save(scope.itemToSave).then(function(data) {
-                angular.copy(scope.itemToSave, scope.selectedItem);
+                angular.copy(data, scope.selectedItem);
                 angular.element('#' + _modalName).off('hidden.bs.modal');
                 angular.element('#' + _modalName).modal('hide');
                 //todo scope.baseList = _baseService.getAll();

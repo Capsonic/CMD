@@ -90,12 +90,12 @@ namespace CMDLogic.EF
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Sorts)
-                .WithRequired(e => e.User)
+                .WithOptional(e => e.User)
                 .HasForeignKey(e => e.Sort_User_ID);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Gridsters)
-                .WithRequired(e => e.User)
+                .WithOptional(e => e.User)
                 .HasForeignKey(e => e.Gridster_User_ID);
 
             modelBuilder.Entity<User>()

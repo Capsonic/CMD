@@ -16,13 +16,15 @@ namespace Reusable
         [StringLength(50)]
         public string Sort_Entity_Kind { get; set; }
 
-        public int Sort_User_ID { get; set; }
+        public int? Sort_User_ID { get; set; }
 
         public DateTime? Sort_Edited_On { get; set; }
 
         public int? Sort_Sequence { get; set; }
 
         public string Sort_ParentInfo { get; set; }
+
+        public bool IsShared { get; set; }
 
         public virtual User User { get; set; }
 

@@ -33,17 +33,17 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <th ng-style="{width:department.InfoGridster.FontSize * 7}">Real</th>
-                                        <th ng-style="{width:department.InfoGridster.FontSize * 7}">Goal</th>
+                                        <th ng-style="{width:department.InfoGridster.FontSize * 6}">Real</th>
+                                        <th ng-style="{width:department.InfoGridster.FontSize * 6}">Goal</th>
                                     </tr>
                                     <tr>
-                                        <td ng-style="{width:department.InfoGridster.FontSize * 7}">{{metricBox.CurrentValue}}</td>
-                                        <td ng-style="{width:department.InfoGridster.FontSize * 7}">{{metricBox.EqualityValue}} {{metricBox.FormattedGoalValue}}</td>
+                                        <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{metricBox.CurrentValue}}</td>
+                                        <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{metricBox.EqualityValue}} {{metricBox.FormattedGoalValue}}</td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
-                        <div class="MetricBox" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
+                        <div class="MetricBox" ng-if="metric.LastMetrics.length > 0" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
                             <button class="btn btn-xs btn-default" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
                         </div>
                     </td>

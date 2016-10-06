@@ -18,7 +18,7 @@ namespace Reusable
 
         IList<T> GetListByParent<P>(int parentID) where P : class;
         T GetSingleByParent<P>(int parentID) where P : class;
-        void AddToParent<P>(int parentId, T entity) where P : class;
+        P AddToParent<P>(int parentId, T entity) where P : class;
         void RemoveFromParent<P>(int parentId, T entity) where P : class;
 
         void Activate(int id);

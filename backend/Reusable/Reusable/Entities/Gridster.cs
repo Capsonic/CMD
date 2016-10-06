@@ -16,7 +16,7 @@ namespace Reusable
         [StringLength(50)]
         public string Gridster_Entity_Kind { get; set; }
 
-        public int Gridster_User_ID { get; set; }
+        public int? Gridster_User_ID { get; set; }
 
         public DateTime? Gridster_Edited_On { get; set; }
 
@@ -30,6 +30,8 @@ namespace Reusable
         public virtual User User { get; set; }
 
         public decimal? FontSize { get; set; }
+
+        public bool IsShared { get; set; }
 
         public override int id { get { return GridsterKey; } }
 
@@ -47,7 +49,8 @@ namespace Reusable
                 rows = rows,
                 x = x,
                 y = y,
-                FontSize = FontSize
+                FontSize = FontSize,
+                IsShared = IsShared
             };
         }
     }

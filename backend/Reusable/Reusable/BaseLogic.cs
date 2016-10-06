@@ -39,7 +39,7 @@ namespace Reusable
             }
         }
 
-        protected virtual void onSaving(DbContext context, Entity entity, int? parentId = null) { }
+        protected virtual void onSaving(DbContext context, Entity entity, BaseEntity parent = null) { }
         protected virtual void onCreate(Entity entity) { }
 
         public virtual CommonResponse Add(Entity entity)
@@ -247,8 +247,8 @@ namespace Reusable
                         //}
 
                         repository.byUserId = byUserId;
-                        repository.AddToParent<ParentType>(parentID, entity);
-                        onSaving(context, entity, parentID);
+                        ParentType parent = repository.AddToParent<ParentType>(parentID, entity);
+                        onSaving(context, entity, parent);
 
                         transaction.Commit();
                     }

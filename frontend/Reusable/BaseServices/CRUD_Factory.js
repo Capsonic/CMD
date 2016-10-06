@@ -503,7 +503,7 @@ angular.module('inspiracode.crudFactory', [])
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
                                 if (!backendResponse.ErrorThrown) {
-                                    
+
                                     var entityFromServer = backendResponse.Result;
                                     entityFromServer.editMode = false;
                                     mainEntity.adapterIn(entityFromServer);
@@ -513,7 +513,6 @@ angular.module('inspiracode.crudFactory', [])
                                         if (!angular.equals(entityFromServer, oEntity)) {
                                             angular.copy(entityFromServer, oEntity);
                                         }
-                                        angular.copy(entityFromServer, oEntity);
                                     } else { //First time loaded, lets add it.
                                         _arrAllRecords.push(entityFromServer);
                                     }
@@ -752,13 +751,23 @@ angular.module('inspiracode.crudFactory', [])
                                 log.debug(response);
                                 deferred.reject(data);
                             } else {
-                                for (var catalog in _catalogs) {
-                                    if (_catalogs.hasOwnProperty(catalog)) {
-                                        _catalogs[catalog]._arrAllRecords = backendResponse.Result[catalog];
+                                if (backendResponse.Result) {
+                                    for (var catalog in _catalogs) {
+                                        if (_catalogs.hasOwnProperty(catalog)) {
+                                            if (backendResponse.Result.hasOwnProperty(catalog)) {
+                                                _catalogs[catalog]._arrAllRecords = backendResponse.Result[catalog];
+                                            } else {
+                                                alertify.alert('Unable to load [' + catalog + '] catalog from ' + mainEntity.entityName).set('modal', true);
+                                                log.error('Unable to load [' + catalog + '] catalog from ' + mainEntity.entityName);
+                                            }
+                                        }
                                     }
+                                    _loadCatalogsExecuted = true;
+                                    deferred.resolve(data);
+                                } else {
+                                    alertify.alert('No catalogs for ' + mainEntity.entityName).set('modal', true);
+                                    log.error('No catalogs for ' + mainEntity.entityName);
                                 }
-                                _loadCatalogsExecuted = true;
-                                deferred.resolve(data);
                             }
                         })
                         .error(function(data) {

@@ -1,7 +1,6 @@
 ﻿using CMDLogic.EF;
 using Reusable;
 using System.Collections.Generic;
-using System;
 using System.Data.Entity;
 
 namespace CMDLogic.Logic
@@ -57,7 +56,7 @@ namespace CMDLogic.Logic
             public IList<Dashboard> Dashboards { get; set; }
         }
 
-        protected override void onSaving(DbContext context, Metric entity, int? parentId = null)
+        protected override void onSaving(DbContext context, Metric entity, BaseEntity parent = null)
         {
             foreach (var item in entity.MetricHistorys)
             {
