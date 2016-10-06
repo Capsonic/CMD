@@ -43,8 +43,8 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="MetricBox" ng-if="metric.LastMetrics.length > 0" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
-                            <button class="btn btn-xs btn-default" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
+                        <div class="MetricBox" id="{{metric.id}}" ng-if="metric.LastMetrics.length > 0" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
+                            <button class="btn btn-xs" ng-click="showTrendInfo();" ng-class="getTrendStyle(metric);" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon"></span></button>
                         </div>
                     </td>
                 </tr>
