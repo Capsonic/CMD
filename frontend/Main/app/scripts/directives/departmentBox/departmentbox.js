@@ -19,49 +19,49 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     var trendModal = angular.element('body #modal-trend');
                     if (trendModal.length == 0) {
                         angular.element('body').append(
-                            `<div class="modal fade" id="modal-trend">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                                            <h4 class="modal-title">Trend Info</h4>
-                                        </div>
-                                        <div class="modal-body">
-                                            <table class="table">
-                                                <tbody>
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn-xs btn-success" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
-                                                        </td>
-                                                        <td style="padding-top: 1.3em;">Indicator meets the objective and is improving.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn-xs btn-success" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                                                        </td>
-                                                        <td style="padding-top: 1.3em;">Indicator meets the objective but the value is getting worse.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn-xs btn-warning" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-up"></span></button>
-                                                        </td>
-                                                        <td style="padding-top: 1.3em;">Indicator doesn't meet the objective, but shows improvement.</td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td>
-                                                            <button class="btn-xs btn-danger" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>
-                                                        </td>
-                                                        <td style="padding-top: 1.3em;">Indicator doesn't meet the objective and the value is getting worse.</td>
-                                                    </tr>
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>`
+                            '<div class="modal fade" id="modal-trend">' +
+                            '                                <div class="modal-dialog">' +
+                            '                                    <div class="modal-content">' +
+                            '                                        <div class="modal-header">' +
+                            '                                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>' +
+                            '                                            <h4 class="modal-title">Trend Info</h4>' +
+                            '                                        </div>' +
+                            '                                        <div class="modal-body">' +
+                            '                                            <table class="table">' +
+                            '                                                <tbody>' +
+                            '                                                    <tr>' +
+                            '                                                        <td>' +
+                            '                                                            <button class="btn-xs btn-success" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-up"></span></button>' +
+                            '                                                        </td>' +
+                            '                                                        <td style="padding-top: 1.3em;">Indicator meets the objective and is improving.</td>' +
+                            '                                                    </tr>' +
+                            '                                                    <tr>' +
+                            '                                                        <td>' +
+                            '                                                            <button class="btn-xs btn-success" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>' +
+                            '                                                        </td>' +
+                            '                                                        <td style="padding-top: 1.3em;">Indicator meets the objective but the value is getting worse.</td>' +
+                            '                                                    </tr>' +
+                            '                                                    <tr>' +
+                            '                                                        <td>' +
+                            '                                                            <button class="btn-xs btn-warning" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-up"></span></button>' +
+                            '                                                        </td>' +
+                            '                                                        <td style="padding-top: 1.3em;">Indicator does nott meet the objective, but shows improvement.</td>' +
+                            '                                                    </tr>' +
+                            '                                                    <tr>' +
+                            '                                                        <td>' +
+                            '                                                            <button class="btn-xs btn-danger" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>' +
+                            '                                                        </td>' +
+                            '                                                        <td style="padding-top: 1.3em;">Indicator does not meet the objective and the value is getting worse.</td>' +
+                            '                                                    </tr>' +
+                            '                                                </tbody>' +
+                            '                                            </table>' +
+                            '                                        </div>' +
+                            '                                        <div class="modal-footer">' +
+                            '                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>' +
+                            '                                        </div>' +
+                            '                                    </div>' +
+                            '                                </div>' +
+                            '                            </div>'
                         );
                     }
                 },

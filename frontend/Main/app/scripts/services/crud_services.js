@@ -85,8 +85,8 @@ angular.module('CMD.CRUDServices', [])
                     // metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
                 });
                 department.Initiatives.forEach(function(initiative) {
-                    initiative.ConvertedActualDate = initiative.ActualDate ? new Date(initiative.ActualDate) : null;
-                    initiative.ConvertedDueDate = initiative.DueDate ? new Date(initiative.DueDate) : null;
+                    initiative.ConvertedActualDate = initiative.ActualDate ? moment(initiative.ActualDate, moment.ISO_8601).toDate() : null;
+                    initiative.ConvertedDueDate = initiative.DueDate ? moment(initiative.DueDate, moment.ISO_8601).toDate() : null;
                     initiative.HiddenForDashboardsTags = getDashboardsFromIds(initiative.HiddenForDashboards, initiativeService.catalogs.Dashboards);
                 });
 
@@ -181,7 +181,7 @@ angular.module('CMD.CRUDServices', [])
                 item.FormattedCurrentValue = getFormattedValue(item.CurrentValue, theEntity.FormatKey);
                 item.FormattedGoalValue = getFormattedValue(item.GoalValue, theEntity.FormatKey);
                 item.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
-                item.ConvertedMetricDate = item.MetricDate ? new Date(item.MetricDate) : null;
+                item.ConvertedMetricDate = item.MetricDate ? moment(item.MetricDate, moment.ISO_8601).toDate() : null;
             });
 
             theEntity.MetricHistorys.sort(function(a, b) {
@@ -219,8 +219,8 @@ angular.module('CMD.CRUDServices', [])
         catalogs: ['Dashboards'],
 
         adapter: function(theEntity, self) {
-            theEntity.ConvertedActualDate = theEntity.ActualDate ? new Date(theEntity.ActualDate) : null;
-            theEntity.ConvertedDueDate = theEntity.DueDate ? new Date(theEntity.DueDate) : null;
+            theEntity.ConvertedActualDate = theEntity.ActualDate ? moment(theEntity.ActualDate, moment.ISO_8601).toDate() : null;
+            theEntity.ConvertedDueDate = theEntity.DueDate ? moment(theEntity.DueDate, moment.ISO_8601).toDate() : null;
             theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
             return theEntity;
         },
