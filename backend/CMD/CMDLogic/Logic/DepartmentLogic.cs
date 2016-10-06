@@ -55,110 +55,129 @@ namespace CMDLogic.Logic
 
         protected override void onSaving(DbContext context, Department entity, BaseEntity parent = null)
         {
-            bool isShared = (parent as Dashboard).IsShared;
-
-            if (entity.InfoGridster != null)
+            if (parent != null)
             {
-                entity.InfoGridster.IsShared = isShared;
+                bool isShared = (parent as Dashboard).IsShared;
+
                 if (isShared)
                 {
-                    entity.InfoGridster.Gridster_User_ID = null;
-                }
-                else
-                {
-                    entity.InfoGridster.Gridster_User_ID = (int)byUserId;
-                }
-
-                entity.InfoGridster.Gridster_ManyToMany_ID = parent.id;
-                entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
-                entity.InfoGridster.Gridster_Entity_ID = entity.id;
-                entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
-
-
-                if (entity.InfoGridster.FontSize == 0 || entity.InfoGridster.FontSize == null)
-                {
-                    entity.InfoGridster.FontSize = 12m;
+                    var arrOwners = (parent as Dashboard).Owners.Split(',');
+                    bool userIsAllowed = false;
+                    foreach (var userKey in arrOwners)
+                    {
+                        if (byUserId.ToString() == userKey.Trim())
+                        {
+                            userIsAllowed = true;
+                            break;
+                        }
+                    }
+                    if (!userIsAllowed)
+                    {
+                        throw new Exception("User not allowed to update this Dashboard.");
+                    }
                 }
 
-                if (entity.InfoGridster.id > 0)
+                if (entity.InfoGridster != null)
                 {
-                    context.Entry(entity.InfoGridster).State = EntityState.Modified;
-                }
-                else
-                {
-                    context.Entry(entity.InfoGridster).State = EntityState.Added;
-                }
-                context.SaveChanges();
-            }
-
-
-            foreach (var metric in entity.Metrics)
-            {
-                if (metric.InfoSort != null)
-                {
-                    metric.InfoSort.IsShared = isShared;
-
+                    entity.InfoGridster.IsShared = isShared;
                     if (isShared)
                     {
-                        metric.InfoSort.Sort_User_ID = null;
+                        entity.InfoGridster.Gridster_User_ID = null;
                     }
                     else
                     {
-                        metric.InfoSort.Sort_User_ID = (int)byUserId;
+                        entity.InfoGridster.Gridster_User_ID = (int)byUserId;
                     }
 
-                    metric.InfoSort.Sort_Edited_On = DateTime.Now;
-                    metric.InfoSort.Sort_Entity_ID = metric.id;
-                    metric.InfoSort.Sort_Entity_Kind = metric.AAA_EntityName;
-                    metric.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
+                    entity.InfoGridster.Gridster_ManyToMany_ID = parent.id;
+                    entity.InfoGridster.Gridster_Edited_On = DateTime.Now;
+                    entity.InfoGridster.Gridster_Entity_ID = entity.id;
+                    entity.InfoGridster.Gridster_Entity_Kind = entity.AAA_EntityName;
 
 
-                    if (metric.InfoSort.id > 0)
+                    if (entity.InfoGridster.FontSize == 0 || entity.InfoGridster.FontSize == null)
                     {
-                        context.Entry(metric.InfoSort).State = EntityState.Modified;
+                        entity.InfoGridster.FontSize = 12m;
+                    }
+
+                    if (entity.InfoGridster.id > 0)
+                    {
+                        context.Entry(entity.InfoGridster).State = EntityState.Modified;
                     }
                     else
                     {
-                        context.Entry(metric.InfoSort).State = EntityState.Added;
+                        context.Entry(entity.InfoGridster).State = EntityState.Added;
                     }
                     context.SaveChanges();
                 }
-            }
 
-            foreach (var initiative in entity.Initiatives)
-            {
-                if (initiative.InfoSort != null)
+
+                foreach (var metric in entity.Metrics)
                 {
-                    initiative.InfoSort.IsShared = isShared;
+                    if (metric.InfoSort != null)
+                    {
+                        metric.InfoSort.IsShared = isShared;
 
-                    if (isShared)
-                    {
-                        initiative.InfoSort.Sort_User_ID = null;
+                        if (isShared)
+                        {
+                            metric.InfoSort.Sort_User_ID = null;
+                        }
+                        else
+                        {
+                            metric.InfoSort.Sort_User_ID = (int)byUserId;
+                        }
+
+                        metric.InfoSort.Sort_Edited_On = DateTime.Now;
+                        metric.InfoSort.Sort_Entity_ID = metric.id;
+                        metric.InfoSort.Sort_Entity_Kind = metric.AAA_EntityName;
+                        metric.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
+
+
+                        if (metric.InfoSort.id > 0)
+                        {
+                            context.Entry(metric.InfoSort).State = EntityState.Modified;
+                        }
+                        else
+                        {
+                            context.Entry(metric.InfoSort).State = EntityState.Added;
+                        }
+                        context.SaveChanges();
                     }
-                    else
+                }
+
+                foreach (var initiative in entity.Initiatives)
+                {
+                    if (initiative.InfoSort != null)
                     {
+                        initiative.InfoSort.IsShared = isShared;
+
+                        if (isShared)
+                        {
+                            initiative.InfoSort.Sort_User_ID = null;
+                        }
+                        else
+                        {
+                            initiative.InfoSort.Sort_User_ID = (int)byUserId;
+                        }
+
+                        initiative.InfoSort.Sort_Edited_On = DateTime.Now;
+                        initiative.InfoSort.Sort_Entity_ID = initiative.id;
+                        initiative.InfoSort.Sort_Entity_Kind = initiative.AAA_EntityName;
+                        initiative.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
                         initiative.InfoSort.Sort_User_ID = (int)byUserId;
-                    }
 
-                    initiative.InfoSort.Sort_Edited_On = DateTime.Now;
-                    initiative.InfoSort.Sort_Entity_ID = initiative.id;
-                    initiative.InfoSort.Sort_Entity_Kind = initiative.AAA_EntityName;
-                    initiative.InfoSort.Sort_ParentInfo = "Dashboard_" + parent.id + "_Department_" + entity.id;
-                    initiative.InfoSort.Sort_User_ID = (int)byUserId;
-
-                    if (initiative.InfoSort.id > 0)
-                    {
-                        context.Entry(initiative.InfoSort).State = EntityState.Modified;
+                        if (initiative.InfoSort.id > 0)
+                        {
+                            context.Entry(initiative.InfoSort).State = EntityState.Modified;
+                        }
+                        else
+                        {
+                            context.Entry(initiative.InfoSort).State = EntityState.Added;
+                        }
+                        context.SaveChanges();
                     }
-                    else
-                    {
-                        context.Entry(initiative.InfoSort).State = EntityState.Added;
-                    }
-                    context.SaveChanges();
                 }
             }
-
-
         }
 
         protected override void onCreate(Department entity)

@@ -138,7 +138,7 @@ namespace CMDLogic.Logic
                 }
                 if (!userIsAllowed)
                 {
-                    throw new System.Exception("User not allowed to make updates to this Dashboard.");
+                    throw new System.Exception("User not allowed to update this Dashboard.");
                 }
             }
         }
