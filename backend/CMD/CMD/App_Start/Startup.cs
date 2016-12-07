@@ -10,6 +10,7 @@ using Ninject;
 using System.Reflection;
 using Ninject.Web.WebApi.OwinHost;
 using CMD.App_Start;
+using IdentityServer3.AccessTokenValidation;
 
 [assembly: OwinStartup(typeof(CMD.Startup))]
 
@@ -34,17 +35,31 @@ namespace CMD
 
         public void ConfigureOAuth(IAppBuilder app)
         {
-            OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
-            {
-                AllowInsecureHttp = true,
-                TokenEndpointPath = new PathString("/api/token"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
-                Provider = new SimpleAuthorizationServerProvider()
-            };
+            //OAuthAuthorizationServerOptions OAuthServerOptions = new OAuthAuthorizationServerOptions()
+            //{
+            //    AllowInsecureHttp = true,
+            //    TokenEndpointPath = new PathString("/api/token"),
+            //    AccessTokenExpireTimeSpan = TimeSpan.FromDays(1),
+            //    Provider = new SimpleAuthorizationServerProvider()
+            //};
 
-            //Token Generation
-            app.UseOAuthAuthorizationServer(OAuthServerOptions);
-            app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+            ////Token Generation
+            //app.UseOAuthAuthorizationServer(OAuthServerOptions);
+            //app.UseOAuthBearerAuthentication(new OAuthBearerAuthenticationOptions());
+
+            // Wire token validation
+            app.UseIdentityServerBearerTokenAuthentication(new IdentityServerBearerTokenAuthenticationOptions
+            {
+                Authority = "http://localhost:61521",
+
+                //ValidationMode = ValidationMode.ValidationEndpoint,
+
+                // For access to the introspection endpoint
+                ClientId = "cmd",
+                ClientSecret = "api-secret",
+
+                RequiredScopes = new[] { "api" }
+            });
 
         }
     }

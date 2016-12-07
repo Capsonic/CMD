@@ -26,4 +26,22 @@ angular.module('mainApp').controller('LoginCtrl', function($scope, $location, au
                 $scope.message = err.error_description;
             });
     };
+
+    $scope.logout = function() {
+        authService.logout();
+    };
+
+
+    $scope.authenticate = function() {
+
+        $activityIndicator.startAnimating();
+        authService.login().then(function(response) {
+                $location.path('/');
+            },
+            function(err) {
+                $scope.message = err.error_description;
+            });
+
+    };
+
 });

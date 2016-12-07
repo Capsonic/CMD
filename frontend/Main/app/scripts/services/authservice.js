@@ -8,61 +8,52 @@
  * Factory in the mainApp.
  */
 angular.module('mainApp').factory('authService', function($http, $q, localStorageService, appConfig, userService, $rootScope, $location) {
-    var serviceBase = appConfig.API_URL;
-    var authServiceFactory = {};
+
+    var settings = {
+        authority: 'http://localhost:61521',
+        client_id: 'cmd',
+        popup_redirect_uri: 'http://localhost:9000/auth_redirect.html',
+        silent_redirect_uri: 'http://localhost:9000/silent-renew.html',
+        post_logout_redirect_uri: "http://localhost:9000",
+
+        response_type: 'id_token token',
+        scope: 'openid profile email api',
+
+        accessTokenExpiringNotificationTime: 4,
+        automaticSilentRenew: true,
+
+        filterProtocolClaims: true
+    };
 
     var _authentication = {
         isAuth: false,
         userName: ""
     };
 
-    var _saveRegistration = function(registration) {
+    var manager = new Oidc.UserManager(settings);
 
-        _logOut();
+    manager.events.addUserLoaded(function(authResponse) {
 
-        return $http.post(serviceBase + 'account/register', '=' + JSON.stringify(registration)).then(function(response) {
-            return response;
+        localStorageService.set('authorizationData', {
+            token: authResponse.access_token,
+            userName: authResponse.profile.given_name
         });
 
-    };
+        _authentication.isAuth = true;
+        _authentication.userName = authResponse.profile.given_name;
 
-    var _login = function(loginData) {
-
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
-
-        var deferred = $q.defer();
-
-        $http.post(serviceBase + 'token', data, {
-            headers: {
-                'Content-Type': 'application/x-www-form-urlencoded'
-            }
-        }).success(function(response) {
-
-            localStorageService.set('authorizationData', {
-                token: response.access_token,
-                userName: loginData.userName
-            });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
-
-            userService.loadAll().then(function(data) {
-                $rootScope.currentUser = userService.getByUserName(loginData.userName);
-                deferred.resolve(response);
-            });
-
-
-
-        }).error(function(err, status) {
-            _logOut();
-            deferred.reject(err);
+        userService.loadAll().then(function(users) {
+            $rootScope.currentUser = userService.getById(authResponse.profile.sub);
         });
 
-        return deferred.promise;
+    });
 
-    };
+    manager.events.addSilentRenewError(function(error) {
+        console.error('error while renewing the access token', error);
+    });
 
-    var _logOut = function() {
+    manager.events.addUserSignedOut(function() {
+        console.log("User signed out.");
 
         localStorageService.remove('authorizationData');
 
@@ -71,6 +62,23 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
 
         $location.path('/login');
 
+    });
+
+    var _login = function() {
+        return manager
+            .signinPopup()
+            .catch(function(error) {
+                console.error('error while logging in through the popup', error);
+                _logout();
+            });
+    };
+
+    var _logout = function() {
+        return manager
+            .signoutRedirect()
+            .catch(function(error) {
+                console.error('error while signing out user', error);
+            });
     };
 
     var _fillAuthData = function() {
@@ -86,12 +94,13 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
 
     }
 
+    var authServiceAPI = {};
 
-    authServiceFactory.saveRegistration = _saveRegistration;
-    authServiceFactory.login = _login;
-    authServiceFactory.logOut = _logOut;
-    authServiceFactory.fillAuthData = _fillAuthData;
-    authServiceFactory.authentication = _authentication;
+    authServiceAPI.login = _login;
+    authServiceAPI.logout = _logout;
+    authServiceAPI.fillAuthData = _fillAuthData;
+    authServiceAPI.authentication = _authentication;
 
-    return authServiceFactory;
+    return authServiceAPI;
+
 });
