@@ -9,16 +9,15 @@
     <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
     <!-- build:css(.) styles/vendor.css -->
     <!-- bower:css -->
-    <link rel="stylesheet" href="bower_components/alertify-js/build/css/alertify.min.css" />
-    <link rel="stylesheet" href="bower_components/alertify-js/build/css/themes/default.min.css" />
     <link rel="stylesheet" href="bower_components/angular-gridster2/dist/gridster.css" />
     <link rel="stylesheet" href="bower_components/ngActivityIndicator/css/ngActivityIndicator.css" />
     <link rel="stylesheet" href="bower_components/angular-dragula/dist/dragula.css" />
     <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.css" />
-    <link rel="stylesheet" href="bower_components/ng-tags-input/ng-tags-input.bootstrap.min.css" />
     <!-- endbower -->
     <!-- endbuild -->
     <!-- build:css(.tmp) styles/main.css -->
+    <link rel="stylesheet" href="scripts/reusable/alertify.min.css">
+    <link rel="stylesheet" href="scripts/reusable/bootstrap.min.css">
     <link rel="stylesheet" href="styles/main.css">
     <!-- endbuild -->
 </head>
@@ -50,11 +49,9 @@
     <script src="bower_components/angular-route/angular-route.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-touch/angular-touch.js"></script>
-    <script src="bower_components/alertify-js/build/alertify.min.js"></script>
     <script src="bower_components/lodash/lodash.js"></script>
     <script src="bower_components/javascript-detect-element-resize/detect-element-resize.js"></script>
     <script src="bower_components/angular-gridster2/dist/gridster.js"></script>
-    <script src="bower_components/screenfull.js/dist/screenfull.js"></script>
     <script src="bower_components/angular-smart-table/dist/smart-table.js"></script>
     <script src="bower_components/ngActivityIndicator/ngActivityIndicator.js"></script>
     <script src="bower_components/angular-dragula/dist/angular-dragula.js"></script>
@@ -65,6 +62,8 @@
     <script src="bower_components/oidc-client/dist/oidc-client.js"></script>
     <!-- endbower -->
     <!-- endbuild -->
+    <script src="scripts/reusable/alertify.js"></script>
+    <script src="scripts/reusable/alertify-defaults.js"></script>
     <!-- build:js({.tmp,app}) scripts/scripts.js -->
     <script src="scripts/app.js"></script>
     <script src="scripts/controllers/main.js"></script>
@@ -90,7 +89,6 @@
     <script src="scripts/controllers/signup.js"></script>
     <!-- endbuild -->
     <script src="scripts/reusable/qserialdecorator.js"></script>
-    <script src="scripts/reusable/alertify-defaults.js"></script>
 </body>
 
 </html>

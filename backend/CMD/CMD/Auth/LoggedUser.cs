@@ -18,17 +18,17 @@ namespace CMD.Auth
 
             if (claims.Count() > 0)
             {
-                Claim claimRole = claims.First(c => c.Type == "role");
+                Claim claimRole = claims.FirstOrDefault(c => c.Type == "role");
                 if (claimRole != null)
                 {
                     Role = claimRole.Value;
                 }
-                Claim claimUserID = claims.First(c => c.Type == "userID");
+                Claim claimUserID = claims.FirstOrDefault(c => c.Type == "userID");
                 if (claimUserID != null)
                 {
                     UserID = int.Parse(claimUserID.Value);
                 }
-                Claim claimUserName = claims.First(c => c.Type == "userName");
+                Claim claimUserName = claims.FirstOrDefault(c => c.Type == "userName");
                 if (claimUserName != null)
                 {
                     UserName = claimUserName.Value;
