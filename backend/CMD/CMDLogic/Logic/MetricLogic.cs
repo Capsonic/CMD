@@ -1,5 +1,6 @@
 ﻿using CMDLogic.EF;
 using Reusable;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 
@@ -36,7 +37,7 @@ namespace CMDLogic.Logic
                 item.MetricHistorys = metricHistoryRepository.GetListByParent<Metric>(item.id);
             }
         }
-        
+
         protected override ICatalogContainer LoadCatalogs()
         {
             return new Catalogs()
@@ -63,6 +64,17 @@ namespace CMDLogic.Logic
                 if (item.id < 1)
                 {
                     metricHistoryRepository.AddToParent<Metric>(entity.id, item);
+                }
+                else
+                {
+                    if (item.EF_State == BaseEntity.EF_EntityState.Modified)
+                    {
+                        metricHistoryRepository.Update(item);
+                    }
+                    else if (item.EF_State == BaseEntity.EF_EntityState.Deleted)
+                    {
+                        metricHistoryRepository.Delete(item.id);
+                    }
                 }
             }
         }

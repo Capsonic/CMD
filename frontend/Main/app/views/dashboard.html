@@ -60,7 +60,7 @@
     </div>
 </div>
 <div class="modal" id="modal-metricToSave">
-    <div class="modal-dialog" style="max-width: 1200px;width:initial;">
+    <div class="modal-dialog" style="max-width: 95%;width:initial;">
         <div class="modal-content">
             <div class="modal-header" style="text-align: right;">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
@@ -69,7 +69,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 col-md-4">
                         <label>Title</label>
                         <input type="text" class="form-control" ng-model="metricToSave.Title" tabindex="1">
                         <br>
@@ -105,13 +105,16 @@
                             <auto-complete source="loadDashboardsTags($query, metricToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
                         </tags-input>
                     </div>
-                    <div class="col-sm-7">
-                        <div class=" well well-sm">
+                    <div class="col-sm-7 col-md-8">
+                        <div>
                             <label>History</label>
-                            <table class="table table-hover table-bordered" style="margin-bottom: 0;">
+                            <span class="label label-success pull-right">To be updated</span>
+                            <span class="label label-danger pull-right" style="margin-right: 5px;">To be deleted</span>
+                            <table class="table table-hover table-bordered well well-sm">
                                 <thead>
                                     <tr>
                                         <th>Date</th>
+                                        <th>Note</th>
                                         <th>Real Value</th>
                                         <th>Goal Value</th>
                                         <th></th>
@@ -120,28 +123,41 @@
                                 <tbody>
                                     <tr>
                                         <td>
-                                            <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToAdd.ConvertedMetricDate" tabindex="7" />
+                                            <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <!-- <input type="time" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <input type="week" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <input type="month" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <input type="datetime" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <input type="date" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" /> -->
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.CurrentValue" tabindex="8" />
+                                            <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToSave.Note" tabindex="8" style="resize: none;"></textarea>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToAdd.GoalValue" tabindex="9" />
+                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToSave.CurrentValue" tabindex="9" />
                                         </td>
-                                        <td rowspan="2" style="vertical-align: middle;">
-                                            <button class="btn btn-default" tabindex="11" ng-click="addMetricHistory(metricToSave.metricHistoryToAdd, metricToSave);">Add</button>
+                                        <td>
+                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToSave.GoalValue" tabindex="10" />
+                                        </td>
+                                        <td>
+                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Add'" class="btn btn-sm btn-default" tabindex="11" ng-click="addMetricHistory(metricToSave.metricHistoryToSave, metricToSave);">Add</button>
+                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Update'" class="btn btn-sm btn-default" tabindex="11" ng-click="updateMetricHistory(metricToSave.metricHistoryToSave, metricToSave);">Update</button>
+                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Update'" class="btn btn-sm btn-default" tabindex="12" ng-click="cancelUpdateMetricHistory(metricToSave);">Cancel</button>
                                         </td>
                                     </tr>
-                                    <tr>
-                                        <td colspan="3">
-                                            <label>Note</label>
-                                            <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToAdd.Note" tabindex="10"></textarea>
+                                </tbody>
+                            </table>
+                            <table class="table table-hover table-bordered well well-sm" style="margin-bottom: 0;">
+                                <tbody>
+                                    <tr ng-repeat="metricHistory in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'" ng-class="{info: metricHistory.mode == 'Update', success: metricHistory.EF_State == 2, danger: metricHistory.EF_State == 3}">
+                                        <td style="width:100px;">
+                                            <button class="btn btn-xs" ng-click="setMetricHistoryToUpdate(metricHistory);"><span class="glyphicon glyphicon-pencil"></span></button>
+                                            <button class="btn btn-xs" ng-click="setDeleteMetricHistory(metricHistory);"><span class="glyphicon glyphicon-remove"></span></button>
                                         </td>
-                                    </tr>
-                                    <tr ng-repeat="metric in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'" data-toggle="popover" data-placement="top" data-trigger="focus" title="Note" data-content="{{metric.Note}}" onmouseover="popoverMetricNote(this, 'show')" onmouseout="popoverMetricNote(this, 'hide')">
-                                        <td>{{metric.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
-                                        <td style="text-align:right;">{{metric.FormattedCurrentValue}}</td>
-                                        <td colspan="2" style="text-align:right;">{{metricToSave.EqualityValue}} {{metric.FormattedGoalValue}}</td>
+                                        <td style="width:30%;">{{metricHistory.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
+                                        <td style="width:30%;">{{metricHistory.Note}}</td>
+                                        <td style="text-align:right;">{{metricHistory.FormattedCurrentValue}}</td>
+                                        <td style="text-align:right;">{{metricHistory.EqualityValue}} {{metricHistory.FormattedGoalValue}}</td>
                                     </tr>
                                 </tbody>
                             </table>

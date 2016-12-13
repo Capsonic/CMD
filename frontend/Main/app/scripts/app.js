@@ -128,8 +128,8 @@ angular.module('mainApp', [
     });
 
 
-    $rootScope.logOut = function() {
-        authService.logOut();
+    $rootScope.logout = function() {
+        authService.logout();
     };
 
 });

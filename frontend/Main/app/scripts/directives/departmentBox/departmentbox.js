@@ -45,7 +45,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             '                                                        <td>' +
                             '                                                            <button class="btn-xs btn-warning" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-up"></span></button>' +
                             '                                                        </td>' +
-                            '                                                        <td style="padding-top: 1.3em;">Indicator does nott meet the objective, but shows improvement.</td>' +
+                            '                                                        <td style="padding-top: 1.3em;">Indicator does not meet the objective, but shows improvement.</td>' +
                             '                                                    </tr>' +
                             '                                                    <tr>' +
                             '                                                        <td>' +

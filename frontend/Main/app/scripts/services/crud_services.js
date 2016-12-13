@@ -178,17 +178,14 @@ angular.module('CMD.CRUDServices', [])
 
             //Metric History
             theEntity.MetricHistorys.forEach(function(item) {
-                item.FormattedCurrentValue = getFormattedValue(item.CurrentValue, theEntity.FormatKey);
-                item.FormattedGoalValue = getFormattedValue(item.GoalValue, theEntity.FormatKey);
-                item.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
-                item.ConvertedMetricDate = item.MetricDate ? moment(item.MetricDate, moment.ISO_8601).toDate() : null;
+                item = crudInstance.adaptMetricHistory(item, theEntity);
             });
 
             theEntity.MetricHistorys.sort(function(a, b) {
                 return a.ConvertedMetricDate - b.ConvertedMetricDate;
             });
 
-            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-2);
+            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-1);
 
             return theEntity;
         },
@@ -209,6 +206,14 @@ angular.module('CMD.CRUDServices', [])
 
     crudInstance.getFormattedValue = getFormattedValue;
     crudInstance.getFormattedEquality = getFormattedEquality;
+
+    crudInstance.adaptMetricHistory = function(metricHistory, metric) {
+        metricHistory.FormattedCurrentValue = getFormattedValue(metricHistory.CurrentValue, metric.FormatKey);
+        metricHistory.FormattedGoalValue = getFormattedValue(metricHistory.GoalValue, metric.FormatKey);
+        metricHistory.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
+        metricHistory.ConvertedMetricDate = metricHistory.MetricDate ? moment(metricHistory.MetricDate, moment.ISO_8601).toDate() : null;
+        return metricHistory;
+    };
 
     return crudInstance;
 }).service('initiativeService', function(crudFactory) {

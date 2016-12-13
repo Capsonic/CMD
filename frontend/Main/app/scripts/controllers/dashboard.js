@@ -434,20 +434,54 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.resetMetricHistoryToAdd = function() {
 
-        $scope.metricToSave.metricHistoryToAdd = {
+        $scope.metricToSave.metricHistoryToSave = {
             CurrentValue: null,
             GoalValue: null,
             Note: null,
-            ConvertedMetricDate: new Date()
+            ConvertedMetricDate: new Date(),
+            mode: 'Add'
         };
-        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setSeconds(0);
-        $scope.metricToSave.metricHistoryToAdd.ConvertedMetricDate.setMilliseconds(0);
+        $scope.metricToSave.metricHistoryToSave.ConvertedMetricDate.setSeconds(0);
+        $scope.metricToSave.metricHistoryToSave.ConvertedMetricDate.setMilliseconds(0);
 
     };
 
+    $scope.setMetricHistoryToUpdate = function(oMetricHistory) {
+        oMetricHistory.mode = 'Update';
+        $scope.metricToSave.metricHistoryToSave = angular.copy(oMetricHistory);
+    };
+
+    $scope.updateMetricHistory = function(oMetricHistoryUpdated) {
+
+        $scope.metricToSave.MetricHistorys.forEach(function(currentMetricHistory) {
+            if (currentMetricHistory.id == oMetricHistoryUpdated.id) {
+                angular.copy(metricService.adaptMetricHistory(oMetricHistoryUpdated, $scope.metricToSave), currentMetricHistory);
+                currentMetricHistory.mode = null;
+                currentMetricHistory.EF_State = 2;
+            }
+        });
+        $scope.resetMetricHistoryToAdd();
+
+
+        // metricService.customPost('updateMetricHistory', oMetricHistory).then(function(response) {
+        //     $scope.metricToSave.MetricHistorys.forEach(function(metricHistory) {
+        //         if (metricHistory.id == response.id) {
+        //             angular.copy(metricService.adaptMetricHistory(response, $scope.metricToSave), metricHistory);
+        //         }
+        //     });
+        //     $scope.resetMetricHistoryToAdd();
+        // });
+    };
+
+    $scope.setDeleteMetricHistory = function(oMetricHistory) {
+        oMetricHistory.EF_State = oMetricHistory.EF_State == 3 ? 0 : 3;
+    };
+
+    $scope.cancelUpdateMetricHistory = function(oMetric) {
+        oMetric.MetricHistorys.forEach(function(oMetricHistory) {
+            oMetricHistory.mode = null;
+        });
+        $scope.resetMetricHistoryToAdd();
+    };
+
 });
-
-
-function popoverMetricNote(element, sAction) {
-    $(element).popover(sAction);
-};
