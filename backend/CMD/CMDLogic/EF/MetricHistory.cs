@@ -25,7 +25,7 @@ namespace CMDLogic.EF
         public DateTime? MetricDate { get; set; }
 
 
-        public int MetricKey { get; set; }
-        public virtual Metric Metric { get; set; }
+        public int MetricYearKey { get; set; }
+        public virtual MetricYear MetricYear { get; set; }
     }
 }

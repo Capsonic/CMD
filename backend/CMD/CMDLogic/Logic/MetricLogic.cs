@@ -14,6 +14,7 @@ namespace CMDLogic.Logic
         IRepository<cat_MetricBasis> cat_MetricBasisRepository;
         IRepository<cat_MetricFormat> cat_MetricFormatRepository;
         IRepository<Dashboard> cat_Dashboards;
+        IRepository<MetricYear> metricYearRepository;
         IRepository<MetricHistory> metricHistoryRepository;
 
         public MetricLogic(DbContext context, IRepository<Metric> repository,
@@ -21,12 +22,14 @@ namespace CMDLogic.Logic
             IRepository<cat_MetricBasis> cat_MetricBasisRepository,
             IRepository<cat_MetricFormat> cat_MetricFormatRepository,
             IRepository<Dashboard> cat_Dashboards,
+            IRepository<MetricYear> metricYearRepository,
             IRepository<MetricHistory> metricHistoryRepository) : base(context, repository)
         {
             this.cat_ComparatorMethodRepository = cat_ComparatorMethodRepository;
             this.cat_MetricBasisRepository = cat_MetricBasisRepository;
             this.cat_MetricFormatRepository = cat_MetricFormatRepository;
             this.cat_Dashboards = cat_Dashboards;
+            this.metricYearRepository = metricYearRepository;
             this.metricHistoryRepository = metricHistoryRepository;
         }
 
@@ -34,7 +37,11 @@ namespace CMDLogic.Logic
         {
             foreach (var item in entities)
             {
-                item.MetricHistorys = metricHistoryRepository.GetListByParent<Metric>(item.id);
+                item.MetricYears = metricYearRepository.GetListByParent<Metric>(item.id);
+                foreach (var year in item.MetricYears)
+                {
+                    year.MetricHistorys = metricHistoryRepository.GetListByParent<MetricYear>(year.id);
+                }
             }
         }
 
@@ -59,21 +66,24 @@ namespace CMDLogic.Logic
 
         protected override void onSaving(DbContext context, Metric entity, BaseEntity parent = null)
         {
-            foreach (var item in entity.MetricHistorys)
+            foreach (var year in entity.MetricYears)
             {
-                if (item.id < 1)
+                foreach (var item in year.MetricHistorys)
                 {
-                    metricHistoryRepository.AddToParent<Metric>(entity.id, item);
-                }
-                else
-                {
-                    if (item.EF_State == BaseEntity.EF_EntityState.Modified)
+                    if (item.id < 1)
                     {
-                        metricHistoryRepository.Update(item);
+                        metricHistoryRepository.AddToParent<Metric>(entity.id, item);
                     }
-                    else if (item.EF_State == BaseEntity.EF_EntityState.Deleted)
+                    else
                     {
-                        metricHistoryRepository.Delete(item.id);
+                        if (item.EF_State == BaseEntity.EF_EntityState.Modified)
+                        {
+                            metricHistoryRepository.Update(item);
+                        }
+                        else if (item.EF_State == BaseEntity.EF_EntityState.Deleted)
+                        {
+                            metricHistoryRepository.Delete(item.id);
+                        }
                     }
                 }
             }

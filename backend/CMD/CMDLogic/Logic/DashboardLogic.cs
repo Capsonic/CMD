@@ -14,6 +14,7 @@ namespace CMDLogic.Logic
         private readonly IDepartmentLogic departmentLogic;
         private readonly Repository<Gridster> gridsterRepository;
         private readonly Repository<Sort> sortRepository;
+        private readonly Repository<MetricYear> metricYearRepository;
         private readonly Repository<MetricHistory> metricHistoryRepository;
         private readonly Repository<User> userRepository;
 
@@ -22,12 +23,14 @@ namespace CMDLogic.Logic
             IDepartmentLogic departmentLogic,
             Repository<Gridster> gridsterRepository,
             Repository<Sort> sortRepository,
+            Repository<MetricYear> metricYearRepository,
             Repository<MetricHistory> metricHistoryRepository,
             Repository<User> userRepository) : base(context, repository)
         {
             this.departmentLogic = departmentLogic;
             this.gridsterRepository = gridsterRepository;
             this.sortRepository = sortRepository;
+            this.metricYearRepository = metricYearRepository;
             this.metricHistoryRepository = metricHistoryRepository;
             this.userRepository = userRepository;
         }
@@ -79,7 +82,11 @@ namespace CMDLogic.Logic
                                                                     && e.Sort_Entity_Kind == metric.AAA_EntityName
                                                                     && e.Sort_ParentInfo == "Dashboard_" + ID + "_Department_" + department.id
                                                                     && e.IsShared == true);
-                        metric.MetricHistorys = metricHistoryRepository.GetList(m => m.MetricKey == metric.MetricKey);
+                        metric.MetricYears = metricYearRepository.GetList(m => m.MetricKey == metric.MetricKey);
+                        foreach (var year in metric.MetricYears)
+                        {
+                            year.MetricHistorys = metricHistoryRepository.GetList(m => m.MetricYearKey == year.MetricYearKey);
+                        }
                     }
 
                     foreach (var initiative in department.Initiatives)
@@ -103,7 +110,11 @@ namespace CMDLogic.Logic
                                                                     && e.Sort_Entity_Kind == metric.AAA_EntityName
                                                                     && e.Sort_ParentInfo == "Dashboard_" + ID + "_Department_" + department.id
                                                                     && e.Sort_User_ID == byUserId);
-                        metric.MetricHistorys = metricHistoryRepository.GetList(m => m.MetricKey == metric.MetricKey);
+                        metric.MetricYears = metricYearRepository.GetList(m => m.MetricKey == metric.MetricKey);
+                        foreach (var year in metric.MetricYears)
+                        {
+                            year.MetricHistorys = metricHistoryRepository.GetList(m => m.MetricYearKey == year.MetricYearKey);
+                        }
                     }
 
                     foreach (var initiative in department.Initiatives)

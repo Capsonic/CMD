@@ -58,6 +58,7 @@
     <Compile Include="EF\Dashboard.cs" />
     <Compile Include="EF\Gant.cs" />
     <Compile Include="EF\Initiative.cs" />
+    <Compile Include="EF\MetricYear.cs" />
     <Compile Include="EF\MetricHistory.cs" />
     <Compile Include="EF\Metric.cs" />
     <Compile Include="EF\Department.cs" />
@@ -151,6 +152,10 @@
     <Compile Include="Migrations\201610060020242_sortOptionalUser.Designer.cs">
       <DependentUpon>201610060020242_sortOptionalUser.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701062025097_AddMetricYear.cs" />
+    <Compile Include="Migrations\201701062025097_AddMetricYear.Designer.cs">
+      <DependentUpon>201701062025097_AddMetricYear.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -217,6 +222,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201610060020242_sortOptionalUser.resx">
       <DependentUpon>201610060020242_sortOptionalUser.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701062025097_AddMetricYear.resx">
+      <DependentUpon>201701062025097_AddMetricYear.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

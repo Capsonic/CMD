@@ -19,6 +19,7 @@ namespace CMDLogic.EF
         public virtual DbSet<Gant> Gants { get; set; }
         public virtual DbSet<Initiative> Initiatives { get; set; }
         public virtual DbSet<Metric> Metrics { get; set; }
+        public virtual DbSet<MetricYear> MetricYears { get; set; }
         public virtual DbSet<MetricHistory> MetricHistorys { get; set; }
         public virtual DbSet<Department> Departments { get; set; }
         public virtual DbSet<Sort> Sorts { get; set; }
