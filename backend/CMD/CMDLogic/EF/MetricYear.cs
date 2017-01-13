@@ -21,6 +21,8 @@ namespace CMDLogic.EF
 
         public string Note { get; set; }
 
+        public int Value { get; set; }
+
         public int MetricKey { get; set; }
         public virtual Metric Metric { get; set; }
 

@@ -1140,6 +1140,44 @@ angular.module('inspiracode.crudFactory', [])
             return deferred.promise;
         };
 
+        var _getAllByParent = function(parentType, parentKey) {
+            var deferred = $q.defer();
+            _arrAllRecords = [];
+            if (parentKey > 0) {
+                $http.get(appConfig.API_URL + mainEntity.entityName + '/GetAllByParent/' + parentType + '/' + parentKey + '?noCache=' + Number(new Date()))
+                    .then(
+                        /*success*/
+                        function(response) {
+                            var backendResponse = response.data;
+                            if (backendResponse.ErrorThrown) {
+                                var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
+                                alertify.alert(alertifyContent).set('modal', true);
+                                deferred.reject(response);
+                            } else {
+
+                                if (backendResponse.Result != null) {
+                                    for (var i = 0; i < backendResponse.Result.length; i++) {
+                                        mainEntity.adapterIn(backendResponse.Result[i]);
+                                    }
+                                    _arrAllRecords = backendResponse.Result;
+                                    deferred.resolve(_arrAllRecords);
+                                }
+                            }
+                        },
+                        /*error*/
+                        function(response) {
+                            alertify.alert('An error has occurred, see console for more details.').set('modal', true);
+                            log.debug(response);
+                            deferred.reject(response);
+                        });
+
+            } else {
+                deferred.resolve(_arrAllRecords);
+            }
+
+            return deferred.promise;
+        };
+
         var _getRawAll = function() {
             return _arrAllRecords;
         };
@@ -1189,7 +1227,8 @@ angular.module('inspiracode.crudFactory', [])
             customPost: _customPost, //Request a custom name method via Post.
             createEntity: _createEntity, //Gets a new instance of entity from the backend.
             addToParent: _addToParent, //Saves an entity and attaches to parent specified.
-            getSingleByParent: _getSingleByParent //Get single by parent
+            getSingleByParent: _getSingleByParent, //Get single by parent
+            getAllByParent: _getAllByParent //Get all by parent
         };
         _arrDependenciesAndThis.push(oAPI);
         var _self = oAPI;

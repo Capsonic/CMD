@@ -180,5 +180,25 @@ namespace CMD.Controllers
                 return response.Error("ERROR: " + e.ToString());
             }
         }
+
+        // POST: api/Base
+        [HttpGet Route("GetAllByParent/{parentType}/{parentId}")]
+        virtual public CommonResponse GetAllByParent(string parentType, int parentId)
+        {
+            CommonResponse response = new CommonResponse();
+
+            try
+            {
+                Type parentClassName = Type.GetType("CMDLogic.EF." + parentType + ", CMDLogic", true);
+                MethodInfo method = _logic.GetType().GetMethod("GetAllByParent");
+                MethodInfo generic = method.MakeGenericMethod(parentClassName);
+                response = (CommonResponse)generic.Invoke(_logic, new object[] { parentId });
+                return response;
+            }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+        }
     }
 }

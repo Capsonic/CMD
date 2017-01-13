@@ -71,9 +71,11 @@
 <div class="modal fade" id="modal-itemToSave">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-Description">{{modeSave}} {{entityName}}</h4>
+            <div class="modal-header" style="text-align: right;">
+                <button type="button" class="btn btn-info" ng-click="openMetricHistory(itemToSave)">History</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 5px;">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveModal()" style="margin-left: 5px;">{{modeSave}}</button>
+                <h4 class="modal-Description pull-left">{{modeSave}} {{entityName}}</h4>
             </div>
             <div class="modal-body">
                 <div class="form-group">
@@ -99,8 +101,43 @@
                 </div>
             </div>
             <div class="modal-footer">
+                <button type="button" class="btn btn-info" ng-click="openMetricHistory(itemToSave)">History</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveModal()">{{modeSave}}</button>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modal-MetricHistory">
+    <div class="modal-dialog" style="max-width: 800px;width:initial;">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: right;">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()" style="margin-left: 5px;">Save</button>
+                <h4 class="modal-title pull-left">Metric History</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+                    <div class="col-sm-3 col-xs-6">
+                        <label>Year</label>
+                        <year-selectize metric="itemToSave"></year-selectize>
+                    </div>
+                </div>
+                <br>
+                <label>History</label>
+                <div class="table-responsive">
+                    <metric-history metric-year="itemToSave.SelectedMetricYear"></metric-history>
+                </div>
+                <div class="col-sm-9 col-xs-6">
+                    <pre>Selected Metric Year:
+{{itemToSave.SelectedMetricYear | json:4}}
+
+Metric Years:
+{{itemToSave.MetricYears | json:4}}</pre></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()">Save</button>
             </div>
         </div>
     </div>

@@ -77,12 +77,6 @@ angular.module('CMD.CRUDServices', [])
 
                 department.Metrics.forEach(function(metric) {
                     metricService.adapt(metric);
-
-                    // metric.FormattedCurrentValue = getFormattedValue(metric.CurrentValue, metric.FormatKey);
-                    // metric.FormattedGoalValue = getFormattedValue(metric.GoalValue, metric.FormatKey);
-                    // metric.BasisValue = getMetricsBasisValue(metric.BasisKey);
-                    // metric.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
-                    // metric.HiddenForDashboardsTags = getDashboardsFromIds(metric.HiddenForDashboards, metricService.catalogs.Dashboards);
                 });
                 department.Initiatives.forEach(function(initiative) {
                     initiative.ConvertedActualDate = initiative.ActualDate ? moment(initiative.ActualDate, moment.ISO_8601).toDate() : null;
@@ -108,6 +102,7 @@ angular.module('CMD.CRUDServices', [])
     });
 
     return crudInstance;
+
 }).service('departmentService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
@@ -131,6 +126,7 @@ angular.module('CMD.CRUDServices', [])
     });
 
     return crudInstance;
+
 }).service('metricService', function(crudFactory, $filter) {
 
     function getFormattedValue(value, format) {
@@ -176,8 +172,19 @@ angular.module('CMD.CRUDServices', [])
             theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
 
 
+            //Metric Years Sort
+            theEntity.MetricYears.sort(function(a, b) {
+                return a.Value - b.Value;
+            });
+
+            theEntity.SelectedMetricYear = null;
+            if (theEntity.MetricYears.length > 0) {
+                theEntity.SelectedMetricYear = theEntity.MetricYears[0];
+            }
+
+
             //Metric History
-            theEntity.MetricHistorys.forEach(function(item) {
+            /*theEntity.MetricHistorys.forEach(function(item) {
                 item = crudInstance.adaptMetricHistory(item, theEntity);
             });
 
@@ -185,7 +192,7 @@ angular.module('CMD.CRUDServices', [])
                 return a.ConvertedMetricDate - b.ConvertedMetricDate;
             });
 
-            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-1);
+            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-1);*/
 
             return theEntity;
         },
@@ -194,9 +201,10 @@ angular.module('CMD.CRUDServices', [])
 
         adapterOut: function(theEntity, self) {
             theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
-            theEntity.MetricHistorys.forEach(function(item) {
-                item.MetricDate = item.ConvertedMetricDate ? item.ConvertedMetricDate.toJSON() : null;
-            });
+
+            // theEntity.MetricHistorys.forEach(function(item) {
+            //     item.MetricDate = item.ConvertedMetricDate ? item.ConvertedMetricDate.toJSON() : null;
+            // });
         },
 
         dependencies: [
@@ -216,7 +224,76 @@ angular.module('CMD.CRUDServices', [])
     };
 
     return crudInstance;
+
+}).service('metricHistoryService', function(crudFactory, $filter) {
+
+    function getFormattedValue(value, format) {
+        if (value != null && value != '') {
+            switch (format) {
+                case 1: //Numeric
+                    return $filter('number')(value, 2);
+                case 2: //Currency
+                    return '$ ' + $filter('number')(value, 2);
+                case 3: //Percentage
+                    return $filter('number')(value, 2) + '%';
+                default:
+                    return value;
+            }
+        }
+        return value;
+    };
+
+    function getFormattedEquality(equality) {
+        switch (equality) {
+            case 1:
+                return '>';
+            case 2:
+                return '<';
+            case 3:
+                return '<>';
+            default:
+                return '';
+        }
+    };
+
+    var crudInstance = new crudFactory({
+
+        entityName: 'MetricHistory',
+
+        catalogs: [],
+
+        adapter: function(theEntity, self) {
+
+            theEntity.FormattedCurrentValue = getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
+            theEntity.FormattedGoalValue = getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
+            theEntity.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
+            theEntity.ConvertedMetricDate = theEntity.MetricDate ? moment(theEntity.MetricDate, moment.ISO_8601).toDate() : null;
+
+            theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
+            //theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
+            theEntity.ConvertedMetricDay = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getDate() : null;
+            return theEntity;
+
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {
+            theEntity.MetricDate = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.toJSON() : null;
+        },
+
+        dependencies: [
+
+        ]
+    });
+
+    crudInstance.getFormattedValue = getFormattedValue;
+    crudInstance.getFormattedEquality = getFormattedEquality;
+
+    return crudInstance;
+
 }).service('initiativeService', function(crudFactory) {
+
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
         entityName: 'Initiative',
@@ -244,6 +321,7 @@ angular.module('CMD.CRUDServices', [])
     });
 
     return crudInstance;
+
 }).service('userService', function(crudFactory) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:

@@ -72,6 +72,7 @@
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
+    <Compile Include="Logic\MetricHistoryLogic.cs" />
     <Compile Include="Logic\MetricLogic.cs" />
     <Compile Include="Logic\DepartmentLogic.cs" />
     <Compile Include="Logic\DashboardLogic.cs" />
@@ -156,6 +157,10 @@
     <Compile Include="Migrations\201701062025097_AddMetricYear.Designer.cs">
       <DependentUpon>201701062025097_AddMetricYear.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701091946374_MetricYearValue.cs" />
+    <Compile Include="Migrations\201701091946374_MetricYearValue.Designer.cs">
+      <DependentUpon>201701091946374_MetricYearValue.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -225,6 +230,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701062025097_AddMetricYear.resx">
       <DependentUpon>201701062025097_AddMetricYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701091946374_MetricYearValue.resx">
+      <DependentUpon>201701091946374_MetricYearValue.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

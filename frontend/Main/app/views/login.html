@@ -15,8 +15,6 @@
             <input type="password" id="txtPassword" class="form-control" placeholder="Password" data-ng-model="loginData.password" required>
         </div>
         <button class="btn btn-lg btn-info btn-block" type="submit" data-ng-click="login()">Login</button>
-        <button class="btn btn-lg btn-info btn-block" type="button" data-ng-click="authenticate('capsonic')">Sign in with Capsonic</button>
-        <button type="button" class="btn btn-danger" ng-click="logout()">Logout</button>
         <br>
         <br>
         <div data-ng-hide="message == ''" class="alert alert-danger">

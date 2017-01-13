@@ -29,5 +29,15 @@ angular.module('mainApp').controller('DashboardsCtrl', function($scope, dashboar
         // metric.HiddenForUsersTags = [tagAdded]
     };
 
+    $scope.ownersToString = function(owners) {
+        var result = '';
+        if (owners) {
+            result = owners.map(function(item) {
+                return item.UserName;
+            });
+        }
+        return result.join(', ');
+    };
+
 
 });

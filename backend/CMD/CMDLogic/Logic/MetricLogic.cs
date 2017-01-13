@@ -6,7 +6,10 @@ using System.Data.Entity;
 
 namespace CMDLogic.Logic
 {
-    public interface IMetricLogic : IBaseLogic<Metric> { }
+    public interface IMetricLogic : IBaseLogic<Metric>
+    {
+        CommonResponse GetAllWithNavigationProperties();
+    }
 
     public class MetricLogic : BaseLogic<Metric>, IMetricLogic
     {
@@ -38,10 +41,10 @@ namespace CMDLogic.Logic
             foreach (var item in entities)
             {
                 item.MetricYears = metricYearRepository.GetListByParent<Metric>(item.id);
-                foreach (var year in item.MetricYears)
-                {
-                    year.MetricHistorys = metricHistoryRepository.GetListByParent<MetricYear>(year.id);
-                }
+                //foreach (var year in item.MetricYears)
+                //{
+                //    year.MetricHistorys = metricHistoryRepository.GetListByParent<MetricYear>(year.id);
+                //}
             }
         }
 
@@ -66,27 +69,48 @@ namespace CMDLogic.Logic
 
         protected override void onSaving(DbContext context, Metric entity, BaseEntity parent = null)
         {
-            foreach (var year in entity.MetricYears)
+            //foreach (var year in entity.MetricYears)
+            //{
+            //    foreach (var item in year.MetricHistorys)
+            //    {
+            //        if (item.id < 1)
+            //        {
+            //            metricHistoryRepository.AddToParent<Metric>(entity.id, item);
+            //        }
+            //        else
+            //        {
+            //            if (item.EF_State == BaseEntity.EF_EntityState.Modified)
+            //            {
+            //                metricHistoryRepository.Update(item);
+            //            }
+            //            else if (item.EF_State == BaseEntity.EF_EntityState.Deleted)
+            //            {
+            //                metricHistoryRepository.Delete(item.id);
+            //            }
+            //        }
+            //    }
+            //}
+        }
+
+        public CommonResponse GetAllWithNavigationProperties()
+        {
+            CommonResponse response = new CommonResponse();
+            List<Metric> entities;
+            try
             {
-                foreach (var item in year.MetricHistorys)
-                {
-                    if (item.id < 1)
-                    {
-                        metricHistoryRepository.AddToParent<Metric>(entity.id, item);
-                    }
-                    else
-                    {
-                        if (item.EF_State == BaseEntity.EF_EntityState.Modified)
-                        {
-                            metricHistoryRepository.Update(item);
-                        }
-                        else if (item.EF_State == BaseEntity.EF_EntityState.Deleted)
-                        {
-                            metricHistoryRepository.Delete(item.id);
-                        }
-                    }
-                }
+                //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
+
+                repository.byUserId = byUserId;
+                entities = (List<Metric>)repository.GetAll();
+
+                loadNavigationProperties(context, entities.ToArray());
             }
+            catch (Exception e)
+            {
+                return response.Error("ERROR: " + e.ToString());
+            }
+
+            return response.Success(entities);
         }
     }
 }

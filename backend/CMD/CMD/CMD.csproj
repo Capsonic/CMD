@@ -215,6 +215,7 @@
     <Compile Include="Auth\AuthContext.cs" />
     <Compile Include="Auth\UserModel.cs" />
     <Compile Include="Controllers\BaseController.cs" />
+    <Compile Include="Controllers\MetricHistoryController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Controllers\InitiativeController.cs" />
     <Compile Include="Controllers\MetricController.cs" />

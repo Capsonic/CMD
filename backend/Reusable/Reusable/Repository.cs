@@ -247,7 +247,7 @@ namespace Reusable
 
             if (parent == null)
             {
-                throw new Exception("Parent non-existent.");
+                return list;
             }
 
             if (parent is BaseDocument)

@@ -8,11 +8,13 @@ namespace CMDLogic.Migrations
         public override void Up()
         {
             AddColumn("dbo.Gridster", "IsShared", c => c.Boolean(nullable: false));
+            AddColumn("dbo.Dashboard", "IsShared", c => c.Boolean(nullable: false));
         }
         
         public override void Down()
         {
             DropColumn("dbo.Gridster", "IsShared");
+            DropColumn("dbo.Dashboard", "IsShared");
         }
     }
 }

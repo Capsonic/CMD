@@ -38,6 +38,12 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             _afterCreateCallBack = function() {};
         }
 
+        //On Open Edit Modal
+        var _openModalCallBack = oMainConfig.openModal;
+        if (!_openModalCallBack || typeof _openModalCallBack != 'function') {
+            _openModalCallBack = function() {};
+        }
+
 
 
         //END CONFIG/////////////////////////////////////
@@ -151,6 +157,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             scope.modeSave = 'Update';
             scope.selectedItem = theItem;
             scope.itemToSave = angular.copy(theItem);
+            _openModalCallBack(scope.itemToSave);
             angular.element('#' + _modalName).modal('show');
             angular.element('#' + _modalName).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
                 scope.$apply(function() {
@@ -191,22 +198,63 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
         var _load = function() {
             $activityIndicator.startAnimating();
             alertify.closeAll();
-            _baseService.loadAll(true).then(function(data) {
+            return _baseService.loadAll(true).then(function(data) {
                 scope.$evalAsync(function() {
                     for (var catalog in _baseService.catalogs) {
                         if (_baseService.catalogs.hasOwnProperty(catalog)) {
                             scope['cat' + catalog] = _baseService.catalogs[catalog].getAll();
                         }
                     }
-                    scope.baseList = _baseService.getAll()
+                    scope.baseList = _baseService.getAll();
                     _afterLoad();
                 });
             });
         };
 
+        var _loadByParentKey = function(parentType, parentKey) {
+            $activityIndicator.startAnimating();
+            alertify.closeAll();
+            return _baseService.getAllByParent(parentType, parentKey).then(function(data) {
+                scope.$evalAsync(function() {
+                    for (var catalog in _baseService.catalogs) {
+                        if (_baseService.catalogs.hasOwnProperty(catalog)) {
+                            scope['cat' + catalog] = _baseService.catalogs[catalog].getAll();
+                        }
+                    }
+                    scope.baseList = _baseService.getAll();
+                    _afterLoad();
+                });
+            });
+        };
+
+
+        var _loadAll = function() {
+            $activityIndicator.startAnimating();
+            alertify.closeAll();
+
+            _baseService.loadCatalogs().then(function() {
+                _baseService.customGet('GetAll').then(function(data) {
+                    _baseService.setRawAll(data);
+                    scope.$evalAsync(function() {
+                        for (var catalog in _baseService.catalogs) {
+                            if (_baseService.catalogs.hasOwnProperty(catalog)) {
+                                scope['cat' + catalog] = _baseService.catalogs[catalog].getAll();
+                            }
+                        }
+                        scope.baseList = _baseService.getAll();
+                        _afterLoad();
+                    });
+                });
+            });
+
+        };
+
+
         // Public baseController API:////////////////////////////////////////////////////////////
         var oAPI = {
             load: _load,
+            loadByParentKey: _loadByParentKey,
+            loadAll: _loadAll,
             // unselectAll: _unselectAll
         };
         return oAPI;
