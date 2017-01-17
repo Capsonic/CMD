@@ -7,7 +7,7 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService) {
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService, metricYearService) {
     $activityIndicator.startAnimating();
     $scope.isLoading = true;
     $scope.isDesignMode = false;
@@ -484,4 +484,18 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         $scope.resetMetricHistoryToAdd();
     };
 
+
+    $scope.saveAllMetricHistorys = function() {
+        $scope.$broadcast('SaveMetricHistory');
+    };
+
+    $scope.RemoveMetricYear = function(metricYear) {
+        if (metricYear && metricYear.id) {
+            metricYearService.remove(metricYear, $scope.itemToSave.MetricYears).then(function(data) {
+                $scope.$broadcast('DeleteMetricYear');
+            });
+        } else {
+            alertify.message('Nothing selected');
+        }
+    }
 });

@@ -6,7 +6,7 @@
  * @description
  * # yearSelectize
  */
-angular.module('mainApp').directive('yearSelectize', function($timeout) {
+angular.module('mainApp').directive('yearSelectize', function($timeout, metricYearService) {
     return {
         template: '<select></select>',
         restrict: 'E',
@@ -23,6 +23,7 @@ angular.module('mainApp').directive('yearSelectize', function($timeout) {
             var options;
             var valueField = 'id';
             var labelField = 'Value';
+            var loading = true;
 
             var selectize = element.selectize({
                 create: true,
@@ -37,7 +38,9 @@ angular.module('mainApp').directive('yearSelectize', function($timeout) {
                 onChange: function(value) {
                     $timeout(function() {
                         if (value == '') {
-                            scope.metric.SelectedMetricYear = {};
+                            if (scope.metric) {
+                                scope.metric.SelectedMetricYear = {};
+                            }
                             return;
                         }
 
@@ -53,30 +56,49 @@ angular.module('mainApp').directive('yearSelectize', function($timeout) {
                         }
                     });
                 },
-                // onOptionAdd: function(value, data) {
-                //     var newYear = {
-                //         Value: value,
-                //         id: 0,
-                //         MetricKey: scope.metric.id
-                //     };
-                //     // scope.metric.MetricYears.push(newYear);
-                //     // refreshOptions(scope.metric.MetricYears);
-
-                // },
+                onOptionAdd: function(value, data) {
+                    if (!loading) {
+                        metricYearService.save({
+                            id: 0,
+                            Value: value,
+                            MetricKey: scope.metric.id
+                        }, scope.metric.MetricYears).then(function(data) {
+                            // console.log(data, scope.metric);
+                            scope.metric.SelectedMetricYear = data.Result;
+                            // loadSelected(scope.metric.SelectedMetricYear.id);
+                            load(scope.metric);
+                        });
+                    }
+                },
                 onItemAdd: function(value, $item) {
-                    // console.log(value, $item);
+                    // if (!loading) {
+                    //     metricYearService.save({
+                    //         id: 0,
+                    //         Value: value,
+                    //         MetricKey: scope.metric.id
+                    //     }, scope.metric.MetricYears).then(function(data) {
+                    //         console.log(data, scope.metric);
+                    //         scope.metric.SelectedMetricYear = data.Result;
+                    //     });
+                    // }
                 }
             })[0].selectize;
 
             scope.$watch('metric', function(newValue) {
-                refreshOptions(newValue && newValue.MetricYears ? newValue.MetricYears : []);
-                loadSelected(newValue && newValue.SelectedMetricYear ? newValue.SelectedMetricYear.id : undefined);
+                load(newValue);
             });
+
+            function load(metric) {
+                loading = true;
+                refreshOptions(metric && metric.MetricYears ? metric.MetricYears : []);
+                loadSelected(metric && metric.SelectedMetricYear ? metric.SelectedMetricYear.id : undefined);
+                loading = false;
+            }
 
             function loadSelected(selected) {
                 selectize.clear();
                 if (selected != undefined) {
-                    selectize.addItem(selected);
+                    selectize.addItem(selected, true);
                 }
                 selectize.refreshItems();
             }
@@ -89,6 +111,10 @@ angular.module('mainApp').directive('yearSelectize', function($timeout) {
                 }
                 selectize.refreshOptions();
             }
+
+            scope.$on('DeleteMetricYear', function() {
+                load(scope.metric);
+            });
 
         }
     };

@@ -59,6 +59,48 @@
         </div>
     </div>
 </div>
+<div class="modal fade" id="modal-MetricHistory">
+    <div class="modal-dialog" style="max-width: 780px;width:initial;">
+        <div class="modal-content">
+            <div class="modal-header" style="text-align: right;">
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 5px;">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()" style="margin-left: 5px;">Save</button>
+                <h4 class="modal-title pull-left">Metric History</h4>
+            </div>
+            <div class="modal-body">
+                <table class="table table-condensed" style="max-width: 250px;">
+                    <thead>
+                        <tr>
+                            <th>
+                                Year
+                            </th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td style="min-width: 90px;">
+                                <year-selectize metric="metricToSave"></year-selectize>
+                            </td>
+                            <td>
+                                <button type="button" class="btn btn-sm btn-danger" ng-click="RemoveMetricYear(metricToSave.SelectedMetricYear)" style="width:100%;">Remove Year</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <br>
+                <label>History</label>
+                <div class="table-responsive">
+                    <metric-history metric-year="metricToSave.SelectedMetricYear" metric="metricToSave"></metric-history>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()">Save</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="modal" id="modal-metricToSave">
     <div class="modal-dialog" style="max-width: 95%;width:initial;">
         <div class="modal-content">

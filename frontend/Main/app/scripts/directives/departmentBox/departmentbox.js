@@ -6,7 +6,7 @@
  * @description
  * # departmentBox
  */
-angular.module('mainApp').directive('departmentBox', function($timeout, metricService, initiativeService) {
+angular.module('mainApp').directive('departmentBox', function($timeout, metricService, initiativeService, $rootScope) {
     return {
         templateUrl: 'views/departmentbox.html',
         restrict: 'E',
@@ -150,9 +150,19 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         metricService.loadEntity(metric.id).then(function(data) {
                             angular.copy(data, metric);
                             scope.$parent.$parent.selectedMetric = metric;
-                            angular.element('#modal-metricToSave').modal('show');
-                            angular.copy(data, scope.$parent.metricToSave);
-                            scope.$parent.$parent.resetMetricHistoryToAdd();
+                            scope.$parent.metricToSave = angular.copy(metric);
+                            // angular.copy(data, scope.$parent.metricToSave);
+
+                            angular.element('#modal-MetricHistory').modal('show');
+                            angular.element('#modal-MetricHistory').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+                                scope.$apply(function() {
+                                    $rootScope.$broadcast('ShowMetricHistory');
+                                });
+                            });
+
+
+                            // angular.element('#modal-metricToSave').modal('show');
+                            // scope.$parent.$parent.resetMetricHistoryToAdd();
                         });
                     };
 

@@ -6,14 +6,15 @@
  * @description
  * # metricHistory
  */
-angular.module('mainApp').directive('metricHistory', function($timeout) {
+angular.module('mainApp').directive('metricHistory', function($timeout, $filter) {
     var elem;
     return {
         //templateUrl: 'views/metricHistory.html',
         template: '<div></div>',
         restrict: 'E',
         scope: {
-            metricYear: '='
+            metricYear: '=',
+            metric: '='
         },
         replace: true,
         link: function(scope, iElement, iAttrs) {
@@ -37,11 +38,35 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                 afterLoad: function(data) {
                     theData = $scope.baseList;
                     if (table) {
+                        adaptToHandsontable($scope.baseList);
                         table.loadData($scope.baseList);
                     }
                     // $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
                 }
             });
+
+            var adaptToHandsontable = function(rows) {
+                if (!rows) {
+                    rows = [];
+                }
+
+                if (!rows.length || (rows[0] && rows[0].id)) {
+                    rows.unshift({});
+                }
+
+                rows.forEach(function(row) {
+                    row.GoalValue = '' + $scope.metric.EqualityValue + ' ' + $scope.metric.FormattedGoalValue;
+
+                });
+
+                rows.sort(function(a, b) {
+                    return b.ConvertedMetricDate - a.ConvertedMetricDate;
+                });
+
+
+
+                return rows;
+            };
 
             var getHandsontableHeight = function() {
                 return 300;
@@ -51,7 +76,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                 if (table) {
                     // console.log(table)
                 }
-                return 750;
+                return 730;
             };
 
             function setSize() {
@@ -62,6 +87,8 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                 el.children().eq(0).children().children().css('height', newHeight + 2);
             }
 
+
+
             var reset = function() {
                 table = new Handsontable(elem, {
                     allowInsertRow: true,
@@ -70,43 +97,34 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                     startRows: 1,
                     colHeaders: true,
                     minSpareRows: 0,
-                    colWidths: [80, 100, 50, 120, 250, 130],
-                    colHeaders: ['Year', 'Month', 'Day', 'Time', 'Note', 'Current Value'],
+                    copyable: false,
+                    colWidths: [100, 70, 90, 200, 120, 120],
+                    colHeaders: ['Month', 'Day', 'Time', 'Note', 'Current Value', 'Goal Value'],
                     columns: [{
-                            data: 'ConvertedMetricYear',
-                            type: 'numeric',
-                            readOnly: true
-                        }, {
-                            data: 'ConvertedMetricMonth',
-                            type: 'dropdown',
-                            source: ['January',
-                                'February',
-                                'March',
-                                'April',
-                                'May',
-                                'June',
-                                'July',
-                                'August',
-                                'September',
-                                'October',
-                                'November',
-                                'December'
-                            ]
-                        }, {
-                            data: 'ConvertedMetricDay',
-                            type: 'dropdown',
-                            source: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31]
-                        }, {
-                            data: 'ConvertedMetricTime',
-                            type: 'time',
-                            timeFormat: 'h:mm a',
-                            correctFormat: true
-                        },
-                        // 'text' is default, you don't actually need to declare it
-                        { data: 'Note' },
-                        { data: 'CurrentValue' },
-                    ],
-                    data: $scope.baseList,
+                        data: 'ConvertedMetricMonth',
+                        type: 'dropdown',
+                        source: metricHistoryService.months,
+                        className: 'htCenter'
+                    }, {
+                        data: 'ConvertedMetricDay',
+                        type: 'dropdown',
+                        source: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31],
+                        className: 'htCenter'
+                    }, {
+                        data: 'ConvertedMetricTime',
+                        type: 'time',
+                        timeFormat: 'h:mm:ss a',
+                        correctFormat: true,
+                        className: 'htCenter'
+                    }, { data: 'Note' }, {
+                        data: 'CurrentValue',
+                        className: 'htRight'
+                    }, {
+                        data: 'GoalValue',
+                        readOnly: true,
+                        className: 'htRight'
+                    }, ],
+                    // data: $scope.baseList,
                     // afterCreateRow: function(index, amount, source) {
                     //     if ($scope.metricYear && $scope.metricYear.id) {
                     //         var theDate = new Date();
@@ -139,7 +157,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
 
                             var allFieldsAreEmtpy = true;
                             for (var prop in current) {
-                                if (['ConvertedMetricDate', 'Note', 'CurrentValue'].indexOf(prop) > -1) {
+                                if (['ConvertedMetricMonth', 'ConvertedMetricDay', 'ConvertedMetricTime', 'Note', 'CurrentValue'].indexOf(prop) > -1) {
                                     if (current[prop] != '' && current[prop] != null && current[prop] != undefined) {
                                         allFieldsAreEmtpy = false;
                                         break;
@@ -167,8 +185,8 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                     }
                 });
 
-                table.alter('insert_row', 0);
-
+                adaptToHandsontable($scope.baseList);
+                table.loadData($scope.baseList);
             };
 
             $scope.$watch(function() {
@@ -184,6 +202,41 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                 }
             });
 
+            function getMonthNumber(monthName) {
+                return metricHistoryService.months.indexOf(monthName);
+            }
+
+            function HTDate_To_JSDate(row) {
+
+                if (!row.ConvertedMetricDay) {
+                    return null;
+                }
+
+                if (getMonthNumber(row.ConvertedMetricMonth) == -1) {
+                    return null;
+                }
+
+                var momentTime = moment(row.ConvertedMetricTime, 'h:mm:ss a');
+                if (!momentTime.isValid()) {
+                    return null;
+                }
+
+                var theDate = moment({
+                    year: $scope.metricYear.Value,
+                    month: getMonthNumber(row.ConvertedMetricMonth),
+                    day: Number(row.ConvertedMetricDay),
+                    hour: momentTime.hour(),
+                    minute: momentTime.minute(),
+                    second: momentTime.second()
+                });
+
+                if (theDate.isValid()) {
+                    return theDate;
+                }
+
+                return null;
+            }
+
             var savePending = function() {
 
                 $activityIndicator.startAnimating();
@@ -192,10 +245,11 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
 
                 //Items to be update or inserted:
                 var arrItemsToBeSaved = $scope.baseList.filter(function(item) {
+                    if (item.edited) {
+                        item.ConvertedMetricDate = HTDate_To_JSDate(item);
+                    }
                     return item.edited;
                 });
-
-
 
                 arrItemsToBeSaved.forEach(function(item) {
                     var promiseConstructor = function() {
@@ -218,7 +272,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
 
                 //Reloading all
                 var promiseConstructor = function() {
-                    return list.loadByParentKey('MetricYear', 1);
+                    return list.loadByParentKey('MetricYear', $scope.metricYear.id);
                 }
 
                 arrPromiseConstructors.push(promiseConstructor);

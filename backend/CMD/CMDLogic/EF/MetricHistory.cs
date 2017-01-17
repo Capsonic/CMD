@@ -20,8 +20,6 @@ namespace CMDLogic.EF
 
         public decimal? CurrentValue { get; set; }
 
-        public decimal? GoalValue { get; set; }
-
         public DateTime? MetricDate { get; set; }
 
 

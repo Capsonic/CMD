@@ -79,11 +79,6 @@ namespace CMDLogic.EF
                 .Property(e => e.CurrentValue)
                 .HasPrecision(15, 4);
 
-            modelBuilder.Entity<MetricHistory>()
-                .Property(e => e.GoalValue)
-                .HasPrecision(15, 4);
-
-
             #region Reusable
             modelBuilder.Entity<User>()
                 .Property(e => e.Identicon64)

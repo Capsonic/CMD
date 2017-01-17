@@ -270,8 +270,9 @@ angular.module('CMD.CRUDServices', [])
             theEntity.ConvertedMetricDate = theEntity.MetricDate ? moment(theEntity.MetricDate, moment.ISO_8601).toDate() : null;
 
             theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
-            //theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
+            theEntity.ConvertedMetricMonth = theEntity.ConvertedMetricDate ? crudInstance.months[theEntity.ConvertedMetricDate.getMonth()] : null;
             theEntity.ConvertedMetricDay = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getDate() : null;
+            theEntity.ConvertedMetricTime = theEntity.ConvertedMetricDate ? moment(theEntity.ConvertedMetricDate).format('h:mm:ss a') : null;
             return theEntity;
 
         },
@@ -289,6 +290,33 @@ angular.module('CMD.CRUDServices', [])
 
     crudInstance.getFormattedValue = getFormattedValue;
     crudInstance.getFormattedEquality = getFormattedEquality;
+
+    crudInstance.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+    return crudInstance;
+
+}).service('metricYearService', function(crudFactory) {
+
+    var crudInstance = new crudFactory({
+
+        entityName: 'MetricYear',
+
+        catalogs: [],
+
+        adapter: function(theEntity, self) {
+            return theEntity;
+        },
+
+        adapterIn: function(theEntity) {},
+
+        adapterOut: function(theEntity, self) {
+
+        },
+
+        dependencies: [
+
+        ]
+    });
 
     return crudInstance;
 

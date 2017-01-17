@@ -7,7 +7,7 @@
  * # MetricsCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('MetricsCtrl', function($scope, listController, metricService) {
+angular.module('mainApp').controller('MetricsCtrl', function($scope, listController, metricService, metricYearService) {
     var list = new listController({
         entityName: 'Metric',
         baseService: metricService,
@@ -54,7 +54,7 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
     };
 
 
-    //Metric History
+    /*//Metric History
     $scope.addMetricHistory = function(historyToAdd, metricSource) {
         var newMetricHistory = {
             FormattedCurrentValue: metricService.getFormattedValue(historyToAdd.CurrentValue, metricSource.FormatKey),
@@ -125,10 +125,20 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
             oMetricHistory.mode = null;
         });
         $scope.resetMetricHistoryToAdd();
-    };
+    };*/
 
     $scope.saveAllMetricHistorys = function() {
         $scope.$broadcast('SaveMetricHistory');
     };
+
+    $scope.RemoveMetricYear = function(metricYear) {
+        if (metricYear && metricYear.id) {
+            metricYearService.remove(metricYear, $scope.itemToSave.MetricYears).then(function(data) {
+                $scope.$broadcast('DeleteMetricYear');
+            });
+        } else {
+            alertify.message('Nothing selected');
+        }
+    }
 
 });

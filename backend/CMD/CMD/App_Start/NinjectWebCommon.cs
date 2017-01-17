@@ -71,6 +71,7 @@ namespace CMD.App_Start
             kernel.Bind<IDashboardLogic>().To<DashboardLogic>();
             kernel.Bind<IDepartmentLogic>().To<DepartmentLogic>();
             kernel.Bind<IMetricLogic>().To<MetricLogic>();
+            kernel.Bind<IMetricYearLogic>().To<MetricYearLogic>();
             kernel.Bind<IMetricHistoryLogic>().To<MetricHistoryLogic>();
             kernel.Bind<IInitiativeLogic>().To<InitiativeLogic>();
 

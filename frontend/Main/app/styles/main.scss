@@ -155,5 +155,16 @@ body {
 }
 
 .selectize-dropdown {
-  z-index: 1000;
+    z-index: 1000;
+}
+
+
+/* All headers */
+
+.handsontable th {
+    font-size: 13px;
+}
+
+.ht_master {
+    font-size: 12px;
 }

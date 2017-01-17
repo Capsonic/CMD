@@ -72,6 +72,7 @@
     <Compile Include="Entities\Department.cs" />
     <Compile Include="Entities\Dashboard.cs" />
     <Compile Include="Logic\InitiativeLogic.cs" />
+    <Compile Include="Logic\MetricYearLogic.cs" />
     <Compile Include="Logic\MetricHistoryLogic.cs" />
     <Compile Include="Logic\MetricLogic.cs" />
     <Compile Include="Logic\DepartmentLogic.cs" />
