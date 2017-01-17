@@ -439,7 +439,7 @@ module.exports = function(grunt) {
                 expand: true,
                 cwd: '../Reusable',
                 dest: '<%= yeoman.app %>/scripts/reusable/',
-                src: ['{,*/}*.js', '*.html', '{,*/}*.css']
+                src: ['{,*/}*.js', '*.html', '{,*/}*.css', '{,*/}*.png']
             }
         },
 
