@@ -101,6 +101,9 @@ angular.module('mainApp').directive('yearSelectize', function($timeout, metricYe
                     selectize.addItem(selected, true);
                 }
                 selectize.refreshItems();
+                $timeout(function() {
+                    selectize.close();
+                }, 100);
             }
 
             function refreshOptions(newOptions) {

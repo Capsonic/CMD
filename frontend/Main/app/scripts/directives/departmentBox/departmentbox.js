@@ -150,7 +150,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         metricService.loadEntity(metric.id).then(function(data) {
                             angular.copy(data, metric);
                             scope.$parent.$parent.selectedMetric = metric;
-                            scope.$parent.metricToSave = angular.copy(metric);
+                            scope.$parent.$parent.metricToSave = angular.copy(metric);
                             // angular.copy(data, scope.$parent.metricToSave);
 
                             angular.element('#modal-MetricHistory').modal('show');

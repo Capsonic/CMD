@@ -16,7 +16,7 @@
                 </tr>
             </thead>
             <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
-                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard" data-toggle="popover" data-placement="auto" data-trigger="focus" title="Metric Description" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
+                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard" data-toggle="popover" data-placement="auto" data-trigger="focus" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
                     <td style="text-align: left;">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
                         <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
@@ -62,7 +62,7 @@
                 </tr>
             </thead>
             <tbody dragula='"initiatives-bag"' dragula-model="department.Initiatives">
-                <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard" ng-class="getInitiativeStyle(initiative);" data-toggle="popover" data-placement="auto" data-trigger="focus" title="Initiative Description" data-content="{{initiative.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
+                <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard" ng-class="getInitiativeStyle(initiative);" data-toggle="popover" data-placement="auto" data-trigger="focus" data-content="{{initiative.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
                     <td style="text-align:left;" class="columnMaxWidth">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
                         <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> {{initiative.Title}}

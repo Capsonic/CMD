@@ -174,7 +174,7 @@ angular.module('CMD.CRUDServices', [])
 
             //Metric Years Sort
             theEntity.MetricYears.sort(function(a, b) {
-                return a.Value - b.Value;
+                return b.Value - a.Value;
             });
 
             theEntity.SelectedMetricYear = null;

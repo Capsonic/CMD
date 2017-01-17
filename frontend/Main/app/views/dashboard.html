@@ -13,35 +13,7 @@
             </p>
         </div>
         <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <div class="navbar-form navbar-right">
-                <div class="form-group" style="width:80px;margin-top:-5px;height: 40px;">
-                    <label style="font-size:8px;margin:0;color:#ffffff;">
-                        Sorting
-                        <br>Metrics / Initiatives
-                    </label>
-                    <input type="checkbox" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives(sortingMetricsOrInitiatives);">
-                </div>
-                <div class="form-group" style="width:60px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
-                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
-                </div>
-                <div class="form-group" style="width:60px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Cols</label>
-                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
-                </div>
-                <div class="form-group" style="width:130px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
-                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
-                </div>
-                <div class="form-group" style="width:330px;margin-top:5px;">
-                    <!-- Take into account badge width with numbers are bigger than 9 -->
-                    <button type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
-                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
-                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
-                    <a href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
-                </div>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
+            <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
                 <li class="dropdown">
                     <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 20px 0 0 0;"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
                     <ul class="dropdown-menu">
@@ -49,6 +21,34 @@
                     </ul>
                 </li>
             </ul>
+            <div class="navbar-form navbar-right">
+                <div ng-show="isDesignMode" class="form-group" style="width:80px;margin-top:-5px;height: 40px;">
+                    <label style="font-size:8px;margin:0;color:#ffffff;">
+                        Sorting
+                        <br>Metrics / Initiatives
+                    </label>
+                    <input type="checkbox" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives(sortingMetricsOrInitiatives);">
+                </div>
+                <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
+                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
+                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
+                </div>
+                <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
+                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Cols</label>
+                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
+                </div>
+                <div ng-show="isDesignMode" class="form-group" style="width:130px;margin-top:-10px;">
+                    <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
+                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
+                </div>
+                <div class="form-group" style="width:330px;margin-top:5px;">
+                    <!-- Take into account badge width with numbers are bigger than 9 -->
+                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
+                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
+                    <button ng-show="isDesignMode" type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
+                    <a ng-show="isDesignMode" href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -60,10 +60,10 @@
     </div>
 </div>
 <div class="modal fade" id="modal-MetricHistory">
-    <div class="modal-dialog" style="max-width: 780px;width:initial;">
+    <div class="modal-dialog" style="max-width: 660px;width:initial;">
         <div class="modal-content">
             <div class="modal-header" style="text-align: right;">
-                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 5px;">Close</button>
+                <button type="button" class="btn btn-default" ng-click="onCloseMetricHistory()" data-dismiss="modal" style="margin-left: 5px;">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()" style="margin-left: 5px;">Save</button>
                 <h4 class="modal-title pull-left">Metric History</h4>
             </div>
@@ -95,13 +95,13 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="onCloseMetricHistory()">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()">Save</button>
             </div>
         </div>
     </div>
 </div>
-<div class="modal" id="modal-metricToSave">
+<!-- <div class="modal" id="modal-metricToSave">
     <div class="modal-dialog" style="max-width: 95%;width:initial;">
         <div class="modal-content">
             <div class="modal-header" style="text-align: right;">
@@ -117,16 +117,6 @@
                         <br>
                         <label>Description</label>
                         <textarea class="form-control" rows="3" ng-model="metricToSave.Description" tabindex="2"></textarea>
-                        <!-- <div class="row">
-                            <div class="col-xs-6">
-                                <label>Current Value</label>
-                                <input type="text" class="form-control" ng-model="metricToSave.CurrentValue" style="text-align:right;">
-                            </div>
-                            <div class="col-xs-6">
-                                <label>Goal Value</label>
-                                <input type="text" class="form-control" ng-model="metricToSave.GoalValue" style="text-align:right;">
-                            </div>
-                        </div> -->
                         <br>
                         <div class="row">
                             <div class="col-xs-6">
@@ -166,11 +156,11 @@
                                     <tr>
                                         <td>
                                             <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <!-- <input type="time" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
+                                            <input type="time" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
                                             <input type="week" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
                                             <input type="month" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
                                             <input type="datetime" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="date" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" /> -->
+                                            <input type="date" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
                                         </td>
                                         <td>
                                             <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToSave.Note" tabindex="8" style="resize: none;"></textarea>
@@ -213,7 +203,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> -->
 <div class="modal" id="modal-initiativeToSave">
     <div class="modal-dialog">
         <div class="modal-content">

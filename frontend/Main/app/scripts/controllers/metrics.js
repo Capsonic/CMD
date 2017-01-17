@@ -141,4 +141,9 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
         }
     }
 
+    $scope.onCloseMetricHistory = function() {
+        $scope.itemToSave = null;
+    }
+    
+
 });

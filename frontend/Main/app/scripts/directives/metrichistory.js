@@ -50,23 +50,29 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                     rows = [];
                 }
 
-                if (!rows.length || (rows[0] && rows[0].id)) {
-                    rows.unshift({});
+                if ($scope.metricYear && $scope.metricYear.id > -1) {
+                    insertRow(rows);
+
+                    // rows.forEach(function(row) {
+                    //     row.GoalValue = '' + $scope.metric.EqualityValue + ' ' + $scope.metric.FormattedGoalValue;
+                    // });
+
+                    rows.sort(function(a, b) {
+                        return b.ConvertedMetricDate - a.ConvertedMetricDate;
+                    });
                 }
-
-                rows.forEach(function(row) {
-                    row.GoalValue = '' + $scope.metric.EqualityValue + ' ' + $scope.metric.FormattedGoalValue;
-
-                });
-
-                rows.sort(function(a, b) {
-                    return b.ConvertedMetricDate - a.ConvertedMetricDate;
-                });
-
-
 
                 return rows;
             };
+
+            var insertRow = function(rows, change) {
+                if (!rows.length || (rows[0] && rows[0].id > -1)) {
+                    rows.unshift({});
+                    if (change) {
+                        table.selectCellByProp(1, change[1]);
+                    }
+                }
+            }
 
             var getHandsontableHeight = function() {
                 return 300;
@@ -76,7 +82,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                 if (table) {
                     // console.log(table)
                 }
-                return 730;
+                return 610;
             };
 
             function setSize() {
@@ -99,7 +105,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                     minSpareRows: 0,
                     copyable: false,
                     colWidths: [100, 70, 90, 200, 120, 120],
-                    colHeaders: ['Month', 'Day', 'Time', 'Note', 'Current Value', 'Goal Value'],
+                    colHeaders: ['Month', 'Day', 'Time', 'Note', 'Current Value'],
                     columns: [{
                         data: 'ConvertedMetricMonth',
                         type: 'dropdown',
@@ -119,11 +125,13 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                     }, { data: 'Note' }, {
                         data: 'CurrentValue',
                         className: 'htRight'
-                    }, {
-                        data: 'GoalValue',
-                        readOnly: true,
-                        className: 'htRight'
                     }, ],
+                    // {
+                    //     data: 'GoalValue',
+                    //     readOnly: true,
+                    //     className: 'htRight'
+                    // }, 
+
                     // data: $scope.baseList,
                     // afterCreateRow: function(index, amount, source) {
                     //     if ($scope.metricYear && $scope.metricYear.id) {
@@ -179,8 +187,13 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                                     current.MetricYearKey = $scope.metricYear.id;
                                     delete current.EF_State;
                                 }
+                                if (source != 'timeValidator') {
+                                    $timeout(function() {
+                                        insertRow($scope.baseList, change);
+                                        table.render();
+                                    });
+                                }
                             }
-
                         });
                     }
                 });
@@ -296,14 +309,9 @@ angular.module('mainApp').directive('metricHistory', function($timeout, $filter)
                 if (!MetricYearKey) {
 
                 }
-
                 savePending();
             });
-
-
-
         }
-
     };
 });
 

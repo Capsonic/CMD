@@ -313,7 +313,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         });
     }
 
-    $scope.metricToSave = {};
+    $scope.metricToSave = null;
     $scope.initiativeToSave = {};
     $scope.departmentToSave = {};
 
@@ -412,7 +412,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
 
 
-    $scope.addMetricHistory = function(historyToAdd, metricSource) {
+    /*$scope.addMetricHistory = function(historyToAdd, metricSource) {
         var newMetricHistory = {
             FormattedCurrentValue: metricService.getFormattedValue(historyToAdd.CurrentValue, metricSource.FormatKey),
             FormattedGoalValue: metricService.getFormattedValue(historyToAdd.GoalValue, metricSource.FormatKey),
@@ -482,7 +482,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             oMetricHistory.mode = null;
         });
         $scope.resetMetricHistoryToAdd();
-    };
+    };*/
 
 
     $scope.saveAllMetricHistorys = function() {
@@ -491,11 +491,16 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.RemoveMetricYear = function(metricYear) {
         if (metricYear && metricYear.id) {
-            metricYearService.remove(metricYear, $scope.itemToSave.MetricYears).then(function(data) {
+            metricYearService.remove(metricYear, $scope.metricToSave.MetricYears).then(function(data) {
                 $scope.$broadcast('DeleteMetricYear');
             });
         } else {
             alertify.message('Nothing selected');
         }
     }
+
+    $scope.onCloseMetricHistory = function() {
+        $scope.metricToSave = null;
+    }
+
 });

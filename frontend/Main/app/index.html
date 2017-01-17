@@ -109,7 +109,10 @@
     <script src="scripts/reusable/qserialdecorator.js"></script>
     <script>
     function popoverHandler(element, sAction) {
-        $(element).popover(sAction);
+        $('.popover').remove();
+        setTimeout(function() {
+            $(element).popover(sAction);
+        }, 200);
     };
     </script>
 </body>
