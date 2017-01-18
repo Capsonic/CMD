@@ -1,5 +1,9 @@
 <div class="DepartmentBox" ng-style="{fontSize:department.InfoGridster.FontSize}">
     <h2 ng-style="{fontSize:department.InfoGridster.FontSize * 1.5}">{{department.Title}}</h2>
+    <!-- <div style="height: 300px;overflow-y: scroll;">
+    <pre style="font-size: 10px;">{{department.Metrics | json:4}}</pre>
+        
+    </div> -->
     <div ng-show="department.Metrics.length > 0">
         <div class="well well-sm" ng-show="$parent.$parent.isDesignMode" style="line-height: 0;position:relative;height:40px;width:220px;margin-top:10px;">
             <span style="font-size:10px;position:absolute;top:20px;">Size:</span>

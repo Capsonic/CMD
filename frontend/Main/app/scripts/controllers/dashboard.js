@@ -119,11 +119,12 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
         adaptForGridster(theOnScreenEntity.Departments);
 
-        addOneByOne();
-
-        $scope.availableYears = getAvailableYears();
-
+        $scope.availableYears = getAvailableYears(theOnScreenEntity.Departments);
         $scope.dashboardYear = $scope.availableYears.slice(-1)[0];
+
+        //addOneByOne must be at the end of this function
+        //coz it uses timeout to run more code.
+        addOneByOne();
     };
 
     function fulfillSortingInfo(oDashboard) {
@@ -508,9 +509,19 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         $scope.metricToSave = null;
     }
 
-    var getAvailableYears = function() {
+    var getAvailableYears = function(departments) {
+        var result = [];
+        if (departments) {
+            departments.forEach(function(department){
+                department.Metrics.forEach(function(metric){
+                    metric.MetricYears.forEach(function(year){
+                        result.push(year.Value);
+                    });
+                });
+            });
+        }
 
-        return [2016, 2017, 2018];
+        return result;
     }
 
 });

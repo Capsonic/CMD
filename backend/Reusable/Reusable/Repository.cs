@@ -258,6 +258,8 @@ namespace Reusable
                 }
             }
 
+            context.Entry(parent).State = EntityState.Unchanged;
+
             string tName = typeof(T).Name + "s";
             list = context.Entry(parent).Collection<T>(tName)
                 .Query()

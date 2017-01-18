@@ -41,10 +41,10 @@ namespace CMDLogic.Logic
             foreach (var item in entities)
             {
                 item.MetricYears = metricYearRepository.GetListByParent<Metric>(item.id);
-                //foreach (var year in item.MetricYears)
-                //{
-                //    year.MetricHistorys = metricHistoryRepository.GetListByParent<MetricYear>(year.id);
-                //}
+                foreach (var year in item.MetricYears)
+                {
+                    year.MetricHistorys = metricHistoryRepository.GetListByParent<MetricYear>(year.id);
+                }
             }
         }
 

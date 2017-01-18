@@ -161,7 +161,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             angular.copy(data, metric);
                             scope.$parent.$parent.selectedMetric = metric;
                             scope.$parent.$parent.metricToSave = angular.copy(metric);
-                            // angular.copy(data, scope.$parent.metricToSave);
+                            // angular.copy(data, scope.$parent.$parent.metricToSave);
 
                             angular.element('#modal-MetricHistory').modal('show');
                             angular.element('#modal-MetricHistory').off('shown.bs.modal').on('shown.bs.modal', function(e) {
