@@ -132,18 +132,12 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
     };
 
     $scope.RemoveMetricYear = function(metricYear) {
-        if (metricYear && metricYear.id) {
-            metricYearService.remove(metricYear, $scope.itemToSave.MetricYears).then(function(data) {
-                $scope.$broadcast('DeleteMetricYear');
-            });
-        } else {
-            alertify.message('Nothing selected');
-        }
+        $scope.$broadcast('DeleteMetricYear', metricYear);
     }
 
     $scope.onCloseMetricHistory = function() {
         $scope.itemToSave = null;
     }
-    
+
 
 });

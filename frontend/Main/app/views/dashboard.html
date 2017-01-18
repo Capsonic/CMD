@@ -70,12 +70,57 @@
             </div>
         </div>
     </div>
+    <div class="modal fade" id="modal-MetricHistory-ReadOnly">
+        <div class="modal-dialog" style="max-width: 660px;width:initial;">
+            <div class="modal-content">
+                <div class="modal-header" style="text-align: right;">
+                    <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 5px;">Close</button>
+                    <h4 class="modal-title pull-left">Metric History</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <table class="table table-condensed" style="max-width: 250px;">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Year
+                                        </th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="min-width: 90px;">
+                                            {{dashboardYear}}
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="col-sm-6">
+                            <label> Goal Value </label>
+                            <p class="form-control-static">{{metricToSave.EqualityValue}} {{metricToSave.FormattedGoalValue}}</p>
+                        </div>
+                    </div>
+                    <br>
+                    <label>History</label>
+                    <div class="table-responsive">
+                        <metric-history-read-only metric-year="metricToSave.SelectedMetricYear" metric="metricToSave"></metric-history-read-only>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <div class="modal fade" id="modal-MetricHistory">
     <div class="modal-dialog" style="max-width: 660px;width:initial;">
         <div class="modal-content">
             <div class="modal-header" style="text-align: right;">
-                <button type="button" class="btn btn-default" ng-click="onCloseMetricHistory()" data-dismiss="modal" style="margin-left: 5px;">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal" style="margin-left: 5px;">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()" style="margin-left: 5px;">Save</button>
                 <h4 class="modal-title pull-left">Metric History</h4>
             </div>
@@ -115,115 +160,12 @@
                 </div>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal" ng-click="onCloseMetricHistory()">Close</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary" ng-click="saveAllMetricHistorys()">Save</button>
             </div>
         </div>
     </div>
 </div>
-<!-- <div class="modal" id="modal-metricToSave">
-    <div class="modal-dialog" style="max-width: 95%;width:initial;">
-        <div class="modal-content">
-            <div class="modal-header" style="text-align: right;">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="saveMetric(metricToSave)">Save</button>
-                <h4 class="modal-Description pull-left">Update Metric</h4>
-            </div>
-            <div class="modal-body">
-                <div class="row">
-                    <div class="col-sm-5 col-md-4">
-                        <label>Title</label>
-                        <input type="text" class="form-control" ng-model="metricToSave.Title" tabindex="1">
-                        <br>
-                        <label>Description</label>
-                        <textarea class="form-control" rows="3" ng-model="metricToSave.Description" tabindex="2"></textarea>
-                        <br>
-                        <div class="row">
-                            <div class="col-xs-6">
-                                <label>Format</label>
-                                <select ng-model="metricToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat" tabindex="3"></select>
-                            </div>
-                            <div class="col-xs-6">
-                                <label>Comparator Method</label>
-                                <select ng-model="metricToSave.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod" tabindex="4"></select>
-                            </div>
-                        </div>
-                        <br>
-                        <label>Basis</label>
-                        <select ng-model="metricToSave.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis" tabindex="5"></select>
-                        <br>
-                        <label>Hidden for Dashboards</label>
-                        <tags-input template="tag-template" ng-model="metricToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, metricToSave);">
-                            <auto-complete source="loadDashboardsTags($query, metricToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
-                        </tags-input>
-                    </div>
-                    <div class="col-sm-7 col-md-8">
-                        <div>
-                            <label>History</label>
-                            <span class="label label-success pull-right">To be updated</span>
-                            <span class="label label-danger pull-right" style="margin-right: 5px;">To be deleted</span>
-                            <table class="table table-hover table-bordered well well-sm">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Note</th>
-                                        <th>Real Value</th>
-                                        <th>Goal Value</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>
-                                            <input type="datetime-local" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="time" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="week" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="month" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="datetime" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                            <input type="date" class="form-control" style="height:35px;" ng-model="metricToSave.metricHistoryToSave.ConvertedMetricDate" tabindex="7" />
-                                        </td>
-                                        <td>
-                                            <textarea class="form-control" row="1" ng-model="metricToSave.metricHistoryToSave.Note" tabindex="8" style="resize: none;"></textarea>
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToSave.CurrentValue" tabindex="9" />
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" style="height:35px;text-align:right;" ng-model="metricToSave.metricHistoryToSave.GoalValue" tabindex="10" />
-                                        </td>
-                                        <td>
-                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Add'" class="btn btn-sm btn-default" tabindex="11" ng-click="addMetricHistory(metricToSave.metricHistoryToSave, metricToSave);">Add</button>
-                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Update'" class="btn btn-sm btn-default" tabindex="11" ng-click="updateMetricHistory(metricToSave.metricHistoryToSave, metricToSave);">Update</button>
-                                            <button ng-if="metricToSave.metricHistoryToSave.mode == 'Update'" class="btn btn-sm btn-default" tabindex="12" ng-click="cancelUpdateMetricHistory(metricToSave);">Cancel</button>
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                            <table class="table table-hover table-bordered well well-sm" style="margin-bottom: 0;">
-                                <tbody>
-                                    <tr ng-repeat="metricHistory in metricToSave.MetricHistorys | orderBy:'-ConvertedMetricDate'" ng-class="{info: metricHistory.mode == 'Update', success: metricHistory.EF_State == 2, danger: metricHistory.EF_State == 3}">
-                                        <td style="width:100px;">
-                                            <button class="btn btn-xs" ng-click="setMetricHistoryToUpdate(metricHistory);"><span class="glyphicon glyphicon-pencil"></span></button>
-                                            <button class="btn btn-xs" ng-click="setDeleteMetricHistory(metricHistory);"><span class="glyphicon glyphicon-remove"></span></button>
-                                        </td>
-                                        <td style="width:30%;">{{metricHistory.ConvertedMetricDate | date:'MMM/d/yy h:mm a'}}</td>
-                                        <td style="width:30%;">{{metricHistory.Note}}</td>
-                                        <td style="text-align:right;">{{metricHistory.FormattedCurrentValue}}</td>
-                                        <td style="text-align:right;">{{metricHistory.EqualityValue}} {{metricHistory.FormattedGoalValue}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary" ng-click="saveMetric(metricToSave)">Save</button>
-            </div>
-        </div>
-    </div>
-</div> -->
 <div class="modal" id="modal-initiativeToSave">
     <div class="modal-dialog">
         <div class="modal-content">

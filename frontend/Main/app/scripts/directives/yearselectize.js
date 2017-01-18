@@ -115,8 +115,21 @@ angular.module('mainApp').directive('yearSelectize', function($timeout, metricYe
                 selectize.refreshOptions();
             }
 
-            scope.$on('DeleteMetricYear', function() {
-                load(scope.metric);
+            scope.$on('DeleteMetricYear', function(s, metricYear) {
+                if (metricYear && metricYear.id) {
+                    alertify.confirm(
+                        'Are you sure you want to delete this Year: ' + metricYear.Value + '?',
+                        function() {
+                            scope.$apply(function() {
+                                metricYearService.remove(metricYear, scope.metric.MetricYears).then(function(data) {
+                                    load(scope.metric);
+                                });
+
+                            });
+                        });
+                } else {
+                    alertify.message('Nothing selected');
+                }
             });
 
         }

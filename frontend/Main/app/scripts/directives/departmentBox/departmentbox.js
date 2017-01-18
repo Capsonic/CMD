@@ -37,7 +37,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             '                                                    </tr>' +
                             '                                                    <tr>' +
                             '                                                        <td>' +
-                            '                                                            <button class="btn-xs btn-success" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>' +
+                            '                                                            <button class="btn-xs btn-default" style="padding:1px 1em;font-size: 1em;height:5em;width:3em;"><span class="glyphicon glyphicon-arrow-down"></span></button>' +
                             '                                                        </td>' +
                             '                                                        <td style="padding-top: 1.3em;">Indicator meets the objective but the value is getting worse.</td>' +
                             '                                                    </tr>' +
@@ -163,13 +163,15 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             scope.$parent.$parent.metricToSave = angular.copy(metric);
                             // angular.copy(data, scope.$parent.$parent.metricToSave);
 
-                            angular.element('#modal-MetricHistory').modal('show');
                             angular.element('#modal-MetricHistory').off('shown.bs.modal').on('shown.bs.modal', function(e) {
                                 scope.$apply(function() {
                                     $rootScope.$broadcast('ShowMetricHistory');
                                 });
-                            });
-
+                            }).off('hidden.bs.modal').on('hidden.bs.modal', function(e) {
+                                scope.$apply(function() {
+                                    $rootScope.$broadcast('HideMetricHistory');
+                                });
+                            }).modal('show');
 
                             // angular.element('#modal-metricToSave').modal('show');
                             // scope.$parent.$parent.resetMetricHistoryToAdd();
@@ -378,7 +380,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                             container = 'btn-success';
                                             break;
                                         case currentStatus == 'GoingWell' && trend == 'down':
-                                            container = 'btn-success';
+                                            container = 'btn-default';
                                             break;
                                     }
                                 }
@@ -392,6 +394,19 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         angular.element('#modal-trend').modal('show');
                     };
 
+                    scope.showMetricHistoryReadOnly = function(oMetric) {
+                        metricService.loadEntity(oMetric.id).then(function(data) {
+                            angular.copy(data, oMetric);
+                            scope.$parent.$parent.selectedMetric = oMetric;
+                            scope.$parent.$parent.metricToSave = angular.copy(oMetric);
+
+                            angular.element('#modal-MetricHistory-ReadOnly').off('shown.bs.modal').on('shown.bs.modal', function(e) {
+                                scope.$apply(function() {
+                                    $rootScope.$broadcast('ShowMetricHistoryReadOnly');
+                                });
+                            }).modal('show');
+                        });
+                    }
 
                 }
             }

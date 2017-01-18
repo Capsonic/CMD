@@ -23,7 +23,7 @@ alertify.defaults = {
 	// language resources
 	glossary : {
 		// dialogs default title
-		title : 'IQS',
+		title : 'CMD',
 		// ok button text
 		ok : 'OK',
 		// cancel button text

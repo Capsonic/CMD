@@ -20,10 +20,10 @@
                 </tr>
             </thead>
             <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
-                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard" data-toggle="popover" data-placement="auto" data-trigger="focus" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
-                    <td style="text-align: left;">
+                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard">
+                    <td style="text-align: left;" class="columnMaxWidth">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
-                        <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> {{metric.Title}}
+                        <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> <span class="btn-link" ng-click="showMetricHistoryReadOnly(metric)" style="color: inherit;cursor:pointer;" data-toggle="popover" data-placement="auto" data-trigger="focus" data-title="{{metric.Title}}" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')"><b>{{metric.Title}}</b> - {{metric.Description}}</span>
                     </td>
                     <!-- <td>{{metric.FormattedCurrentValue}}</td>
                     <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td> -->
@@ -66,10 +66,10 @@
                 </tr>
             </thead>
             <tbody dragula='"initiatives-bag"' dragula-model="department.Initiatives">
-                <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard" ng-class="getInitiativeStyle(initiative);" data-toggle="popover" data-placement="auto" data-trigger="focus" data-content="{{initiative.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
+                <tr ng-repeat="initiative in department.Initiatives | filter:isShownForCurrentDashboard" ng-class="getInitiativeStyle(initiative);" data-toggle="popover" data-placement="auto" data-trigger="focus" data-title="{{initiative.Title}}" data-content="{{initiative.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
                     <td style="text-align:left;" class="columnMaxWidth">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editInitiative(initiative);"></span>
-                        <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> {{initiative.Title}}
+                        <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideInitiative(initiative);">Hide</span> <b>{{initiative.Title}}</b> - {{initiative.Description}}
                     </td>
                     <td>{{initiative.ConvertedDueDate | date:'mediumDate'}}</td>
                     <td>{{initiative.ProgressValue | number:2}} %</td>

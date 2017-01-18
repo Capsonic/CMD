@@ -6,7 +6,7 @@
  * @description
  * # metricHistory
  */
-angular.module('mainApp').directive('metricHistory', function($timeout, $filter) {
+angular.module('mainApp').directive('metricHistory', function($timeout) {
     var elem;
     return {
         //templateUrl: 'views/metricHistory.html',

@@ -7,7 +7,7 @@
  * # DashboardCtrl
  * Controller of the mainApp
  */
-angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService, metricYearService) {
+angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboardService, $routeParams, departmentService, filterFilter, $q, $timeout, $activityIndicator, metricService, initiativeService, metricYearService, $interval) {
     $activityIndicator.startAnimating();
     $scope.isLoading = true;
     $scope.isDesignMode = false;
@@ -53,29 +53,36 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     var theOriginalEntity;
     var theOnScreenEntity;
-    switch (true) {
-        case $routeParams.id !== true && $routeParams.id > 0: //Get By id
-            dashboardService.loadEntity($routeParams.id).then(function(data) {
+    var dashboardKey = null;
 
-                metricService.loadCatalogs().then(function(data) {
+    var load = function() {
+        dashboardService.loadEntity(dashboardKey).then(function(data) {
 
-                    initiativeService.loadCatalogs().then(function(data) {
-                        $activityIndicator.stopAnimating();
+            metricService.loadCatalogs().then(function(data) {
 
-                        theOriginalEntity = dashboardService.getById($routeParams.id);
-                        if (!theOriginalEntity) {
-                            alertify.alert('Nonexistent record.').set('modal', true).set('closable', false);
-                            $scope.openingMode = 'error';
-                            return;
-                        }
+                initiativeService.loadCatalogs().then(function(data) {
+                    $activityIndicator.stopAnimating();
 
-                        theOnScreenEntity = angular.copy(theOriginalEntity);
-                        $scope.afterLoadData();
-                    });
+                    theOriginalEntity = dashboardService.getById(dashboardKey);
+                    if (!theOriginalEntity) {
+                        alertify.alert('Nonexistent record.').set('modal', true).set('closable', false);
+                        $scope.openingMode = 'error';
+                        return;
+                    }
 
+                    theOnScreenEntity = angular.copy(theOriginalEntity);
+                    $scope.afterLoadData();
                 });
 
             });
+
+        });
+    }
+
+    switch (true) {
+        case $routeParams.id !== true && $routeParams.id > 0: //Get By id
+            dashboardKey = $routeParams.id;
+            load();
             break;
 
         default:
@@ -112,19 +119,29 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
         fulfillSortingInfo(theOnScreenEntity);
 
-        var tempCopy = angular.copy(theOnScreenEntity);
-        tempCopy.Departments = [];
-
-        $scope.baseEntity = tempCopy
-
         adaptForGridster(theOnScreenEntity.Departments);
 
-        $scope.availableYears = getAvailableYears(theOnScreenEntity.Departments);
-        $scope.dashboardYear = $scope.availableYears.slice(-1)[0];
+        if (!$scope.baseEntity || !angular.equals(theOnScreenEntity, $scope.baseEntity)) {
+            var tempCopy = angular.copy(theOnScreenEntity);
+            tempCopy.Departments = [];
 
-        //addOneByOne must be at the end of this function
-        //coz it uses timeout to run more code.
-        addOneByOne();
+            $scope.baseEntity = tempCopy;
+
+
+            $scope.availableYears = getAvailableYears(theOnScreenEntity.Departments);
+            if (!$scope.dashboardYear) {
+                $scope.dashboardYear = $scope.availableYears.slice(-1)[0];
+            } else {
+                if ($scope.availableYears.indexOf($scope.dashboardYear) == -1) {
+                    $scope.dashboardYear = null;
+                }
+            }
+
+            //addOneByOne must be at the end of this function
+            //coz it uses timeout to run more code.
+            addOneByOne();
+        }
+
     };
 
     function fulfillSortingInfo(oDashboard) {
@@ -415,106 +432,24 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.pendingToSave = 0;
 
-
-
-
-    /*$scope.addMetricHistory = function(historyToAdd, metricSource) {
-        var newMetricHistory = {
-            FormattedCurrentValue: metricService.getFormattedValue(historyToAdd.CurrentValue, metricSource.FormatKey),
-            FormattedGoalValue: metricService.getFormattedValue(historyToAdd.GoalValue, metricSource.FormatKey),
-            EqualityValue: metricService.getFormattedEquality(metricSource.ComparatorMethodKey),
-            CurrentValue: historyToAdd.CurrentValue,
-            GoalValue: historyToAdd.GoalValue,
-            ConvertedMetricDate: historyToAdd.ConvertedMetricDate,
-            MetricDate: null, // historyToAdd.ConvertedMetricDate ? historyToAdd.ConvertedMetricDate.toJSON() : null,
-            Note: historyToAdd.Note,
-            MetricKey: metricSource.id
-        };
-        metricSource.MetricHistorys.push(newMetricHistory);
-
-        $scope.resetMetricHistoryToAdd();
-
-        $('[data-toggle="tooltip"]').tooltip();
-
-    };
-
-    $scope.resetMetricHistoryToAdd = function() {
-
-        $scope.metricToSave.metricHistoryToSave = {
-            CurrentValue: null,
-            GoalValue: null,
-            Note: null,
-            ConvertedMetricDate: new Date(),
-            mode: 'Add'
-        };
-        $scope.metricToSave.metricHistoryToSave.ConvertedMetricDate.setSeconds(0);
-        $scope.metricToSave.metricHistoryToSave.ConvertedMetricDate.setMilliseconds(0);
-
-    };
-
-    $scope.setMetricHistoryToUpdate = function(oMetricHistory) {
-        oMetricHistory.mode = 'Update';
-        $scope.metricToSave.metricHistoryToSave = angular.copy(oMetricHistory);
-    };
-
-    $scope.updateMetricHistory = function(oMetricHistoryUpdated) {
-
-        $scope.metricToSave.MetricHistorys.forEach(function(currentMetricHistory) {
-            if (currentMetricHistory.id == oMetricHistoryUpdated.id) {
-                angular.copy(metricService.adaptMetricHistory(oMetricHistoryUpdated, $scope.metricToSave), currentMetricHistory);
-                currentMetricHistory.mode = null;
-                currentMetricHistory.EF_State = 2;
-            }
-        });
-        $scope.resetMetricHistoryToAdd();
-
-
-        // metricService.customPost('updateMetricHistory', oMetricHistory).then(function(response) {
-        //     $scope.metricToSave.MetricHistorys.forEach(function(metricHistory) {
-        //         if (metricHistory.id == response.id) {
-        //             angular.copy(metricService.adaptMetricHistory(response, $scope.metricToSave), metricHistory);
-        //         }
-        //     });
-        //     $scope.resetMetricHistoryToAdd();
-        // });
-    };
-
-    $scope.setDeleteMetricHistory = function(oMetricHistory) {
-        oMetricHistory.EF_State = oMetricHistory.EF_State == 3 ? 0 : 3;
-    };
-
-    $scope.cancelUpdateMetricHistory = function(oMetric) {
-        oMetric.MetricHistorys.forEach(function(oMetricHistory) {
-            oMetricHistory.mode = null;
-        });
-        $scope.resetMetricHistoryToAdd();
-    };*/
-
-
     $scope.saveAllMetricHistorys = function() {
         $scope.$broadcast('SaveMetricHistory');
     };
 
     $scope.RemoveMetricYear = function(metricYear) {
-        if (metricYear && metricYear.id) {
-            metricYearService.remove(metricYear, $scope.metricToSave.MetricYears).then(function(data) {
-                $scope.$broadcast('DeleteMetricYear');
-            });
-        } else {
-            alertify.message('Nothing selected');
-        }
-    }
+        $scope.$broadcast('DeleteMetricYear', metricYear);
+    };
 
-    $scope.onCloseMetricHistory = function() {
-        $scope.metricToSave = null;
-    }
+    $scope.$on('HideMetricHistory', function() {
+        load();
+    });
 
     var getAvailableYears = function(departments) {
         var result = [];
         if (departments) {
-            departments.forEach(function(department){
-                department.Metrics.forEach(function(metric){
-                    metric.MetricYears.forEach(function(year){
+            departments.forEach(function(department) {
+                department.Metrics.forEach(function(metric) {
+                    metric.MetricYears.forEach(function(year) {
                         result.push(year.Value);
                     });
                 });
@@ -522,6 +457,12 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         }
 
         return result;
-    }
+    };
+
+    $interval(function() {
+        if (!$scope.isDesignMode) {
+            load();
+        }
+    }, 3000, null, false);
 
 });
