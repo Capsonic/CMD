@@ -18,7 +18,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                 pre: function preLink(scope, iElement, iAttrs) {
                     var trendModal = angular.element('body #modal-trend');
                     if (trendModal.length == 0) {
-                        angular.element('body').append(
+                        angular.element('#fullscreenMe').append(
                             '<div class="modal fade" id="modal-trend">' +
                             '                                <div class="modal-dialog">' +
                             '                                    <div class="modal-content">' +
@@ -124,10 +124,20 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             var oFound = hiddenDashboards.find(function(id) {
                                 return id == currentDashboard().id;
                             });
-                            return oFound == undefined;
-                        } else {
-                            return true;
+
+                            if (oFound == undefined) {
+                                return false;
+                            }
                         }
+
+                        if (metricOrInitiative.AAA_EntityName == 'Metric') {
+                            var hasCurrentYear = metricService.getMetricYearByYear(metricOrInitiative, currentYear);
+                            if (!hasCurrentYear) {
+                                return false;
+                            }
+                        }
+
+                        return true;
                     };
 
                     scope.hideMetric = function(metric) {
@@ -239,18 +249,24 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         });
                     });
 
+                    var currentYear = 2017;
+                    scope.getMetricHistoryByYear = function(oMetric) {
+                        return metricService.getLastMetricHistoryForYear(oMetric, currentYear);
+                    }
 
-                    scope.getMetricStyle = function(oMetricHistory, oMetric) {
+                    scope.getMetricStyle = function(oMetric) {
 
-                        if (oMetricHistory.GoalValue != null && oMetricHistory.GoalValue != undefined && oMetricHistory.GoalValue != null && oMetricHistory.GoalValue != undefined) {
+                        var oHistory = scope.getMetricHistoryByYear(oMetric);
+
+                        if (oHistory && oMetric.GoalValue != null && oMetric.GoalValue != undefined) {
                             switch (oMetric.ComparatorMethodKey) {
                                 case 1: //Greater Than
-                                    if (oMetricHistory.CurrentValue < oMetricHistory.GoalValue) {
+                                    if (oHistory.CurrentValue < oMetric.GoalValue) {
                                         return 'GoingBad';
                                     }
                                     break;
                                 case 2: //Less Than
-                                    if (oMetricHistory.CurrentValue > oMetricHistory.GoalValue) {
+                                    if (oHistory.CurrentValue > oMetric.GoalValue) {
                                         return 'GoingBad';
                                     }
                                     break;
@@ -286,81 +302,89 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         scope.getTrendStyle = function(oMetric) {
                             var container = 'hidden';
 
-                            if (oMetric.LastMetrics && oMetric.LastMetrics.length > 0) {
-                                var trend;
-                                var lastMetric = oMetric.LastMetrics[oMetric.LastMetrics.length - 1];
-                                var currentStatus = scope.getMetricStyle(lastMetric, oMetric);
+                            var oMetricYear = metricService.getMetricYearByYear(oMetric, currentYear);
 
-                                var arrowElement = element.find('.MetricBox#' + oMetric.id + ' span');
+                            if (oMetricYear) {
 
-                                if (oMetric.LastMetrics && oMetric.LastMetrics.length > 1) {
-                                    var firstMetric = oMetric.LastMetrics[oMetric.LastMetrics.length - 2];
-                                    var differenceLastMetric, differenceFirstMetric;
 
-                                    switch (oMetric.ComparatorMethodKey) {
-                                        case 1: //Greater Than
-                                            differenceLastMetric = lastMetric.GoalValue - lastMetric.CurrentValue;
-                                            differenceFirstMetric = firstMetric.GoalValue - firstMetric.CurrentValue;
 
-                                            if (differenceLastMetric > differenceFirstMetric) {
-                                                trend = 'down';
-                                            } else {
-                                                trend = 'up';
-                                            }
+                                if (oMetricYear.MetricHistorys && oMetricYear.MetricHistorys.length > 0) {
+                                    var trend;
+                                    var oLastHistory = oMetricYear.MetricHistorys[oMetricYear.MetricHistorys.length - 1];
+                                    var currentStatus = scope.getMetricStyle(oMetric);
 
-                                            break;
-                                        case 2: //Less Than
-                                            differenceLastMetric = lastMetric.GoalValue - lastMetric.CurrentValue;
-                                            differenceFirstMetric = firstMetric.GoalValue - firstMetric.CurrentValue;
+                                    var arrowElement = element.find('.MetricBox#' + oMetric.id + ' span');
 
-                                            if (differenceLastMetric < differenceFirstMetric) {
-                                                trend = 'down';
-                                            } else {
-                                                trend = 'up';
-                                            }
+                                    if (oMetricYear.MetricHistorys && oMetricYear.MetricHistorys.length > 1) {
+                                        var oFirstHistory = oMetricYear.MetricHistorys[oMetricYear.MetricHistorys.length - 2];
+                                        var differenceLastMetric, differenceFirstMetric;
 
-                                            break;
-                                        case 3: //Around Than
-                                            // statements_1
-                                            // break;
-                                        default:
-                                            return '';
-                                    }
+                                        switch (oMetric.ComparatorMethodKey) {
+                                            case 1: //Greater Than
+                                                differenceLastMetric = oMetric.GoalValue - oLastHistory.CurrentValue;
+                                                differenceFirstMetric = oMetric.GoalValue - oFirstHistory.CurrentValue;
 
-                                } else {
+                                                if (differenceLastMetric > differenceFirstMetric) {
+                                                    trend = 'down';
+                                                } else {
+                                                    trend = 'up';
+                                                }
 
-                                    if (currentStatus == 'GoingBad') {
-                                        trend = 'down';
+                                                break;
+                                            case 2: //Less Than
+                                                differenceLastMetric = oMetric.GoalValue - oLastHistory.CurrentValue;
+                                                differenceFirstMetric = oMetric.GoalValue - oFirstHistory.CurrentValue;
+
+                                                if (differenceLastMetric < differenceFirstMetric) {
+                                                    trend = 'down';
+                                                } else {
+                                                    trend = 'up';
+                                                }
+
+                                                break;
+                                            case 3: //Around Than
+                                                // statements_1
+                                                // break;
+                                            default:
+                                                return '';
+                                        }
+
                                     } else {
-                                        trend = 'up';
+
+                                        if (currentStatus == 'GoingBad') {
+                                            trend = 'down';
+                                        } else {
+                                            trend = 'up';
+                                        }
+
                                     }
 
-                                }
+                                    if (trend == 'up') {
+                                        arrowElement.addClass('glyphicon-arrow-up');
+                                        arrowElement.removeClass('glyphicon-arrow-down');
 
-                                if (trend == 'up') {
-                                    arrowElement.addClass('glyphicon-arrow-up');
-                                    arrowElement.removeClass('glyphicon-arrow-down');
+                                    } else {
+                                        arrowElement.addClass('glyphicon-arrow-down');
+                                        arrowElement.removeClass('glyphicon-arrow-up');
+                                    }
 
-                                } else {
-                                    arrowElement.addClass('glyphicon-arrow-down');
-                                    arrowElement.removeClass('glyphicon-arrow-up');
-                                }
-
-                                switch (true) {
-                                    case currentStatus == 'GoingBad' && trend == 'up':
-                                        container = 'btn-warning';
-                                        break;
-                                    case currentStatus == 'GoingBad' && trend == 'down':
-                                        container = 'btn-danger';
-                                        break;
-                                    case currentStatus == 'GoingWell' && trend == 'up':
-                                        container = 'btn-success';
-                                        break;
-                                    case currentStatus == 'GoingWell' && trend == 'down':
-                                        container = 'btn-success';
-                                        break;
+                                    switch (true) {
+                                        case currentStatus == 'GoingBad' && trend == 'up':
+                                            container = 'btn-warning';
+                                            break;
+                                        case currentStatus == 'GoingBad' && trend == 'down':
+                                            container = 'btn-danger';
+                                            break;
+                                        case currentStatus == 'GoingWell' && trend == 'up':
+                                            container = 'btn-success';
+                                            break;
+                                        case currentStatus == 'GoingWell' && trend == 'down':
+                                            container = 'btn-success';
+                                            break;
+                                    }
                                 }
                             }
+
                             return container;
                         };
                     });

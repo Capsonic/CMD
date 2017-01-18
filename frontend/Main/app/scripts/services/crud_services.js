@@ -127,7 +127,7 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 
-}).service('metricService', function(crudFactory, $filter) {
+}).service('metricService', function(crudFactory, $filter, metricHistoryService) {
 
     function getFormattedValue(value, format) {
         if (value != null && value != '') {
@@ -182,17 +182,17 @@ angular.module('CMD.CRUDServices', [])
                 theEntity.SelectedMetricYear = theEntity.MetricYears[0];
             }
 
-
             //Metric History
-            /*theEntity.MetricHistorys.forEach(function(item) {
-                item = crudInstance.adaptMetricHistory(item, theEntity);
+            theEntity.MetricYears.forEach(function(oYear) {
+                oYear.MetricHistorys.forEach(function(oHistory) {
+                    metricHistoryService.adapt(oHistory);
+                });
+
+                oYear.MetricHistorys.sort(function(a, b) {
+                    return a.ConvertedMetricDate - b.ConvertedMetricDate;
+                });
             });
 
-            theEntity.MetricHistorys.sort(function(a, b) {
-                return a.ConvertedMetricDate - b.ConvertedMetricDate;
-            });
-
-            theEntity.LastMetrics = theEntity.MetricHistorys.slice(-1);*/
 
             return theEntity;
         },
@@ -214,6 +214,32 @@ angular.module('CMD.CRUDServices', [])
 
     crudInstance.getFormattedValue = getFormattedValue;
     crudInstance.getFormattedEquality = getFormattedEquality;
+
+    crudInstance.getMetricYearByYear = function(oMetric, iYear) {
+        if (oMetric && oMetric.MetricYears && iYear) {
+            return oMetric.MetricYears.find(function(oYear) {
+                return oYear.Value == iYear;
+            });
+        }
+    };
+
+    crudInstance.getLastMetricHistoryForYear = function(oMetric, iYear) {
+        if (oMetric && iYear) {
+            var oMetricYear = crudInstance.getMetricYearByYear(oMetric, iYear);
+
+            if (oMetricYear) {
+                oMetricYear.MetricHistorys.sort(function(a, b) {
+                    return a.ConvertedMetricDate - b.ConvertedMetricDate;
+                });
+
+                return oMetricYear.MetricHistorys.slice(-1)[0];
+            }
+        }
+
+        return null;
+    };
+
+
 
     crudInstance.adaptMetricHistory = function(metricHistory, metric) {
         metricHistory.FormattedCurrentValue = getFormattedValue(metricHistory.CurrentValue, metric.FormatKey);
