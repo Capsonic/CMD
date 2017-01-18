@@ -120,6 +120,10 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         adaptForGridster(theOnScreenEntity.Departments);
 
         addOneByOne();
+
+        $scope.availableYears = getAvailableYears();
+
+        $scope.dashboardYear = $scope.availableYears.slice(-1)[0];
     };
 
     function fulfillSortingInfo(oDashboard) {
@@ -297,19 +301,20 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     $scope.fullScreen = function() {
         if (screenfull.enabled) {
             screenfull.request(angular.element('#fullscreenMe')[0]);
-            angular.element('.Dashboard').css('top', 0);
+            // angular.element('.Dashboard').css('top', 0);
         }
     };
 
     if (screenfull.enabled) {
         document.addEventListener(screenfull.raw.fullscreenchange, function() {
             $scope.isDesignMode = !screenfull.isFullscreen;
+            $scope.isFullScreen = screenfull.isFullscreen;
             $scope.options.draggable.enabled = !screenfull.isFullscreen;
-            if (screenfull.isFullscreen) {
-                angular.element('.Dashboard').css('top', 0);
-            } else {
-                angular.element('.Dashboard').css('top', 50);
-            }
+            // if (screenfull.isFullscreen) {
+            //     angular.element('.Dashboard').css('top', 0);
+            // } else {
+            //     angular.element('.Dashboard').css('top', 50);
+            // }
         });
     }
 
@@ -501,6 +506,11 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
     $scope.onCloseMetricHistory = function() {
         $scope.metricToSave = null;
+    }
+
+    var getAvailableYears = function() {
+
+        return [2016, 2017, 2018];
     }
 
 });

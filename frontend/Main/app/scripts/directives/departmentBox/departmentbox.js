@@ -131,7 +131,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         }
 
                         if (metricOrInitiative.AAA_EntityName == 'Metric') {
-                            var hasCurrentYear = metricService.getMetricYearByYear(metricOrInitiative, currentYear);
+                            var hasCurrentYear = metricService.getMetricYearByYear(metricOrInitiative, scope.$parent.dashboardYear);
                             if (!hasCurrentYear) {
                                 return false;
                             }
@@ -249,9 +249,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         });
                     });
 
-                    var currentYear = 2017;
                     scope.getMetricHistoryByYear = function(oMetric) {
-                        return metricService.getLastMetricHistoryForYear(oMetric, currentYear);
+                        return metricService.getLastMetricHistoryForYear(oMetric, scope.$parent.dashboardYear);
                     }
 
                     scope.getMetricStyle = function(oMetric) {
@@ -302,7 +301,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         scope.getTrendStyle = function(oMetric) {
                             var container = 'hidden';
 
-                            var oMetricYear = metricService.getMetricYearByYear(oMetric, currentYear);
+                            var oMetricYear = metricService.getMetricYearByYear(oMetric, scope.$parent.dashboardYear);
 
                             if (oMetricYear) {
 

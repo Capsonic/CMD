@@ -1,63 +1,73 @@
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
-                <span class="sr-only">Toggle navigation</span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <p class="navbar-brand hidden-xs" style="padding:0 20px 0 0;margin:0;"><img src="scripts/reusable/cap-auto.png" class="CALogo" /></p>
-            <a class="navbar-brand" href="" style="font-size: 40px;padding:8px; 0 0 0">CMD</a>
-            <p class="navbar-brand navbar-right DashboardTitle" ng-show="!isDesignMode">
-                <marquee>{{baseEntity.Name}} - {{baseEntity.Description}}</marquee>
-            </p>
-        </div>
-        <!-- <img src="scripts/reusable/cap-auto.png" style="display: block; position: absolute; top: 5px; left: 5px; z-index: 1031;width:200px;" /> -->
-        <div class="collapse navbar-collapse" id="js-navbar-collapse">
-            <ul class="nav navbar-nav navbar-right" style="margin-right: 5px;">
-                <li class="dropdown">
-                    <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 20px 0 0 0;"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="" ng-click="logout()">Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
-            <div class="navbar-form navbar-right">
-                <div ng-show="isDesignMode" class="form-group" style="width:80px;margin-top:-5px;height: 40px;">
-                    <label style="font-size:8px;margin:0;color:#ffffff;">
-                        Sorting
-                        <br>Metrics / Initiatives
-                    </label>
-                    <input type="checkbox" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives(sortingMetricsOrInitiatives);">
+<div id="fullscreenMe">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#js-navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="navbar-brand hidden-xs" style="padding:0 20px 0 0;margin:0;"><img src="scripts/reusable/cap-auto.png" class="CALogo" /></p>
+                <a class="navbar-brand" href="" style="font-size: 30px;padding:12px 0 0 0;margin-bottom: 5px;">CMD</a>
+                <p class="navbar-brand navbar-right DashboardTitle" ng-show="!isDesignMode">
+                    <marquee>{{baseEntity.Name}} - {{baseEntity.Description}}</marquee>
+                </p>
+            </div>
+            <!-- <img src="scripts/reusable/cap-auto.png" style="display: block; position: absolute; top: 5px; left: 5px; z-index: 1031;width:200px;" /> -->
+            <div class="collapse navbar-collapse" id="js-navbar-collapse">
+                <ul ng-show="!isFullScreen" class="nav navbar-nav navbar-right" style="margin-right: 5px;">
+                    <li class="dropdown">
+                        <a href="" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" style="padding: 20px 0 0 0;"><span class="glyphicon glyphicon-user"></span> {{currentUser.Value}} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="" ng-click="logout()">Logout</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                <!-- Buttons -->
+                <div class="navbar-form navbar-right">
+                    <div class="form-group" style="width:410px;margin-top:3px;">
+                        <!-- Take into account badge width with numbers are bigger than 9 -->
+                        <div class="form-group pull-right" style="width:80px;margin-top:-10px;">
+                            <label style="color:#ffffff;font-size:8px;margin:0;">Year</label>
+                            <select ng-model="dashboardYear" style="height:25px;padding:1px;font-size:10px;width:70px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="year for year in availableYears"></select>
+                        </div>
+                        <button ng-show="!isFullScreen" type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
+                        <button ng-show="!isFullScreen" type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
+                        <button ng-show="isDesignMode" type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge" style="font-size: .9em;">{{pendingToSave}}</span></button>
+                        <a ng-show="isDesignMode" href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
+                    </div>
                 </div>
-                <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
-                    <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
-                </div>
-                <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Min Cols</label>
-                    <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
-                </div>
-                <div ng-show="isDesignMode" class="form-group" style="width:130px;margin-top:-10px;">
-                    <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
-                    <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
-                </div>
-                <div class="form-group" style="width:330px;margin-top:5px;">
-                    <!-- Take into account badge width with numbers are bigger than 9 -->
-                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
-                    <button type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
-                    <button ng-show="isDesignMode" type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge">{{pendingToSave}}</span></button>
-                    <a ng-show="isDesignMode" href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
+                <!-- Options -->
+                <div class="navbar-form navbar-right">
+                    <div ng-show="isDesignMode" class="form-group" style="width:80px;margin-top:-5px;height: 40px;">
+                        <label style="font-size:8px;margin:0;color:#ffffff;">
+                            Sorting
+                            <br>Metrics / Initiatives
+                        </label>
+                        <input type="checkbox" style="margin:0;padding:0;" ng-model="sortingMetricsOrInitiatives" ng-change="on_change_sortingMetricsOrInitiatives(sortingMetricsOrInitiatives);">
+                    </div>
+                    <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
+                        <label style="color:#ffffff;font-size:8px;margin:0;">Min Rows</label>
+                        <select ng-model="options.minRows" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
+                    </div>
+                    <div ng-show="isDesignMode" class="form-group" style="width:60px;margin-top:-10px;">
+                        <label style="color:#ffffff;font-size:8px;margin:0;">Min Cols</label>
+                        <select ng-model="options.minCols" style="height:25px;padding:1px;font-size:10px;width:50px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="o as o for o in [1,2,3,4,5,10,15,20,25,30]"></select>
+                    </div>
+                    <div ng-show="isDesignMode" class="form-group" style="width:130px;margin-top:-10px;">
+                        <label style="color:#ffffff;font-size:8px;margin:0;">Scrollbar</label>
+                        <select ng-model="options.gridType" style="height:25px;padding:1px;font-size:10px;width:120px;margin-right:5px;top:16px;" class="form-control navbar-right" ng-options="gridType.gridType as gridType.Value for gridType in theGridTypes"></select>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-<div class="Dashboard" id="fullscreenMe" ng-show="!isLoading">
-    <div gridster="options">
-        <div gridster-item="department" ng-repeat="department in baseEntity.Departments">
-            <department-box department="department"></department-box>
+    <div class="Dashboard" ng-show="!isLoading">
+        <div gridster="options">
+            <div gridster-item="department" ng-repeat="department in baseEntity.Departments">
+                <department-box department="department"></department-box>
+            </div>
         </div>
     </div>
 </div>
@@ -70,26 +80,34 @@
                 <h4 class="modal-title pull-left">Metric History</h4>
             </div>
             <div class="modal-body">
-                <table class="table table-condensed" style="max-width: 250px;">
-                    <thead>
-                        <tr>
-                            <th>
-                                Year
-                            </th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td style="min-width: 90px;">
-                                <year-selectize metric="metricToSave"></year-selectize>
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-sm btn-danger" ng-click="RemoveMetricYear(metricToSave.SelectedMetricYear)" style="width:100%;">Remove Year</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <table class="table table-condensed" style="max-width: 250px;">
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Year
+                                    </th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td style="min-width: 90px;">
+                                        <year-selectize metric="metricToSave"></year-selectize>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-sm btn-danger" ng-click="RemoveMetricYear(metricToSave.SelectedMetricYear)" style="width:100%;">Remove Year</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="col-sm-6">
+                        <label> Goal Value </label>
+                        <p class="form-control-static">{{metricToSave.EqualityValue}} {{metricToSave.FormattedGoalValue}}</p>
+                    </div>
+                </div>
                 <br>
                 <label>History</label>
                 <div class="table-responsive">
