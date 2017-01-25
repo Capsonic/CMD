@@ -503,15 +503,22 @@ angular.module('inspiracode.crudFactory', [])
                             if (typeof response.data === 'object') {
                                 var backendResponse = response.data;
                                 if (!backendResponse.ErrorThrown) {
+                                    // theEntity.editMode = false;
 
                                     var entityFromServer = backendResponse.Result;
-                                    entityFromServer.editMode = false;
                                     mainEntity.adapterIn(entityFromServer);
                                     _populateCatalogValues(_adapter(entityFromServer, _self));
-                                    var oEntity = _getById(entityFromServer.id);
-                                    if (oEntity) { //Already exists, lets updated it if they are different.
-                                        if (!angular.equals(entityFromServer, oEntity)) {
-                                            angular.copy(entityFromServer, oEntity);
+
+                                    //Actual entity
+                                    if (!angular.equals(entityFromServer, theEntity)) {
+                                        angular.copy(entityFromServer, theEntity);
+                                    }
+
+                                    //cache:
+                                    var oOriginalEntity = _getById(entityFromServer.id);
+                                    if (oOriginalEntity) { //Already exists, lets updated it if they are different.
+                                        if (!angular.equals(entityFromServer, oOriginalEntity)) {
+                                            angular.copy(entityFromServer, oOriginalEntity);
                                         }
                                     } else { //First time loaded, lets add it.
                                         _arrAllRecords.push(entityFromServer);
@@ -790,8 +797,8 @@ angular.module('inspiracode.crudFactory', [])
                     var promiseCatalogs = _arrDependencies[i].loadCatalogs(bForce);
                     promises.push(promiseCatalogs);
                 }
-                var promiseEntities = _arrDependencies[i].loadEntities(bForce);
-                promises.push(promiseEntities);
+                // var promiseEntities = _arrDependencies[i].loadEntities(bForce);
+                // promises.push(promiseEntities);
             }
             promises.push(_loadCatalogs());
             return $q.all(promises);

@@ -23,6 +23,26 @@ namespace CMDLogic.EF
 
         public int Value { get; set; }
 
+        public decimal? CurrentValue { get; set; }
+
+        public decimal? GoalValue { get; set; }
+
+        public decimal? AroundRangeValue { get; set; }
+
+        public int? FormatKey { get; set; }
+
+        public int? BasisKey { get; set; }
+
+        public int? ComparatorMethodKey { get; set; }
+
+        public string HiddenForDashboards { get; set; }
+
+        public virtual cat_ComparatorMethod cat_ComparatorMethod { get; set; }
+
+        public virtual cat_MetricBasis cat_MetricBasis { get; set; }
+
+        public virtual cat_MetricFormat cat_MetricFormat { get; set; }
+
         public int MetricKey { get; set; }
         public virtual Metric Metric { get; set; }
 
@@ -30,9 +50,6 @@ namespace CMDLogic.EF
 
         [NotMapped]
         public override int id { get { return MetricYearKey; } }
-
-        [NotMapped]
-        public Sort InfoSort { get; set; }
 
     }
 }

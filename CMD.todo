@@ -1,43 +1,46 @@
 08/08/2016 - Dennis's Email:
-  ✔ How to add many "current" values (for each month for example) @done (16-10-05 13:34)
-  ✔ Need to have some metrics that show up in executive dashboard and some that only show up in Department Dashboard. (Like a checkbox for visibility) @done (16-08-29 14:51)
   Others:
 
 
 08/19/2016 - Dennis's Email:
- ✔ I am thinking we need a mouse over for the description of the metric. Or some other option to show or not show the description. @done (16-10-06 14:39)
- ✔ I am having an issue with the initiative description showing up in the dashboard. @done (16-08-19 11:55)
- ✔ Formating issues with initiatives on the department page. @done (16-08-19 16:28)
- ✔ I am having the same issue on the executive dashboard page again.   @done (16-08-29 14:51)
  Others:
-   ✔ Allow user to set the font size individually on each box. @done (16-08-19 16:28)
-   ✔ Titles are being displayed in only one row, if they are too long for the space, they will be cut with ... (ellipsis). @done (16-08-19 16:37)
 
 
 
 09/22/2013 - Dennis Webex:
- ✔ Mode Presentation by default @done (16-10-03 12:18)
- ✔ Monthly details shown when clicking a metric/initiative's title @done (16-10-05 13:33)
- ✔ Hide Basis @done (16-10-03 12:20)
- ✔ Show trend (last two months) @done (16-10-06 14:39)
  ☐ Around field => "Range Value"
- ✔ Executive dashboard to be the same for all users and controlled by selected users. @done (16-10-06 14:40)
 
+
+01/23/2017 - Several Meetings:
+ ☐ Move Format, Goal, ComparatorMehtod to MetricYear table
 
 ＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿＿
 Archive:
- ✔ Show Number format on Dashboard @done (16-08-17 17:37) @project(08/08/2016 - Dennis's Email)
- ✔ Show > or < or <> for comparator on dashboard @done (16-08-17 17:37) @project(08/08/2016 - Dennis's Email)
+ ✔ Executive dashboard to be the same for all users and controlled by selected users. @done (16-10-06 14:40) @project(09/22/2013 - Dennis Webex)
+ ✔ Show trend (last two months) @done (16-10-06 14:39) @project(09/22/2013 - Dennis Webex)
+ ✔ I am thinking we need a mouse over for the description of the metric. Or some other option to show or not show the description. @done (16-10-06 14:39) @project(08/19/2016 - Dennis's Email)
+ ✔ How to add many "current" values (for each month for example) @done (16-10-05 13:34) @project(08/08/2016 - Dennis's Email)
+ ✔ Monthly details shown when clicking a metric/initiative's title @done (16-10-05 13:33) @project(09/22/2013 - Dennis Webex)
+ ✔ Hide Basis @done (16-10-03 12:20) @project(09/22/2013 - Dennis Webex)
+ ✔ Mode Presentation by default @done (16-10-03 12:18) @project(09/22/2013 - Dennis Webex)
+ ✔ Need to have some metrics that show up in executive dashboard and some that only show up in Department Dashboard. (Like a checkbox for visibility) @done (16-08-29 14:51) @project(08/08/2016 - Dennis's Email)
+ ✔ I am having the same issue on the executive dashboard page again.   @done (16-08-29 14:51) @project(08/19/2016 - Dennis's Email)
+ ✔ Titles are being displayed in only one row, if they are too long for the space, they will be cut with ... (ellipsis). @done (16-08-19 16:37) @project(08/19/2016 - Dennis's Email / Others)
+ ✔ Formating issues with initiatives on the department page. @done (16-08-19 16:28) @project(08/19/2016 - Dennis's Email)
+ ✔ Allow user to set the font size individually on each box. @done (16-08-19 16:28) @project(08/19/2016 - Dennis's Email / Others)
+ ✔ I am having an issue with the initiative description showing up in the dashboard. @done (16-08-19 11:55) @project(08/19/2016 - Dennis's Email)
+ ✔ Update initiatives and metrics in dashboard view. @done (16-08-18 18:07) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ Executive Dashboard stopped displaying all of the departments selected @done (16-08-18 13:41) @project(08/08/2016 - Dennis's Email)
+ ✔ HTTPS @done (16-08-18 10:31) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ Alphabetical sort of Metrics @done (16-08-18 09:44) @project(08/08/2016 - Dennis's Email)
+ ✔ Add Title field to Metric @done (16-08-18 08:59) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ Fix Dashboards list too slow. @done (16-08-17 17:48) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ Filter metrics by search box in Departments-Metrics view. @done (16-08-17 17:44) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ On multi line metrics the "+" symbol does not line up. @done (16-08-17 17:43) @project(08/08/2016 - Dennis's Email)
+ ✔ Dashboard tiles need scroll @done (16-08-17 17:43) @project(08/08/2016 - Dennis's Email)
+ ✔ When many metrics have to scroll to add. (difficultly) @done (16-08-17 17:39) @project(08/08/2016 - Dennis's Email)
  ✘ Click thru to department for dashboard or to (Department Dashboard) @cancelled (16-08-17 17:38) (We will create one dashboard per department) @project(08/08/2016 - Dennis's Email)
  ✔ New metric button is floating @done (16-08-17 17:38) @project(08/08/2016 - Dennis's Email)
  ✔ Format text on metric page @done (16-08-17 17:38) @project(08/08/2016 - Dennis's Email)
- ✔ When many metrics have to scroll to add. (difficultly) @done (16-08-17 17:39) @project(08/08/2016 - Dennis's Email)
- ✔ Dashboard tiles need scroll @done (16-08-17 17:43) @project(08/08/2016 - Dennis's Email)
- ✔ On multi line metrics the "+" symbol does not line up. @done (16-08-17 17:43) @project(08/08/2016 - Dennis's Email)
- ✔ Alphabetical sort of Metrics @done (16-08-18 09:44) @project(08/08/2016 - Dennis's Email)
- ✔ Executive Dashboard stopped displaying all of the departments selected @done (16-08-18 13:41) @project(08/08/2016 - Dennis's Email)
- ✔ Filter metrics by search box in Departments-Metrics view. @done (16-08-17 17:44) @project(08/08/2016 - Dennis's Email / Others)
- ✔ Fix Dashboards list too slow. @done (16-08-17 17:48) @project(08/08/2016 - Dennis's Email / Others)
- ✔ Add Title field to Metric @done (16-08-18 08:59) @project(08/08/2016 - Dennis's Email / Others)
- ✔ HTTPS @done (16-08-18 10:31) @project(08/08/2016 - Dennis's Email / Others)
- ✔ Update initiatives and metrics in dashboard view. @done (16-08-18 18:07) @project(08/08/2016 - Dennis's Email / Others)
+ ✔ Show Number format on Dashboard @done (16-08-17 17:37) @project(08/08/2016 - Dennis's Email)
+ ✔ Show > or < or <> for comparator on dashboard @done (16-08-17 17:37) @project(08/08/2016 - Dennis's Email)

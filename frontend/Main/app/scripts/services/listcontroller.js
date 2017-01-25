@@ -232,7 +232,7 @@ angular.module('mainApp').factory('listController', function($log, $activityIndi
             $activityIndicator.startAnimating();
             alertify.closeAll();
 
-            _baseService.loadCatalogs().then(function() {
+            _baseService.loadDependencies().then(function() {
                 _baseService.customGet('GetAll').then(function(data) {
                     _baseService.setRawAll(data);
                     scope.$evalAsync(function() {

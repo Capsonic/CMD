@@ -13,10 +13,6 @@ angular.module('mainApp').directive('yearSelectize', function($timeout, metricYe
         // require: 'ngModel',
         scope: {
             metric: '='
-                // placeholder: '@',
-                // valueField: '@',
-                // labelField: '@',
-                // options: '='
         },
         link: function postLink(scope, element, attrs, ngModel) {
 
@@ -48,11 +44,11 @@ angular.module('mainApp').directive('yearSelectize', function($timeout, metricYe
                             scope.metric.SelectedMetricYear = options.find(function(option) {
                                 return option[valueField] == value;
                             });
-                            if (!scope.metric.SelectedMetricYear) {
-                                scope.metric.SelectedMetricYear = {};
-                                scope.metric.SelectedMetricYear[valueField] = 0;
-                                scope.metric.SelectedMetricYear[labelField] = value;
-                            }
+                            // if (!scope.metric.SelectedMetricYear) {
+                            //     scope.metric.SelectedMetricYear = {};
+                            //     scope.metric.SelectedMetricYear[valueField] = 0;
+                            //     scope.metric.SelectedMetricYear[labelField] = value;
+                            // }
                         }
                     });
                 },

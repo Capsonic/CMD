@@ -27,7 +27,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
         //         }
         //     }
         // },
-        controller: function($scope, listController, metricHistoryService, $q, $activityIndicator) {
+        controller: function($scope, listController, metricHistoryService, $q, $activityIndicator, metricYearService) {
 
             var table;
 
@@ -256,14 +256,13 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                 var arrPromiseConstructors = [];
 
 
-                //Items to be update or inserted:
+                //Items to be updated or inserted:
                 var arrItemsToBeSaved = $scope.baseList.filter(function(item) {
                     if (item.edited) {
                         item.ConvertedMetricDate = HTDate_To_JSDate(item);
                     }
                     return item.edited;
                 });
-
                 arrItemsToBeSaved.forEach(function(item) {
                     var promiseConstructor = function() {
                         return metricHistoryService.save(item);
@@ -282,6 +281,14 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                     arrPromiseConstructors.push(promiseConstructor);
                 });
 
+                //Metric Year update
+                if ($scope.metricYear && $scope.metricYear.editMode) {
+                    var promiseConstructor = function() {
+                        return metricYearService.save($scope.metricYear, $scope.metric.MetricYears);
+                    }
+                    arrPromiseConstructors.push(promiseConstructor);
+                }
+
 
                 //Reloading all
                 var promiseConstructor = function() {
@@ -292,6 +299,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
 
                 //Sending transactions in serial way:
                 $q.serial(arrPromiseConstructors).finally(function(data) {
+                    $scope.$emit('RefreshMetric', $scope.metric);
                     $timeout(function() {
                         alertify.message('Process completed.');
                     }, 100);
@@ -307,9 +315,10 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
             $scope.$on('SaveMetricHistory', function() {
                 var MetricYearKey = $scope.metricYear.id;
                 if (!MetricYearKey) {
-
+                    alertify.message('Nothing to save.');
+                } else {
+                    savePending();
                 }
-                savePending();
             });
         }
     };

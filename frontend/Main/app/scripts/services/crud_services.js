@@ -9,9 +9,11 @@
  */
 angular.module('CMD.CRUDServices', [])
 
-.service('dashboardService', function(crudFactory, $filter, metricService, initiativeService) {
+.service('utilsService', function($filter) {
 
-    function getFormattedValue(value, format) {
+    var service = {};
+
+    service.getFormattedValue = function(value, format) {
         if (value != null && value != '') {
             switch (format) {
                 case 1: //Numeric
@@ -27,7 +29,7 @@ angular.module('CMD.CRUDServices', [])
         return value;
     };
 
-    function getFormattedEquality(equality) {
+    service.getFormattedEquality = function(equality) {
         switch (equality) {
             case 1:
                 return '>';
@@ -40,28 +42,60 @@ angular.module('CMD.CRUDServices', [])
         }
     };
 
-    function getMetricsBasisValue(id) {
-        switch (id) {
-            case 1:
-                return 'Hourly';
-            case 2:
-                return 'Daily';
-            case 3:
-                return 'Weekly';
-            case 4:
-                return 'Monthly';
-            case 5:
-                return 'Bimonthy';
-            case 6:
-                return 'Quarterly';
-            case 7:
-                return 'Biannual';
-            case 8:
-                return 'Yearly';
-            default:
-                return '';
+    service.toJavascriptDate = function(sISO_8601_Date) {
+        return sISO_8601_Date ? moment(sISO_8601_Date, moment.ISO_8601).toDate() : null;
+    };
+
+    service.adaptHiddenForDashboards = function(theEntity) {
+        var result = [];
+        if (theEntity.HiddenForDashboardsTags) {
+            for (var i = 0; i < theEntity.HiddenForDashboardsTags.length; i++) {
+                var current = theEntity.HiddenForDashboardsTags[i];
+                result.push(current.id);
+            }
         }
-    }
+        theEntity.HiddenForDashboardsTags = [];
+        return result.join(',');
+    };
+
+    service.getDashboardsFromIds = function(sIDs, dashboardsCatalog) {
+        if (sIDs != null && sIDs.length > 0) {
+            var arrIDs = sIDs.split(',');
+            return arrIDs.map(function(sID) {
+                return dashboardsCatalog.getById(sID);
+            });
+        } else {
+            return [];
+        }
+    };
+
+    service.adaptUsersTags = function(theEntity) {
+        var result = [];
+        if (theEntity.OwnersTags) {
+            for (var i = 0; i < theEntity.OwnersTags.length; i++) {
+                var current = theEntity.OwnersTags[i];
+                result.push(current.id);
+            }
+        }
+        theEntity.OwnersTags = [];
+        return result.join(',');
+    };
+
+    // service.getUsersFromIds = function(sIDs, usersCatalog) {
+    //     if (sIDs != null && sIDs.length > 0) {
+    //         var arrIDs = sIDs.split(',');
+    //         return arrIDs.map(function(sID) {
+    //             return usersCatalog.getById(sID);
+    //         });
+    //     } else {
+    //         return [];
+    //     }
+    // };
+
+    return service;
+})
+
+.service('dashboardService', function(crudFactory, utilsService, metricService, initiativeService) {
 
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
@@ -71,7 +105,7 @@ angular.module('CMD.CRUDServices', [])
 
         adapter: function(theEntity, self) {
 
-            theEntity.OwnersTags = getDashboardsFromIds(theEntity.Owners, self.catalogs.Users);
+            theEntity.OwnersTags = utilsService.getDashboardsFromIds(theEntity.Owners, self.catalogs.Users);
 
             theEntity.Departments.forEach(function(department) {
 
@@ -79,9 +113,7 @@ angular.module('CMD.CRUDServices', [])
                     metricService.adapt(metric);
                 });
                 department.Initiatives.forEach(function(initiative) {
-                    initiative.ConvertedActualDate = initiative.ActualDate ? moment(initiative.ActualDate, moment.ISO_8601).toDate() : null;
-                    initiative.ConvertedDueDate = initiative.DueDate ? moment(initiative.DueDate, moment.ISO_8601).toDate() : null;
-                    initiative.HiddenForDashboardsTags = getDashboardsFromIds(initiative.HiddenForDashboards, initiativeService.catalogs.Dashboards);
+                    initiativeService.adapt(initiative);
                 });
 
             });
@@ -93,7 +125,7 @@ angular.module('CMD.CRUDServices', [])
         },
 
         adapterOut: function(theEntity, self) {
-            theEntity.Owners = adaptUsersTags(theEntity);
+            theEntity.Owners = utilsService.adaptUsersTags(theEntity);
         },
 
         dependencies: [
@@ -127,50 +159,30 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 
-}).service('metricService', function(crudFactory, $filter, metricHistoryService) {
+}).service('metricService', function(crudFactory, metricHistoryService, metricYearService) {
 
-    function getFormattedValue(value, format) {
-        if (value != null && value != '') {
-            switch (format) {
-                case 1: //Numeric
-                    return $filter('number')(value, 2);
-                case 2: //Currency
-                    return '$ ' + $filter('number')(value, 2);
-                case 3: //Percentage
-                    return $filter('number')(value, 2) + '%';
-                default:
-                    return value;
-            }
-        }
-        return value;
-    };
-
-    function getFormattedEquality(equality) {
-        switch (equality) {
-            case 1:
-                return '>';
-            case 2:
-                return '<';
-            case 3:
-                return '<>';
-            default:
-                return '';
-        }
-    };
 
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
         entityName: 'Metric',
 
-        catalogs: ['ComparatorMethod', 'MetricFormat', 'MetricBasis', 'Dashboards'],
+        catalogs: [],
 
         adapter: function(theEntity, self) {
-            theEntity.FormattedCurrentValue = getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
-            theEntity.FormattedGoalValue = getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
-            theEntity.BasisValue = self.catalogs.MetricBasis.getById(theEntity.BasisKey).Value;
-            theEntity.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
-            theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
 
+            theEntity.MetricYears.forEach(function(oYear) {
+                //Adapt Metric Year
+                metricYearService.adapt(oYear);
+
+                oYear.MetricHistorys.forEach(function(oHistory) {
+                    //Adapt Metric History
+                    metricHistoryService.adapt(oHistory);
+                });
+
+                oYear.MetricHistorys.sort(function(a, b) {
+                    return a.ConvertedMetricDate - b.ConvertedMetricDate;
+                });
+            });
 
             //Metric Years Sort
             theEntity.MetricYears.sort(function(a, b) {
@@ -182,38 +194,19 @@ angular.module('CMD.CRUDServices', [])
                 theEntity.SelectedMetricYear = theEntity.MetricYears[0];
             }
 
-            //Metric History
-            theEntity.MetricYears.forEach(function(oYear) {
-                oYear.MetricHistorys.forEach(function(oHistory) {
-                    metricHistoryService.adapt(oHistory);
-                });
-
-                oYear.MetricHistorys.sort(function(a, b) {
-                    return a.ConvertedMetricDate - b.ConvertedMetricDate;
-                });
-            });
-
-
             return theEntity;
         },
 
         adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
-            theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
 
-            // theEntity.MetricHistorys.forEach(function(item) {
-            //     item.MetricDate = item.ConvertedMetricDate ? item.ConvertedMetricDate.toJSON() : null;
-            // });
         },
 
         dependencies: [
-
+            metricYearService
         ]
     });
-
-    crudInstance.getFormattedValue = getFormattedValue;
-    crudInstance.getFormattedEquality = getFormattedEquality;
 
     crudInstance.getMetricYearByYear = function(oMetric, iYear) {
         if (oMetric && oMetric.MetricYears && iYear) {
@@ -239,48 +232,9 @@ angular.module('CMD.CRUDServices', [])
         return null;
     };
 
-
-
-    crudInstance.adaptMetricHistory = function(metricHistory, metric) {
-        metricHistory.FormattedCurrentValue = getFormattedValue(metricHistory.CurrentValue, metric.FormatKey);
-        metricHistory.FormattedGoalValue = getFormattedValue(metricHistory.GoalValue, metric.FormatKey);
-        metricHistory.EqualityValue = getFormattedEquality(metric.ComparatorMethodKey);
-        metricHistory.ConvertedMetricDate = metricHistory.MetricDate ? moment(metricHistory.MetricDate, moment.ISO_8601).toDate() : null;
-        return metricHistory;
-    };
-
     return crudInstance;
 
-}).service('metricHistoryService', function(crudFactory, $filter) {
-
-    function getFormattedValue(value, format) {
-        if (value != null && value != '') {
-            switch (format) {
-                case 1: //Numeric
-                    return $filter('number')(value, 2);
-                case 2: //Currency
-                    return '$ ' + $filter('number')(value, 2);
-                case 3: //Percentage
-                    return $filter('number')(value, 2) + '%';
-                default:
-                    return value;
-            }
-        }
-        return value;
-    };
-
-    function getFormattedEquality(equality) {
-        switch (equality) {
-            case 1:
-                return '>';
-            case 2:
-                return '<';
-            case 3:
-                return '<>';
-            default:
-                return '';
-        }
-    };
+}).service('metricHistoryService', function(crudFactory, utilsService) {
 
     var crudInstance = new crudFactory({
 
@@ -290,15 +244,16 @@ angular.module('CMD.CRUDServices', [])
 
         adapter: function(theEntity, self) {
 
-            theEntity.FormattedCurrentValue = getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
-            theEntity.FormattedGoalValue = getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
-            theEntity.EqualityValue = getFormattedEquality(theEntity.ComparatorMethodKey);
-            theEntity.ConvertedMetricDate = theEntity.MetricDate ? moment(theEntity.MetricDate, moment.ISO_8601).toDate() : null;
+            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
+            theEntity.FormattedGoalValue = utilsService.getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
+            theEntity.EqualityValue = utilsService.getFormattedEquality(theEntity.ComparatorMethodKey);
+            theEntity.ConvertedMetricDate = utilsService.toJavascriptDate(theEntity.MetricDate);
 
             theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
             theEntity.ConvertedMetricMonth = theEntity.ConvertedMetricDate ? crudInstance.months[theEntity.ConvertedMetricDate.getMonth()] : null;
             theEntity.ConvertedMetricDay = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getDate() : null;
             theEntity.ConvertedMetricTime = theEntity.ConvertedMetricDate ? moment(theEntity.ConvertedMetricDate).format('h:mm:ss a') : null;
+
             return theEntity;
 
         },
@@ -314,29 +269,32 @@ angular.module('CMD.CRUDServices', [])
         ]
     });
 
-    crudInstance.getFormattedValue = getFormattedValue;
-    crudInstance.getFormattedEquality = getFormattedEquality;
-
     crudInstance.months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
     return crudInstance;
 
-}).service('metricYearService', function(crudFactory) {
+}).service('metricYearService', function(crudFactory, utilsService) {
 
     var crudInstance = new crudFactory({
 
         entityName: 'MetricYear',
 
-        catalogs: [],
+        catalogs: ['ComparatorMethod', 'MetricFormat', 'MetricBasis', 'Dashboards'],
 
         adapter: function(theEntity, self) {
+            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
+            theEntity.FormattedGoalValue = utilsService.getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
+            theEntity.BasisValue = self.catalogs.MetricBasis.getById(theEntity.BasisKey).Value;
+            theEntity.EqualityValue = utilsService.getFormattedEquality(theEntity.ComparatorMethodKey);
+            theEntity.HiddenForDashboardsTags = utilsService.getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
+
             return theEntity;
         },
 
         adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
-
+            theEntity.HiddenForDashboards = utilsService.adaptHiddenForDashboards(theEntity);
         },
 
         dependencies: [
@@ -346,7 +304,7 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 
-}).service('initiativeService', function(crudFactory) {
+}).service('initiativeService', function(crudFactory, utilsService) {
 
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
@@ -355,9 +313,9 @@ angular.module('CMD.CRUDServices', [])
         catalogs: ['Dashboards'],
 
         adapter: function(theEntity, self) {
-            theEntity.ConvertedActualDate = theEntity.ActualDate ? moment(theEntity.ActualDate, moment.ISO_8601).toDate() : null;
-            theEntity.ConvertedDueDate = theEntity.DueDate ? moment(theEntity.DueDate, moment.ISO_8601).toDate() : null;
-            theEntity.HiddenForDashboardsTags = getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
+            theEntity.ConvertedActualDate = utilsService.toJavascriptDate(theEntity.ActualDate);
+            theEntity.ConvertedDueDate = utilsService.toJavascriptDate(theEntity.DueDate);
+            theEntity.HiddenForDashboardsTags = utilsService.getDashboardsFromIds(theEntity.HiddenForDashboards, self.catalogs.Dashboards);
             return theEntity;
         },
 
@@ -366,7 +324,7 @@ angular.module('CMD.CRUDServices', [])
         adapterOut: function(theEntity, self) {
             theEntity.DueDate = theEntity.ConvertedDueDate ? theEntity.ConvertedDueDate.toJSON() : null;
             theEntity.ActualDate = theEntity.ConvertedActualDate ? theEntity.ConvertedActualDate.toJSON() : null;
-            theEntity.HiddenForDashboards = adaptHiddenForDashboards(theEntity);
+            theEntity.HiddenForDashboards = utilsService.adaptHiddenForDashboards(theEntity);
         },
 
         dependencies: [
@@ -423,50 +381,3 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 });
-
-function adaptHiddenForDashboards(theEntity) {
-    var result = [];
-    if (theEntity.HiddenForDashboardsTags) {
-        for (var i = 0; i < theEntity.HiddenForDashboardsTags.length; i++) {
-            var current = theEntity.HiddenForDashboardsTags[i];
-            result.push(current.id);
-        }
-    }
-    theEntity.HiddenForDashboardsTags = [];
-    return result.join(',');
-}
-
-function getDashboardsFromIds(sIDs, dashboardsCatalog) {
-    if (sIDs != null && sIDs.length > 0) {
-        var arrIDs = sIDs.split(',');
-        return arrIDs.map(function(sID) {
-            return dashboardsCatalog.getById(sID);
-        });
-    } else {
-        return [];
-    }
-}
-
-
-function adaptUsersTags(theEntity) {
-    var result = [];
-    if (theEntity.OwnersTags) {
-        for (var i = 0; i < theEntity.OwnersTags.length; i++) {
-            var current = theEntity.OwnersTags[i];
-            result.push(current.id);
-        }
-    }
-    theEntity.OwnersTags = [];
-    return result.join(',');
-}
-
-function getUsersFromIds(sIDs, usersCatalog) {
-    if (sIDs != null && sIDs.length > 0) {
-        var arrIDs = sIDs.split(',');
-        return arrIDs.map(function(sID) {
-            return usersCatalog.getById(sID);
-        });
-    } else {
-        return [];
-    }
-}

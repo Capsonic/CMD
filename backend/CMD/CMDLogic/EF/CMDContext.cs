@@ -30,12 +30,12 @@ namespace CMDLogic.EF
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<cat_MetricBasis>()
-                .HasMany(e => e.Metrics)
+                .HasMany(e => e.MetricYears)
                 .WithOptional(e => e.cat_MetricBasis)
                 .HasForeignKey(e => e.BasisKey);
 
             modelBuilder.Entity<cat_MetricFormat>()
-                .HasMany(e => e.Metrics)
+                .HasMany(e => e.MetricYears)
                 .WithOptional(e => e.cat_MetricFormat)
                 .HasForeignKey(e => e.FormatKey);
 
@@ -62,12 +62,16 @@ namespace CMDLogic.EF
                 .WithMany(e => e.Initiatives)
                 .Map(m => m.ToTable("cross_Department_Initiative").MapLeftKey("InitiativeKey").MapRightKey("DepartmentKey"));
 
-            modelBuilder.Entity<Metric>()
+            modelBuilder.Entity<MetricYear>()
                 .Property(e => e.CurrentValue)
                 .HasPrecision(15, 4);
 
-            modelBuilder.Entity<Metric>()
+            modelBuilder.Entity<MetricYear>()
                 .Property(e => e.GoalValue)
+                .HasPrecision(15, 4);
+
+            modelBuilder.Entity<MetricYear>()
+                .Property(e => e.AroundRangeValue)
                 .HasPrecision(15, 4);
 
             modelBuilder.Entity<Metric>()

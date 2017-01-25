@@ -162,6 +162,14 @@
     <Compile Include="Migrations\201701091946374_MetricYearValue.Designer.cs">
       <DependentUpon>201701091946374_MetricYearValue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701191719309_MetricValuesToMetricYear.cs" />
+    <Compile Include="Migrations\201701191719309_MetricValuesToMetricYear.Designer.cs">
+      <DependentUpon>201701191719309_MetricValuesToMetricYear.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201701241627324_HiddenDashboardsMetricYear.cs" />
+    <Compile Include="Migrations\201701241627324_HiddenDashboardsMetricYear.Designer.cs">
+      <DependentUpon>201701241627324_HiddenDashboardsMetricYear.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -234,6 +242,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701091946374_MetricYearValue.resx">
       <DependentUpon>201701091946374_MetricYearValue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701191719309_MetricValuesToMetricYear.resx">
+      <DependentUpon>201701191719309_MetricValuesToMetricYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701241627324_HiddenDashboardsMetricYear.resx">
+      <DependentUpon>201701241627324_HiddenDashboardsMetricYear.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

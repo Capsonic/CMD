@@ -49,8 +49,6 @@
                         <th style="text-align:center;width:100px;"></th>
                         <th st-sort="Title" st-skip-natural="true">Title</th>
                         <th st-sort="Description" st-skip-natural="true">Description</th>
-                        <th st-sort="GoalValue" st-skip-natural="true">Goal Value</th>
-                        <th st-sort="MetricBasis.Value" st-skip-natural="true">Basis</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -62,8 +60,6 @@
                         </td>
                         <td style="text-align:left;">{{item.Title}}</td>
                         <td style="text-align:left;">{{item.Description}}</td>
-                        <td style="text-align:right;">{{item.EqualityValue}} {{item.FormattedGoalValue}}</td>
-                        <td>{{item.BasisValue}}</td>
                     </tr>
                 </tbody>
             </table>
@@ -86,23 +82,6 @@
                     <br>
                     <label>Description</label>
                     <textarea class="form-control" rows="3" ng-model="itemToSave.Description"></textarea>
-                    <br>
-                    <label>Format</label>
-                    <select ng-model="itemToSave.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat"></select>
-                    <br>
-                    <label>Basis</label>
-                    <select ng-model="itemToSave.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis"></select>
-                    <br>
-                    <label>Comparator Method</label>
-                    <select ng-model="itemToSave.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod"></select>
-                    <br>
-                    <label>Goal Value</label>
-                    <input type="text" id="input" class="form-control" ng-model="itemToSave.GoalValue">
-                    <br>
-                    <label>Hidden for Dashboards</label>
-                    <tags-input template="tag-template" ng-model="itemToSave.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, itemToSave);">
-                        <auto-complete source="loadDashboardsTags($query, itemToSave.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
-                    </tags-input>
                 </div>
             </div>
             <div class="modal-footer">
@@ -146,8 +125,24 @@
                         </table>
                     </div>
                     <div class="col-sm-6">
-                        <label> Goal Value </label>
-                        <p class="form-control-static">{{itemToSave.EqualityValue}} {{itemToSave.FormattedGoalValue}}</p>
+                        <div class="form-group" style="font-size: .8em;">
+                            <label>Format</label>
+                            <select ng-model="itemToSave.SelectedMetricYear.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Basis</label>
+                            <select ng-model="itemToSave.SelectedMetricYear.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Comparator Method</label>
+                            <select ng-model="itemToSave.SelectedMetricYear.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Goal Value</label>
+                            <input type="text" id="input" class="form-control" ng-model="itemToSave.SelectedMetricYear.GoalValue" ng-change="on_input_change(itemToSave.SelectedMetricYear);">
+                            <br>
+                            <label>Hidden for Dashboards</label>
+                            <tags-input template="tag-template" ng-model="itemToSave.SelectedMetricYear.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, itemToSave.SelectedMetricYear);">
+                                <auto-complete source="loadDashboardsTags($query, itemToSave.SelectedMetricYear.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                            </tags-input>
+                        </div>
                     </div>
                 </div>
                 <br>

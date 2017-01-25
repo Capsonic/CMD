@@ -456,6 +456,10 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             });
         }
 
+        result.sort(function(a, b) {
+            return a - b;
+        });
+
         return result;
     };
 
