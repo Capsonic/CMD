@@ -253,21 +253,22 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                     scope.getMetricHistoryByYear = function(oMetric) {
                         return metricService.getLastMetricHistoryForYear(oMetric, scope.$parent.dashboardYear);
-                    }
+                    };
 
                     scope.getMetricStyle = function(oMetric) {
 
+                        var oYear = metricService.getMetricYearByYear(oMetric, scope.$parent.dashboardYear);
                         var oHistory = scope.getMetricHistoryByYear(oMetric);
 
-                        if (oHistory && oMetric.GoalValue != null && oMetric.GoalValue != undefined) {
-                            switch (oMetric.ComparatorMethodKey) {
+                        if (oHistory && oYear.GoalValue != null && oYear.GoalValue != undefined) {
+                            switch (oYear.ComparatorMethodKey) {
                                 case 1: //Greater Than
-                                    if (oHistory.CurrentValue < oMetric.GoalValue) {
+                                    if (oHistory.CurrentValue < oYear.GoalValue) {
                                         return 'GoingBad';
                                     }
                                     break;
                                 case 2: //Less Than
-                                    if (oHistory.CurrentValue > oMetric.GoalValue) {
+                                    if (oHistory.CurrentValue > oYear.GoalValue) {
                                         return 'GoingBad';
                                     }
                                     break;
@@ -300,6 +301,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
 
                     $timeout(function() {
+
                         scope.getTrendStyle = function(oMetric) {
                             var container = 'hidden';
 
@@ -307,23 +309,22 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                             if (oMetricYear) {
 
-
-
                                 if (oMetricYear.MetricHistorys && oMetricYear.MetricHistorys.length > 0) {
                                     var trend;
                                     var oLastHistory = oMetricYear.MetricHistorys[oMetricYear.MetricHistorys.length - 1];
                                     var currentStatus = scope.getMetricStyle(oMetric);
 
                                     var arrowElement = element.find('.MetricBox#' + oMetric.id + ' span');
+                                    var btnTrend = element.find('.MetricBox#' + oMetric.id + ' .btn');
 
                                     if (oMetricYear.MetricHistorys && oMetricYear.MetricHistorys.length > 1) {
                                         var oFirstHistory = oMetricYear.MetricHistorys[oMetricYear.MetricHistorys.length - 2];
                                         var differenceLastMetric, differenceFirstMetric;
 
-                                        switch (oMetric.ComparatorMethodKey) {
+                                        switch (oMetricYear.ComparatorMethodKey) {
                                             case 1: //Greater Than
-                                                differenceLastMetric = oMetric.GoalValue - oLastHistory.CurrentValue;
-                                                differenceFirstMetric = oMetric.GoalValue - oFirstHistory.CurrentValue;
+                                                differenceLastMetric = oMetricYear.GoalValue - oLastHistory.CurrentValue;
+                                                differenceFirstMetric = oMetricYear.GoalValue - oFirstHistory.CurrentValue;
 
                                                 if (differenceLastMetric > differenceFirstMetric) {
                                                     trend = 'down';
@@ -333,8 +334,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                                                 break;
                                             case 2: //Less Than
-                                                differenceLastMetric = oMetric.GoalValue - oLastHistory.CurrentValue;
-                                                differenceFirstMetric = oMetric.GoalValue - oFirstHistory.CurrentValue;
+                                                differenceLastMetric = oMetricYear.GoalValue - oLastHistory.CurrentValue;
+                                                differenceFirstMetric = oMetricYear.GoalValue - oFirstHistory.CurrentValue;
 
                                                 if (differenceLastMetric < differenceFirstMetric) {
                                                     trend = 'down';
@@ -363,24 +364,32 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                     if (trend == 'up') {
                                         arrowElement.addClass('glyphicon-arrow-up');
                                         arrowElement.removeClass('glyphicon-arrow-down');
-
                                     } else {
                                         arrowElement.addClass('glyphicon-arrow-down');
                                         arrowElement.removeClass('glyphicon-arrow-up');
                                     }
 
+                                    btnTrend.removeClass('btn-success');
+                                    btnTrend.removeClass('btn-default');
+                                    btnTrend.removeClass('btn-warning');
+                                    btnTrend.removeClass('btn-danger');
+
                                     switch (true) {
-                                        case currentStatus == 'GoingBad' && trend == 'up':
-                                            container = 'btn-warning';
-                                            break;
-                                        case currentStatus == 'GoingBad' && trend == 'down':
-                                            container = 'btn-danger';
-                                            break;
                                         case currentStatus == 'GoingWell' && trend == 'up':
-                                            container = 'btn-success';
+                                            btnTrend.addClass('btn-success');
+                                            container = 'TrendWellAndUp';
                                             break;
                                         case currentStatus == 'GoingWell' && trend == 'down':
-                                            container = 'btn-default';
+                                            btnTrend.addClass('btn-default');
+                                            container = 'TrendWellButDown';
+                                            break;
+                                        case currentStatus == 'GoingBad' && trend == 'up':
+                                            btnTrend.addClass('btn-warning');
+                                            container = 'TrendBadButUp';
+                                            break;
+                                        case currentStatus == 'GoingBad' && trend == 'down':
+                                            btnTrend.addClass('btn-danger');
+                                            container = 'TrendBadAndDown';
                                             break;
                                     }
                                 }
@@ -388,6 +397,8 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                             return container;
                         };
+
+
                     });
 
                     scope.showTrendInfo = function() {

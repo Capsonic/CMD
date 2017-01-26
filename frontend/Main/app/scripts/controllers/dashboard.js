@@ -58,7 +58,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     var load = function() {
         dashboardService.loadEntity(dashboardKey).then(function(data) {
 
-            metricService.loadCatalogs().then(function(data) {
+            metricYearService.loadCatalogs().then(function(data) {
 
                 initiativeService.loadCatalogs().then(function(data) {
                     $activityIndicator.stopAnimating();
@@ -104,10 +104,10 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.afterLoadData = function() {
-        $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
-        for (var catalog in metricService.catalogs) {
-            if (metricService.catalogs.hasOwnProperty(catalog)) {
-                $scope['cat' + catalog] = metricService.catalogs[catalog].getAll();
+        $scope.theDashboards = metricYearService.catalogs.Dashboards.getAll();
+        for (var catalog in metricYearService.catalogs) {
+            if (metricYearService.catalogs.hasOwnProperty(catalog)) {
+                $scope['cat' + catalog] = metricYearService.catalogs[catalog].getAll();
             }
         }
 
@@ -423,6 +423,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         });
     };
     $scope.on_dashboardTag_Added = function(tagAdded, metric) {
+        metric.editoMode = true;
         // metric.HiddenForDashboardsTags = [tagAdded]
     };
 
@@ -441,6 +442,14 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
     };
 
     $scope.$on('HideMetricHistory', function() {
+        load();
+    });
+
+    $scope.on_input_change = function(oItem) {
+        oItem.editMode = true;
+    };
+
+    $scope.$on('RefreshMetric', function(scope, oMetric) {
         load();
     });
 

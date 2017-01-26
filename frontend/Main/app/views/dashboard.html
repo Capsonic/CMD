@@ -100,7 +100,7 @@
                         </div>
                         <div class="col-sm-6">
                             <label> Goal Value </label>
-                            <p class="form-control-static">{{metricToSave.EqualityValue}} {{metricToSave.FormattedGoalValue}}</p>
+                            <p class="form-control-static">{{metricToSave.SelectedMetricYear.EqualityValue}} {{metricToSave.SelectedMetricYear.FormattedGoalValue}}</p>
                         </div>
                     </div>
                     <br>
@@ -149,8 +149,24 @@
                         </table>
                     </div>
                     <div class="col-sm-6">
-                        <label> Goal Value </label>
-                        <p class="form-control-static">{{metricToSave.EqualityValue}} {{metricToSave.FormattedGoalValue}}</p>
+                        <div class="form-group" style="font-size: .8em;">
+                            <label>Format</label>
+                            <select ng-model="metricToSave.SelectedMetricYear.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat" ng-change="on_input_change(metricToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Basis</label>
+                            <select ng-model="metricToSave.SelectedMetricYear.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis" ng-change="on_input_change(metricToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Comparator Method</label>
+                            <select ng-model="metricToSave.SelectedMetricYear.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod" ng-change="on_input_change(metricToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Goal Value</label>
+                            <input type="text" id="input" class="form-control" ng-model="metricToSave.SelectedMetricYear.GoalValue" ng-change="on_input_change(metricToSave.SelectedMetricYear);">
+                            <br>
+                            <label>Hidden for Dashboards</label>
+                            <tags-input template="tag-template" ng-model="metricToSave.SelectedMetricYear.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, metricToSave.SelectedMetricYear);">
+                                <auto-complete source="loadDashboardsTags($query, metricToSave.SelectedMetricYear.HiddenForDashboardsTags)" min-length="1" load-on-focus="true" max-results-to-show="100" select-first-match="true" load-on-down-arrow="true"></auto-complete>
+                            </tags-input>
+                        </div>
                     </div>
                 </div>
                 <br>

@@ -44,6 +44,15 @@
         </form>
     </div>
     <br>
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="pull-right">
+                <label>Year</label>
+                <select ng-model="dashboardYear" class="form-control" ng-options="year for year in availableYears"></select>
+            </div>
+        </div>
+    </div>
+    <br>
     <form action="" class="form-horizontal" role="form">
         <div class="form-group">
             <label for="input" class="col-sm-2 control-label">Search:</label>

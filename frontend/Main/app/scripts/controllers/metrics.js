@@ -37,18 +37,6 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
         // metric.HiddenForDashboardsTags = [tagAdded]
     };
 
-    $scope.loadMetricYearsTags = function($query, currentList) {
-        if ($scope.theMetricYears) {
-            return $scope.theMetricYears.filter(function(item) {
-                return item.Value.toLowerCase().indexOf($query.toLowerCase()) != -1;
-            });
-        }
-    };
-    $scope.on_dashboardTag_Added = function(tagAdded, metric) {
-        metric.editMode = true;
-        // metric.HiddenForDashboardsTags = [tagAdded]
-    };
-
     $scope.openMetricHistory = function(oMetric) {
         angular.element('#modal-MetricHistory').modal('show');
         angular.element('#modal-MetricHistory').off('shown.bs.modal').on('shown.bs.modal', function(e) {
@@ -64,10 +52,6 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
 
     $scope.RemoveMetricYear = function(metricYear) {
         $scope.$broadcast('DeleteMetricYear', metricYear);
-    };
-
-    $scope.onCloseMetricHistory = function() {
-        $scope.itemToSave = null;
     };
 
     $scope.$on('RefreshMetric', function(scope, oMetric) {

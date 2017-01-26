@@ -20,7 +20,7 @@
                 </tr>
             </thead>
             <tbody dragula='"metrics-bag"' dragula-model="department.Metrics">
-                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard">
+                <tr ng-repeat="metric in department.Metrics | filter:isShownForCurrentDashboard" data-toggle="popover" data-placement="auto" data-trigger="focus" data-title="{{metric.Title}}" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')">
                     <td style="text-align: left;" class="columnMaxWidth">
                         <span class="btn btn-xs btn-default glyphicon glyphicon-pencil" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="editMetric(metric);"></span>
                         <span class="btn btn-xs btn-default" ng-if="$parent.$parent.isDesignMode" style="position: relative;top: -2px;" ng-click="hideMetric(metric);">Hide</span> <span class="btn-link" ng-click="showMetricHistoryReadOnly(metric)" style="color: inherit;cursor:pointer;" data-toggle="popover" data-placement="auto" data-trigger="focus" data-title="{{metric.Title}}" data-content="{{metric.Description}}" onmouseover="popoverHandler(this, 'show')" onmouseout="popoverHandler(this, 'hide')"><b>{{metric.Title}}</b> - {{metric.Description}}</span>
@@ -28,27 +28,29 @@
                     <!-- <td>{{metric.FormattedCurrentValue}}</td>
                     <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td> -->
                     <td>
-                        <div class="MetricBox hvr-float-shadow" ng-class="getMetricStyle(metric);" ng-if="getMetricHistoryByYear(metric)" ng-click="showMetricHistoryReadOnly(metric)">
-                            <table class="table MetricTable" style="width:inherit;">
-                                <tbody>
-                                    <tr>
-                                        <td colspan="2" class="MonthTitle">
-                                            {{getMetricHistoryByYear(metric).ConvertedMetricDate | date:'medium'}}
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <th ng-style="{width:department.InfoGridster.FontSize * 6}">Real</th>
-                                        <th ng-style="{width:department.InfoGridster.FontSize * 6}">Goal</th>
-                                    </tr>
-                                    <tr>
-                                        <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{getMetricHistoryByYear(metric).CurrentValue}}</td>
-                                        <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="MetricBox" id="{{metric.id}}" ng-if="getMetricHistoryByYear(metric)" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
-                            <button class="btn btn-xs" ng-click="showTrendInfo();" ng-class="getTrendStyle(metric);" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon"></span></button>
+                        <div ng-class="getTrendStyle(metric);">
+                            <div class="MetricBox hvr-float-shadow" ng-if="getMetricHistoryByYear(metric)" ng-click="showMetricHistoryReadOnly(metric)">
+                                <table class="table MetricTable" style="width:inherit;">
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="2" class="MonthTitle">
+                                                {{getMetricHistoryByYear(metric).ConvertedMetricDate | date:'medium'}}
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <th ng-style="{width:department.InfoGridster.FontSize * 6}">Real</th>
+                                            <th ng-style="{width:department.InfoGridster.FontSize * 6}">Goal</th>
+                                        </tr>
+                                        <tr>
+                                            <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{getMetricHistoryByYear(metric).CurrentValue}}</td>
+                                            <td ng-style="{width:department.InfoGridster.FontSize * 6}">{{getMetricHistoryByYear(metric).EqualityValue}} {{getMetricHistoryByYear(metric).FormattedGoalValue}}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="MetricBox" id="{{metric.id}}" ng-if="getMetricHistoryByYear(metric)" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
+                                <button class="btn btn-xs" ng-click="showTrendInfo();" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon"></span></button>
+                            </div>
                         </div>
                     </td>
                 </tr>

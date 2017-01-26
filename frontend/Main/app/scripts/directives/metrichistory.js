@@ -41,7 +41,6 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                         adaptToHandsontable($scope.baseList);
                         table.loadData($scope.baseList);
                     }
-                    // $scope.theDashboards = metricService.catalogs.Dashboards.getAll();
                 }
             });
 
@@ -52,10 +51,6 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
 
                 if ($scope.metricYear && $scope.metricYear.id > -1) {
                     insertRow(rows);
-
-                    // rows.forEach(function(row) {
-                    //     row.GoalValue = '' + $scope.metric.EqualityValue + ' ' + $scope.metric.FormattedGoalValue;
-                    // });
 
                     rows.sort(function(a, b) {
                         return b.ConvertedMetricDate - a.ConvertedMetricDate;
@@ -88,12 +83,9 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
             function setSize() {
                 var el = jQuery(elem);
                 var newHeight = el.find('table').eq(0).outerHeight();
-                console.log(newHeight);
                 el.children().eq(0).children().css('height', newHeight + 10);
                 el.children().eq(0).children().children().css('height', newHeight + 2);
             }
-
-
 
             var reset = function() {
                 table = new Handsontable(elem, {
@@ -103,7 +95,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                     startRows: 1,
                     colHeaders: true,
                     minSpareRows: 0,
-                    copyable: false,
+                    copyable: true,
                     colWidths: [100, 70, 90, 200, 120, 120],
                     colHeaders: ['Month', 'Day', 'Time', 'Note', 'Current Value'],
                     columns: [{
