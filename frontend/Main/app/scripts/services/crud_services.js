@@ -36,7 +36,7 @@ angular.module('CMD.CRUDServices', [])
             case 2:
                 return '<';
             case 3:
-                return '<>';
+                return '+/-';
             default:
                 return '';
         }
@@ -251,8 +251,6 @@ angular.module('CMD.CRUDServices', [])
         adapter: function(theEntity, self) {
 
             theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
-            theEntity.FormattedGoalValue = utilsService.getFormattedValue(theEntity.GoalValue, theEntity.FormatKey);
-            theEntity.EqualityValue = utilsService.getFormattedEquality(theEntity.ComparatorMethodKey);
             theEntity.ConvertedMetricDate = utilsService.toJavascriptDate(theEntity.MetricDate);
 
             theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;

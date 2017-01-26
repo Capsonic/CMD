@@ -219,6 +219,7 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
             $timeout(function() {
                 $scope.isLoading = false;
                 $scope.pendingToSave = $scope.getPendingToSaveCount();
+                $scope.$broadcast('dashboardLoaded');
             }, 500);
             return;
         }

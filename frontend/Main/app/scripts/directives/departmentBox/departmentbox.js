@@ -94,7 +94,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     function resetSizes() {
                         $timeout(function() {
                             element.find('.initiativeMaxWidth').css('max-width', element.parent().width() * .6);
-                            element.find('.metricMaxWidth').css('max-width', element.parent().width() * .8);
+                            element.find('.metricMaxWidth').css('max-width', element.parent().width() * .75);
                         }, 200);
                     };
 
@@ -284,6 +284,10 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         return metricService.getLastMetricHistoryForYear(oMetric, scope.$parent.dashboardYear);
                     };
 
+                    scope.getMetricYearByYear = function(oMetric) {
+                        return metricService.getMetricYearByYear(oMetric, scope.$parent.dashboardYear);
+                    };
+
                     scope.getMetricStyle = function(oMetric) {
 
                         var oYear = metricService.getMetricYearByYear(oMetric, scope.$parent.dashboardYear);
@@ -302,8 +306,12 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                     }
                                     break;
                                 case 3: //Around Than
-                                    // statements_1
-                                    // break;
+                                    var maxValue = oYear.GoalValue + oYear.AroundRangeValue;
+                                    var minValue = oYear.GoalValue - oYear.AroundRangeValue;
+                                    if (oHistory.CurrentValue < minValue || oHistory.CurrentValue > maxValue) {
+                                        return 'GoingBad';
+                                    }
+                                    break;
                                 default:
                                     return '';
                             }
@@ -374,8 +382,25 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                                                 break;
                                             case 3: //Around Than
-                                                // statements_1
-                                                // break;
+                                                if (oMetricYear.GoalValue > oLastHistory.CurrentValue) {
+                                                    differenceLastMetric = oMetricYear.GoalValue - oLastHistory.CurrentValue;
+                                                } else {
+                                                    differenceLastMetric = oLastHistory.CurrentValue - oMetricYear.GoalValue;
+                                                }
+
+                                                if (oMetricYear.GoalValue > oFirstHistory.CurrentValue) {
+                                                    differenceFirstMetric = oMetricYear.GoalValue - oFirstHistory.CurrentValue;
+                                                } else {
+                                                    differenceFirstMetric = oFirstHistory.CurrentValue - oMetricYear.GoalValue;
+                                                }
+
+                                                if (differenceLastMetric > differenceFirstMetric) {
+                                                    trend = 'down';
+                                                } else {
+                                                    trend = 'up';
+                                                }
+
+                                                break;
                                             default:
                                                 return '';
                                         }
@@ -451,6 +476,10 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
 
                     scope.$on('departmentBoxShown', function() {
                         createOpenTips();
+                    });
+
+                    scope.$on('dashboardLoaded', function() {
+                        resetSizes();
                     });
 
                 }

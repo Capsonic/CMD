@@ -56,6 +56,7 @@ namespace CMDLogic.Logic
 
         protected override void onSaving(DbContext context, Department entity, BaseEntity parent = null)
         {
+            //parent is a Dashboard
             if (parent != null)
             {
                 bool isShared = (parent as Dashboard).IsShared;

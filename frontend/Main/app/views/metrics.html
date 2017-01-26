@@ -78,7 +78,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Title</label>
-                    <input type="text" id="input" class="form-control" ng-model="itemToSave.Title">
+                    <input type="text" class="form-control" ng-model="itemToSave.Title">
                     <br>
                     <label>Description</label>
                     <textarea class="form-control" rows="3" ng-model="itemToSave.Description"></textarea>
@@ -126,17 +126,25 @@
                     </div>
                     <div class="col-sm-6">
                         <div class="form-group" style="font-size: .8em;">
-                            <label>Format</label>
-                            <select ng-model="itemToSave.SelectedMetricYear.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
-                            <br>
                             <label>Basis</label>
                             <select ng-model="itemToSave.SelectedMetricYear.BasisKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricBasis" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
+                            <br>
+                            <label>Format</label>
+                            <select ng-model="itemToSave.SelectedMetricYear.FormatKey" class="form-control" ng-options="cat.id as cat.Value for cat in catMetricFormat" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
                             <br>
                             <label>Comparator Method</label>
                             <select ng-model="itemToSave.SelectedMetricYear.ComparatorMethodKey" class="form-control" ng-options="cat.id as cat.Value for cat in catComparatorMethod" ng-change="on_input_change(itemToSave.SelectedMetricYear);"></select>
                             <br>
+                            <div ng-if="itemToSave.SelectedMetricYear.ComparatorMethodKey == 3">
+                                <label>Around Range Value</label>
+                                <div class="input-group">
+                                    <div class="input-group-addon">+/-</div>
+                                    <input type="text" class="form-control" ng-model="itemToSave.SelectedMetricYear.AroundRangeValue" ng-change="on_input_change(itemToSave.SelectedMetricYear);">
+                                </div>
+                                <br>
+                            </div>
                             <label>Goal Value</label>
-                            <input type="text" id="input" class="form-control" ng-model="itemToSave.SelectedMetricYear.GoalValue" ng-change="on_input_change(itemToSave.SelectedMetricYear);">
+                            <input type="text" class="form-control" ng-model="itemToSave.SelectedMetricYear.GoalValue" ng-change="on_input_change(itemToSave.SelectedMetricYear);">
                             <br>
                             <label>Hidden for Dashboards</label>
                             <tags-input template="tag-template" ng-model="itemToSave.SelectedMetricYear.HiddenForDashboardsTags" key-property="id" display-property="Value" placeholder="Dashboards" add-from-autocomplete-only="true" add-on-blur="false" replace-spaces-with-dashes="false" on-tag-added="on_dashboardTag_Added($tag, itemToSave.SelectedMetricYear);">
