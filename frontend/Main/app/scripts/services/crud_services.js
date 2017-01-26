@@ -135,7 +135,7 @@ angular.module('CMD.CRUDServices', [])
 
     return crudInstance;
 
-}).service('departmentService', function(crudFactory) {
+}).service('departmentService', function(crudFactory, metricService, initiativeService) {
     var crudInstance = new crudFactory({
         //Entity Name = WebService/API to call:
         entityName: 'Department',
@@ -143,6 +143,12 @@ angular.module('CMD.CRUDServices', [])
         catalogs: [],
 
         adapter: function(theEntity) {
+            theEntity.Metrics.forEach(function(metric) {
+                metricService.adapt(metric);
+            });
+            theEntity.Initiatives.forEach(function(initiative) {
+                initiativeService.adapt(initiative);
+            });
             return theEntity;
         },
 

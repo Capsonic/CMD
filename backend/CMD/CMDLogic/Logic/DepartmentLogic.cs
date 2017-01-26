@@ -1,6 +1,7 @@
 ﻿using CMDLogic.EF;
 using Reusable;
 using System;
+using System.Collections.Generic;
 using System.Data.Entity;
 
 namespace CMDLogic.Logic
@@ -10,19 +11,19 @@ namespace CMDLogic.Logic
     public class DepartmentLogic : BaseLogic<Department>, IDepartmentLogic
     {
         private readonly IRepository<Initiative> initiativeRepository;
-        private readonly IRepository<Metric> metricRepository;
+        private readonly IMetricLogic metricLogic;
         private readonly IRepository<Gridster> gridsterRepository;
         private readonly IRepository<Dashboard> dashboardRepository;
 
         public DepartmentLogic(DbContext context,
             IRepository<Department> repository,
             IRepository<Initiative> initiativeRepository,
-            IRepository<Metric> metricRepository,
+            IMetricLogic metricLogic,
             IRepository<Gridster> gridsterRepository,
             IRepository<Dashboard> dashboardRepository) : base(context, repository)
         {
             this.initiativeRepository = initiativeRepository;
-            this.metricRepository = metricRepository;
+            this.metricLogic = metricLogic;
             this.gridsterRepository = gridsterRepository;
             this.dashboardRepository = dashboardRepository;
         }
@@ -30,14 +31,14 @@ namespace CMDLogic.Logic
         protected override void loadNavigationProperties(DbContext context, params Department[] entities)
         {
             initiativeRepository.byUserId = byUserId;
-            metricRepository.byUserId = byUserId;
+            metricLogic.byUserId = byUserId;
             gridsterRepository.byUserId = byUserId;
 
             foreach (Department item in entities)
             {
                 //item.Dashboards = dashboardRepository.GetListByParent<Department>(item.id);
                 item.Initiatives = initiativeRepository.GetListByParent<Department>(item.id);
-                item.Metrics = metricRepository.GetListByParent<Department>(item.id);
+                item.Metrics = (ICollection<Metric>)metricLogic.GetAllByParent<Department>(item.id).Result;
 
                 //if (item.InfoGridster == null)
                 //{
