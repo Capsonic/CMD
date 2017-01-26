@@ -23,7 +23,8 @@
     "handsontable": "^0.29.2",
     "angular-selectize2": "^3.0.1",
     "animate.css": "^3.5.2",
-    "hover": "Hover#^2.1.0"
+    "hover": "Hover#^2.1.0",
+    "opentip": "^2.4.6"
   },
   "devDependencies": {
     "angular-mocks": "^1.5.7"

@@ -87,6 +87,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                 element.hide();
                                 resetSizes();
                                 element.show();
+                                createOpenTips();
                             }
                         });
                     });
@@ -95,6 +96,24 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                         $timeout(function() {
                             element.find('.columnMaxWidth').css('max-width', element.parent().width() * .6);
                         }, 200);
+                    };
+
+                    function createOpenTips() {
+                        scope.department.Metrics.forEach(function(oMetric) {
+                            new Opentip('.MetricLine#' + oMetric.id, oMetric.Description, oMetric.Title, {
+                                delay: 0,
+                                fixed: false,
+                                style: null //, 'glass'//'dark', 'alert'
+                            });
+                        });
+
+                        scope.department.Initiatives.forEach(function(oInitiative) {
+                            new Opentip('.InitiativeLine#' + oInitiative.id, oInitiative.Description, oInitiative.Title, {
+                                delay: 0,
+                                fixed: false,
+                                style: null //, 'glass'//'dark', 'alert'
+                            });
+                        });
                     };
 
                     scope.theWidth = function() {
@@ -417,7 +436,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                 });
                             }).modal('show');
                         });
-                    }
+                    };
 
                 }
             }

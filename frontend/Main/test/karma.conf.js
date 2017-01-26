@@ -48,6 +48,8 @@ module.exports = function(config) {
       'bower_components/microplugin/src/microplugin.js',
       'bower_components/selectize/dist/js/selectize.js',
       'bower_components/angular-selectize2/dist/angular-selectize.js',
+      'bower_components/opentip/lib/opentip.js',
+      'bower_components/opentip/lib/adapter-jquery.js',
       'bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'app/scripts/**/*.js',
