@@ -19,7 +19,7 @@
         </div>
     </div>
 </div>
-<div class="container Relationator">
+<div class="container Relationator" id="fullscreenMe">
     <br>
     <br>
     <br>
@@ -68,7 +68,7 @@
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="occuppiedEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in occuppiedEntities | orderBy:propertyNameOccuppied:reverseOccuppied">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+';onDepartmentBoxShown();">
                     <div ng-show="entity.expanded == '-'" class="DepartmentBoxList">
                         <department-box department="entity"></department-box>
                     </div>
@@ -81,7 +81,7 @@
             <ul class="list-group well" dragula='"entities-bag"' dragula-model="availableEntities">
                 <li id={{entity.id}} class="list-group-item" ng-repeat="entity in availableEntities | orderBy:propertyNameAvailable:reverseAvailable">
                     <span ng-show="entity.expanded == '+'">{{entity.Title}}</span>
-                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+'">
+                    <input type="button" class="Expander pull-right btn btn-default btn-xs" ng-init="entity.expanded = '+';" ng-value="entity.expanded" ng-click="entity.expanded = entity.expanded == '+' ? '-':'+';onDepartmentBoxShown();">
                     <div ng-show="entity.expanded == '-'" class="DepartmentBoxList">
                         <department-box department="entity"></department-box>
                     </div>

@@ -56,5 +56,9 @@ angular.module('mainApp').controller('DashboardDepartmentsCtrl', function($scope
         return result;
     };
 
+    $scope.onDepartmentBoxShown = function() {
+        $scope.$broadcast('departmentBoxShown');
+    };
+
 
 });

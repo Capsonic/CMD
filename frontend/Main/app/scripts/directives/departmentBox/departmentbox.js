@@ -87,33 +87,43 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                 element.hide();
                                 resetSizes();
                                 element.show();
-                                createOpenTips();
                             }
                         });
                     });
 
                     function resetSizes() {
                         $timeout(function() {
-                            element.find('.columnMaxWidth').css('max-width', element.parent().width() * .6);
+                            element.find('.initiativeMaxWidth').css('max-width', element.parent().width() * .6);
+                            element.find('.metricMaxWidth').css('max-width', element.parent().width() * .8);
                         }, 200);
                     };
 
                     function createOpenTips() {
-                        scope.department.Metrics.forEach(function(oMetric) {
-                            new Opentip('.MetricLine#' + oMetric.id, oMetric.Description, oMetric.Title, {
-                                delay: 0,
-                                fixed: false,
-                                style: null //, 'glass'//'dark', 'alert'
+                        $timeout(function() {
+                            scope.department.Metrics.forEach(function(oMetric) {
+                                var el = $(element).find('#' + oMetric.id + '.MetricLine');
+                                if (el.length > 0) {
+                                    new Opentip(el, oMetric.Description, oMetric.Title, {
+                                        delay: 0,
+                                        fixed: false,
+                                        style: null, //, 'glass'//'dark', 'alert'
+                                        offset: [7, 7]
+                                    });
+                                }
                             });
-                        });
 
-                        scope.department.Initiatives.forEach(function(oInitiative) {
-                            new Opentip('.InitiativeLine#' + oInitiative.id, oInitiative.Description, oInitiative.Title, {
-                                delay: 0,
-                                fixed: false,
-                                style: null //, 'glass'//'dark', 'alert'
+                            scope.department.Initiatives.forEach(function(oInitiative) {
+                                var el = $(element).find('#' + oInitiative.id + '.InitiativeLine');
+                                if (el.length > 0) {
+                                    new Opentip(el, oInitiative.Description, oInitiative.Title, {
+                                        delay: 0,
+                                        fixed: false,
+                                        style: null, //, 'glass'//'dark', 'alert'
+                                        offset: [7, 7]
+                                    });
+                                }
                             });
-                        });
+                        }, 300);
                     };
 
                     scope.theWidth = function() {
@@ -417,7 +427,6 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             return container;
                         };
 
-
                     });
 
                     scope.showTrendInfo = function() {
@@ -437,6 +446,12 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             }).modal('show');
                         });
                     };
+
+                    createOpenTips();
+
+                    scope.$on('departmentBoxShown', function() {
+                        createOpenTips();
+                    });
 
                 }
             }
