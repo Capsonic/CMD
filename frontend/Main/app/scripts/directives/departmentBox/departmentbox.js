@@ -103,7 +103,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             scope.department.Metrics.forEach(function(oMetric) {
                                 var el = $(element).find('#' + oMetric.id + '.MetricLine');
                                 if (el.length > 0) {
-                                    new Opentip(el, oMetric.Description, oMetric.Title, {
+                                    new Opentip(el, oMetric.Description || '', oMetric.Title || '', {
                                         delay: 0,
                                         fixed: false,
                                         style: null, //, 'glass'//'dark', 'alert'
@@ -115,7 +115,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                             scope.department.Initiatives.forEach(function(oInitiative) {
                                 var el = $(element).find('#' + oInitiative.id + '.InitiativeLine');
                                 if (el.length > 0) {
-                                    new Opentip(el, oInitiative.Description, oInitiative.Title, {
+                                    new Opentip(el, oInitiative.Description || '', oInitiative.Title || '', {
                                         delay: 0,
                                         fixed: false,
                                         style: null, //, 'glass'//'dark', 'alert'
@@ -154,7 +154,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                                 return id == currentDashboard().id;
                             });
 
-                            if (oFound == undefined) {
+                            if (oFound != undefined) {
                                 return false;
                             }
                         }

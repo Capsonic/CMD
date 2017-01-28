@@ -113,11 +113,11 @@ angular.module('mainApp', [
         var authentication = authService.authentication;
         if (!authentication || !authentication.isAuth) {
             // no logged user, we should be going to #login
-            // if (next.templateUrl == "views/login.html") {
-            //     // already going to #login, no redirect needed
-            // } else {
-            //     $location.path('/login');
-            // }
+            if (next.templateUrl == "views/login.html") {
+                // already going to #login, no redirect needed
+            } else {
+                $location.path('/login');
+            }
         } else {
             // var tokenPayload = jwtHelper.decodeToken(jwt);
             // LoginService.update(tokenPayload.data.userId, tokenPayload.data.userName);
@@ -126,6 +126,11 @@ angular.module('mainApp', [
 
     $rootScope.$on('$routeChangeSuccess', function() {
         $rootScope.activePath = $location.path();
+        if ($rootScope.activePath == '/dashboard') {
+            $('body').css('overflow', 'hidden');
+        } else {
+            $('body').css('overflow', '');
+        }
     });
 
 

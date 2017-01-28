@@ -60,7 +60,7 @@ angular.module('mainApp').directive('yearSelectize', function($timeout, metricYe
                             MetricKey: scope.metric.id
                         }, scope.metric.MetricYears).then(function(data) {
                             // console.log(data, scope.metric);
-                            scope.metric.SelectedMetricYear = data.Result;
+                            scope.metric.SelectedMetricYear = data;
                             // loadSelected(scope.metric.SelectedMetricYear.id);
                             load(scope.metric);
                         });

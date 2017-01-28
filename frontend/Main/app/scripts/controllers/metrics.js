@@ -22,7 +22,9 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
         openModal: function(entity) {
             // console.log(entity);
         }
-    }).loadAll();
+    });
+
+    list.loadAll();
 
 
     $scope.loadDashboardsTags = function($query, currentList) {
@@ -55,6 +57,7 @@ angular.module('mainApp').controller('MetricsCtrl', function($scope, listControl
     };
 
     $scope.$on('RefreshMetric', function(scope, oMetric) {
+        // list.loadAll();
         if ($scope.baseList) {
             $scope.baseList.forEach(function(oEntity) {
                 if (oEntity.id == oMetric.id) {

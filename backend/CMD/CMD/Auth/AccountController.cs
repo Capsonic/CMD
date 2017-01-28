@@ -72,6 +72,7 @@ namespace CMD.Auth
             User theNewUser = new User();
             theNewUser.UserName = userModel.UserName;
             theNewUser.Value = userModel.UserName;
+            theNewUser.Role = "User";
 
 
             ImageConverter converter = new ImageConverter();

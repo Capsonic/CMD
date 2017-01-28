@@ -476,7 +476,7 @@ angular.module('inspiracode.crudFactory', [])
                                     $timeout(function() {
                                         alertify.success(backendResponse.ResponseDescription);
                                     }, 100);
-                                    deferred.resolve(response.data);
+                                    deferred.resolve(response.data.Result);
                                 } else {
                                     var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                     alertify.alert(alertifyContent).set('modal', true);
