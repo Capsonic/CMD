@@ -46,6 +46,15 @@ angular.module('CMD.CRUDServices', [])
         return sISO_8601_Date ? moment(sISO_8601_Date, moment.ISO_8601).toDate() : null;
     };
 
+    service.toServerDate = function(oDate) {
+        var momentDate = moment(oDate);
+        if (momentDate.isValid()) {
+            momentDate.local();
+            return momentDate.format();
+        }
+        return null;
+    };
+
     service.adaptHiddenForDashboards = function(theEntity) {
         var result = [];
         if (theEntity.HiddenForDashboardsTags) {
@@ -182,7 +191,7 @@ angular.module('CMD.CRUDServices', [])
 
                 oYear.MetricHistorys.forEach(function(oHistory) {
                     //Adapt Metric History
-                    metricHistoryService.adapt(oHistory);
+                    metricHistoryService.adapt(oHistory, metricHistoryService, oYear);
                 });
 
                 oYear.MetricHistorys.sort(function(a, b) {
@@ -248,9 +257,9 @@ angular.module('CMD.CRUDServices', [])
 
         catalogs: [],
 
-        adapter: function(theEntity, self) {
+        adapter: function(theEntity, self, oMetricYear) {
 
-            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
+            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, oMetricYear.FormatKey);
             theEntity.ConvertedMetricDate = utilsService.toJavascriptDate(theEntity.MetricDate);
 
             theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;
@@ -265,7 +274,7 @@ angular.module('CMD.CRUDServices', [])
         adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
-            theEntity.MetricDate = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.toJSON() : null;
+            theEntity.MetricDate = utilsService.toServerDate(theEntity.ConvertedMetricDate);
         },
 
         dependencies: [
@@ -326,8 +335,8 @@ angular.module('CMD.CRUDServices', [])
         adapterIn: function(theEntity) {},
 
         adapterOut: function(theEntity, self) {
-            theEntity.DueDate = theEntity.ConvertedDueDate ? theEntity.ConvertedDueDate.toJSON() : null;
-            theEntity.ActualDate = theEntity.ConvertedActualDate ? theEntity.ConvertedActualDate.toJSON() : null;
+            theEntity.DueDate = utilsService.toServerDate(theEntity.ConvertedDueDate);
+            theEntity.ActualDate = utilsService.toServerDate(theEntity.ConvertedActualDate);
             theEntity.HiddenForDashboards = utilsService.adaptHiddenForDashboards(theEntity);
         },
 

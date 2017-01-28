@@ -401,7 +401,9 @@ angular.module('inspiracode.crudFactory', [])
         };
 
         var _adapt = function(entity) {
-            return _populateCatalogValues(_adapter(entity, _self));
+            var theArguments = Array.prototype.slice.call(arguments);
+            theArguments.splice(1, 1, _self);
+            return _populateCatalogValues(_adapter.apply(entity, theArguments));
         }
 
         var _getById = function(theId) {
