@@ -49,8 +49,7 @@
                         <th style="text-align:center;width:250px;"></th>
                         <th st-sort="Name" st-skip-natural="true">Name</th>
                         <th st-sort="Description" st-skip-natural="true">Description</th>
-                        <th st-sort="IsShared" st-skip-natural="true">Is Shared</th>
-                        <th st-skip-natural="true">Owners</th>
+                        <th st-skip-natural="true">Owners (If Shared)</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -63,7 +62,6 @@
                         </td>
                         <td style="text-align:left;">{{item.Name}}</td>
                         <td style="text-align:left;">{{item.Description}}</td>
-                        <td style="text-align:center;">{{item.IsShared ? 'Yes':'No'}}</td>
                         <td style="text-align:center;">{{ownersToString(item.OwnersTags)}}</td>
                     </tr>
                 </tbody>

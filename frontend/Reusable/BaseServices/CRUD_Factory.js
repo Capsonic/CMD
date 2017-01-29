@@ -1089,6 +1089,15 @@ angular.module('inspiracode.crudFactory', [])
                         if (typeof response.data === 'object') {
                             var backendResponse = response.data;
                             if (!backendResponse.ErrorThrown) {
+                                _populateCatalogValues(_adapter(backendResponse.Result, _self));
+                                angular.copy(backendResponse.Result, theEntity);
+                                if (angular.isArray(theArrayBelonging)) {
+                                    var theEntityCopy = angular.copy(theEntity);
+                                    _arrAllRecords.push(theEntityCopy);
+                                    theArrayBelonging.push(theEntity);
+                                } else {
+                                    _arrAllRecords.push(theEntity);
+                                }
                                 deferred.resolve(backendResponse.Result);
                             } else {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';

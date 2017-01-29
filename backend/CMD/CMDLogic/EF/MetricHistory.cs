@@ -18,6 +18,8 @@ namespace CMDLogic.EF
 
         public string Note { get; set; }
 
+        public int? FormatKey { get; set; }
+
         public decimal? CurrentValue { get; set; }
 
         public DateTime? MetricDate { get; set; }

@@ -26,8 +26,11 @@
                     <td>{{metric.EqualityValue}} {{metric.FormattedGoalValue}}</td> -->
                     <td>
                         <div ng-class="getTrendStyle(metric);">
-                            <div class="MetricBox hvr-float-shadow" ng-if="getMetricHistoryByYear(metric)" ng-click="showMetricHistoryReadOnly(metric)">
-                                <table class="table MetricTable" style="width:inherit;">
+                            <div class="MetricBox pull-right" id="{{metric.id}}" ng-if="getMetricHistoryByYear(metric)" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
+                                <button class="btn btn-xs" ng-click="showTrendInfo();" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon"></span></button>
+                            </div>
+                            <div class="MetricBox hvr-float-shadow pull-right" ng-if="getMetricHistoryByYear(metric)" ng-click="showMetricHistoryReadOnly(metric)" style="width:80%;">
+                                <table class="table MetricTable pull-right" style="width:inherit;">
                                     <tbody>
                                         <tr>
                                             <td colspan="2" class="MonthTitle">
@@ -44,9 +47,6 @@
                                         </tr>
                                     </tbody>
                                 </table>
-                            </div>
-                            <div class="MetricBox" id="{{metric.id}}" ng-if="getMetricHistoryByYear(metric)" ng-style="{width:department.InfoGridster.FontSize * 3}" style="vertical-align: top;">
-                                <button class="btn btn-xs" ng-click="showTrendInfo();" style="padding:1px .7em;font-size: .8em;height:5em;"><span class="glyphicon"></span></button>
                             </div>
                         </div>
                     </td>

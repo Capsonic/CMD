@@ -257,9 +257,9 @@ angular.module('CMD.CRUDServices', [])
 
         catalogs: [],
 
-        adapter: function(theEntity, self, oMetricYear) {
+        adapter: function(theEntity, self) {
 
-            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, oMetricYear.FormatKey);
+            theEntity.FormattedCurrentValue = utilsService.getFormattedValue(theEntity.CurrentValue, theEntity.FormatKey);
             theEntity.ConvertedMetricDate = utilsService.toJavascriptDate(theEntity.MetricDate);
 
             theEntity.ConvertedMetricYear = theEntity.ConvertedMetricDate ? theEntity.ConvertedMetricDate.getFullYear() : null;

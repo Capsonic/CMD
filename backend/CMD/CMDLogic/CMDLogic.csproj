@@ -170,6 +170,10 @@
     <Compile Include="Migrations\201701241627324_HiddenDashboardsMetricYear.Designer.cs">
       <DependentUpon>201701241627324_HiddenDashboardsMetricYear.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201701282149489_FormatKeyMetricHistory.cs" />
+    <Compile Include="Migrations\201701282149489_FormatKeyMetricHistory.Designer.cs">
+      <DependentUpon>201701282149489_FormatKeyMetricHistory.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -248,6 +252,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201701241627324_HiddenDashboardsMetricYear.resx">
       <DependentUpon>201701241627324_HiddenDashboardsMetricYear.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201701282149489_FormatKeyMetricHistory.resx">
+      <DependentUpon>201701282149489_FormatKeyMetricHistory.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

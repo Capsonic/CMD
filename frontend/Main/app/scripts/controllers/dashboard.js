@@ -477,6 +477,6 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
         if (!$scope.isDesignMode) {
             load();
         }
-    }, 5000, null, false);
+    }, 30000, null, false);
 
 });

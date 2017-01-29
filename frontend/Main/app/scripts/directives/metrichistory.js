@@ -256,6 +256,7 @@ angular.module('mainApp').directive('metricHistory', function($timeout) {
                     return item.edited;
                 });
                 arrItemsToBeSaved.forEach(function(item) {
+                    item.FormatKey = $scope.metricYear.FormatKey;
                     var promiseConstructor = function() {
                         return metricHistoryService.save(item);
                     }
