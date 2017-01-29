@@ -49,11 +49,21 @@ angular.module('mainApp').controller('DashboardDepartmentsCtrl', function($scope
             });
         }
 
+        result = removeDuplicates(result);
+
         result.sort(function(a, b) {
             return a - b;
         });
 
         return result;
+    };
+
+    var removeDuplicates = function(arr) {
+        var uniqueElements = [];
+        jQuery.each(arr, function(i, el) {
+            if (jQuery.inArray(jQuery.trim(el), uniqueElements) === -1) uniqueElements.push(jQuery.trim(el));
+        });
+        return uniqueElements;
     };
 
     $scope.onDepartmentBoxShown = function() {
