@@ -13,7 +13,8 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
 
     var _authentication = {
         isAuth: false,
-        userName: ""
+        userName: '',
+        role: null
     };
 
     var _saveRegistration = function(registration) {
@@ -28,7 +29,7 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
 
     var _login = function(loginData) {
 
-        var data = "grant_type=password&username=" + loginData.userName + "&password=" + loginData.password;
+        var data = 'grant_type=password&username=' + loginData.userName + '&password=' + loginData.password;
 
         var deferred = $q.defer();
 
@@ -36,25 +37,48 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded'
             }
-        }).success(function(response) {
+        }).then(function(response) {
+
+            var backendResponse = response.data;
+
+            var token = backendResponse.access_token;
+            var userName = loginData.userName;
 
             localStorageService.set('authorizationData', {
-                token: response.access_token,
-                userName: loginData.userName
+                token: token,
+                userName: userName
             });
-
-            _authentication.isAuth = true;
-            _authentication.userName = loginData.userName;
 
             userService.loadAll().then(function(data) {
                 $rootScope.currentUser = userService.getByUserName(loginData.userName);
-                deferred.resolve(response);
+
+                _authentication.isAuth = true;
+                _authentication.userName = $rootScope.currentUser ? $rootScope.currentUser.Value : ''
+                _authentication.role = $rootScope.currentUser.Role;
+
+                localStorageService.set('authorizationData', {
+                    token: token,
+                    userName: userName,
+                    role: $rootScope.currentUser.Role
+                });
+
+                deferred.resolve(response.data);
+
+            }, function(data) {
+                deferred.reject(data);
+                _logOut();
             });
 
 
-
-        }).error(function(err, status) {
+        }, function(err, status) {
             _logOut();
+            if (!err) {
+                err = 'Error. Server unavailable.';
+            } else {
+                if (err && err.data && err.data.error) {
+                    err = err.data.error;
+                }
+            }
             deferred.reject(err);
         });
 
@@ -67,7 +91,10 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
         localStorageService.remove('authorizationData');
 
         _authentication.isAuth = false;
-        _authentication.userName = "";
+        _authentication.userName = '';
+        _authentication.role = null;
+
+        $rootScope.currentUser = null;
 
         $location.path('/login');
 
@@ -78,9 +105,10 @@ angular.module('mainApp').factory('authService', function($http, $q, localStorag
         var authData = localStorageService.get('authorizationData');
         if (authData) {
             _authentication.isAuth = true;
-            _authentication.userName = authData.userName;
             userService.loadAll().then(function(data) {
                 $rootScope.currentUser = userService.getByUserName(authData.userName);
+                _authentication.userName = $rootScope.currentUser ? $rootScope.currentUser.Value : ''
+                _authentication.role = $rootScope.currentUser.Role;
             });
         }
 

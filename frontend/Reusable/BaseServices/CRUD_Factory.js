@@ -660,8 +660,8 @@ angular.module('inspiracode.crudFactory', [])
             }
             if (id > 0) {
                 $http.get(appConfig.API_URL + mainEntity.entityName + '/' + id + qParams + '&noCache=' + Number(new Date()))
-                    .success(function(data) {
-                        var backendResponse = data;
+                    .then(function(data) {
+                        var backendResponse = data.data;
                         if (backendResponse.ErrorThrown) {
                             var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                             alertify.alert(alertifyContent).set('modal', true);
@@ -678,8 +678,7 @@ angular.module('inspiracode.crudFactory', [])
                             }
                             deferred.resolve(backendResponse.Result);
                         }
-                    })
-                    .error(function(data) {
+                    }, function(data) {
                         // something went wrong
                         var alertifyContent = '<div style="word-wrap: break-word;">' + JSON.stringify(data) + '</div>';
                         alertify.alert(alertifyContent).set('modal', true);
@@ -707,8 +706,8 @@ angular.module('inspiracode.crudFactory', [])
                 _arrAllRecords = [];
 
                 $http.get(appConfig.API_URL + mainEntity.entityName + '?noCache=' + Number(new Date()))
-                    .success(function(data) {
-                        var backendResponse = data;
+                    .then(function(data) {
+                        var backendResponse = data.data;
                         if (backendResponse.ErrorThrown) {
                             var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                             alertify.alert(alertifyContent).set('modal', true);
@@ -723,8 +722,7 @@ angular.module('inspiracode.crudFactory', [])
                             deferred.resolve(data);
 
                         }
-                    })
-                    .error(function(data) {
+                    }, function(data) {
                         // something went wrong
                         alertify.alert('An error has occurried, see console for more details.').set('modal', true);
                         log.debug(data);
@@ -752,8 +750,8 @@ angular.module('inspiracode.crudFactory', [])
 
                 if (bAtLeastOneCatalog) {
                     $http.get(appConfig.API_URL + mainEntity.entityName + '/getCatalogs' + '?noCache=' + Number(new Date()))
-                        .success(function(data) {
-                            var backendResponse = data;
+                        .then(function(data) {
+                            var backendResponse = data.data;
                             if (backendResponse.ErrorThrown) {
                                 var alertifyContent = '<div style="word-wrap: break-word;">' + backendResponse.ResponseDescription + '</div>';
                                 alertify.alert(alertifyContent).set('modal', true);
@@ -778,8 +776,7 @@ angular.module('inspiracode.crudFactory', [])
                                     log.error('No catalogs for ' + mainEntity.entityName);
                                 }
                             }
-                        })
-                        .error(function(data) {
+                        }, function(data) {
                             // something went wrong
                             alertify.alert('An error has occurried, see console for more details.').set('modal', true);
                             log.debug(data);
