@@ -14,6 +14,8 @@ namespace CMD.App_Start
     using Reusable;
     using CMDLogic.Logic;
     using Controllers;
+    using BusinessSpecificLogic.Logic;
+
     public static class NinjectWebCommon 
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();

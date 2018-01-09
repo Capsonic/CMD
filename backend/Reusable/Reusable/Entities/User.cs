@@ -72,5 +72,14 @@ namespace Reusable
         public virtual ICollection<Track> Tracks4 { get; set; }
 
         public override int id { get { return UserKey; } }
+
+        [NotMapped]
+        public bool ChangePassword { get; set; }
+
+        [NotMapped]
+        public string Password { get; set; }
+
+        [NotMapped]
+        public string ConfirmPassword { get; set; }
     }
 }

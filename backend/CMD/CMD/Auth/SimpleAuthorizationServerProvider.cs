@@ -3,6 +3,7 @@ using Microsoft.Owin.Security.OAuth;
 using System.Security.Claims;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Reusable;
+using BusinessSpecificLogic.Logic;
 
 namespace CMD.Auth
 {

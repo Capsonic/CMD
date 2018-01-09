@@ -20,7 +20,15 @@ namespace Reusable
             //this.byUserId = byUserId;
         }
 
+        protected enum OPERATION_MODE
+        {
+            NONE,
+            ADD,
+            UPDATE
+        };
+
         protected abstract void loadNavigationProperties(DbContext context, params Entity[] entities);
+        protected virtual void onBeforeSaving(Entity entity, BaseEntity parent = null, OPERATION_MODE mode = OPERATION_MODE.NONE) { }
 
         protected static EntityState GetEntityState(EF_EntityState state)
         {
@@ -54,7 +62,11 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                         repository.byUserId = byUserId;
+
+                        onBeforeSaving(entity, null, OPERATION_MODE.ADD);
+
                         repository.Add(entity);
+
                         onSaving(context, entity);
 
                         transaction.Commit();
@@ -194,6 +206,9 @@ namespace Reusable
                         //var repository = RepositoryFactory.Create<Entity>(context, byUserId);
 
                         repository.byUserId = byUserId;
+
+                        onBeforeSaving(entity, null, OPERATION_MODE.UPDATE);
+
                         repository.Update(entity);
                         onSaving(context, entity);
 
