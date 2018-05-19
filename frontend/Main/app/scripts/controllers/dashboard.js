@@ -40,11 +40,11 @@ angular.module('mainApp').controller('DashboardCtrl', function($scope, dashboard
 
 
     function itemChange(gridsterItem, scope) {
-        scope.department.InfoGridster.cols = scope.department.cols;
-        scope.department.InfoGridster.rows = scope.department.rows;
-        scope.department.InfoGridster.x = scope.department.x;
-        scope.department.InfoGridster.y = scope.department.y;
-        scope.department.editMode = true;
+        gridsterItem.InfoGridster.cols = gridsterItem.cols;
+        gridsterItem.InfoGridster.rows = gridsterItem.rows;
+        gridsterItem.InfoGridster.x = gridsterItem.x;
+        gridsterItem.InfoGridster.y = gridsterItem.y;
+        gridsterItem.editMode = true;
         $scope.pendingToSave = $scope.getPendingToSaveCount();
     };
 

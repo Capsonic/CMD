@@ -131,7 +131,7 @@ angular.module('mainApp').directive('departmentBox', function($timeout, metricSe
                     };
 
                     var currentDashboard = function() {
-                        return scope.$parent.$parent.baseEntity;
+                        return scope.$parent.baseEntity;
                     };
 
                     // scope.getMetrics = function() {

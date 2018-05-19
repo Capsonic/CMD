@@ -35,7 +35,7 @@
                         <button ng-show="!isFullScreen" type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="fullScreen();"><span class="glyphicon glyphicon-fullscreen"></span></button>
                         <button ng-show="!isFullScreen" type="button" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;width:130px;" ng-click="modePresentation();">{{isDesignMode ? 'Presentation Mode' : 'Design Mode'}}</button>
                         <button ng-show="isDesignMode" type="button" ng-class="{NeedsAttention:pendingToSave > 0}" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;" ng-click="saveAll();">Save <span class="badge" style="font-size: .9em;">{{pendingToSave}}</span></button>
-                        <a ng-show="isDesignMode" href="#/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
+                        <a ng-show="isDesignMode" href="#!/dashboards" class="btn btn-sm btn-default navbar-btn navbar-right" style="margin:0 5px 0 0;"><span class="glyphicon glyphicon-cog"></span></a>
                     </div>
                 </div>
                 <!-- Options -->
@@ -63,12 +63,12 @@
             </div>
         </div>
     </div>
-    <div class="Dashboard" ng-show="!isLoading">
-        <div gridster="options">
-            <div gridster-item="department" ng-repeat="department in baseEntity.Departments">
+    <div class="Dashboard" >
+        <gridster options="options">
+            <gridster-item item="department" ng-repeat="department in baseEntity.Departments">
                 <department-box department="department"></department-box>
-            </div>
-        </div>
+            </gridster-item>
+        </gridster>
     </div>
     <div class="modal fade" id="modal-MetricHistory-ReadOnly">
         <div class="modal-dialog" style="max-width: 660px;width:initial;">
